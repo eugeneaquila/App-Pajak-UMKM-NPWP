@@ -611,13 +611,14 @@
         <div class="header-container">
             <div class="brand">
                 <h1><i class="fa-solid fa-calculator"></i> NPWP & UMKM Tax Manager</h1>
-                <p>Kalkulator & Pengelolaan PPh Final 0,5% (Firebase Connected)</p>
+                <p>Kalkulator & Pengelolaan PPh Final 0,5% (Auto-Saved Offline & Cloud)</p>
             </div>
             <div class="header-actions">
                 <div class="user-badge" id="userBadgeArea">
                     <i class="fa-solid fa-circle-user"></i> <span id="displayUserNpwp">Loading...</span>
                 </div>
-                <button class="btn btn-outline" onclick="window.exportToCSV()"><i class="fa-solid fa-file-csv"></i> Ekspor CSV</button>
+                <button class="btn btn-outline" onclick="window.exportSpreadsheet()"><i class="fa-solid fa-file-excel"></i> Ekspor Spreadsheet</button>
+                <button class="btn btn-outline" onclick="window.downloadTemplate()"><i class="fa-solid fa-file-arrow-down"></i> Unduh Template</button>
                 <button class="btn btn-outline" onclick="window.triggerImport()"><i class="fa-solid fa-file-import"></i> Impor CSV</button>
                 <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="window.importCSV(event)">
                 <button class="btn btn-danger" onclick="window.handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
@@ -858,7 +859,6 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Your Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDdmiCbU40lfgHdXEpvbmYdcxonIao9CC4",
             authDomain: "app-pajak-umkm-npwp.firebaseapp.com",
@@ -869,10 +869,16 @@
             measurementId: "G-REMEK0H9JT"
         };
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        const LOCAL_STORAGE_KEY = "umkm_tax_manager_local_state";
+
+        let app, auth, db;
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+        } catch (e) {
+            console.warn("Firebase Init Offline Fallback Active:", e);
+        }
 
         const npwpToEmail = (npwp) => `${npwp.trim()}@umkm-pajak.id`;
 
@@ -886,9 +892,9 @@
             'September': 9, 'Oktober': 10, 'November': 11, 'Desember': 12
         };
 
-        // Initialize Global State
-        window.appState = {
-            profile: { namaUsaha: "Kopi Berkah Nusantara", npwp: "", jenisWP: "OP" },
+        // Load initial local data if available
+        const defaultState = {
+            profile: { namaUsaha: "Kopi Berkah Nusantara", npwp: "7326011206010003", jenisWP: "OP" },
             selectedYear: 2026,
             activeTabIndex: 0,
             monthsData: [
@@ -897,22 +903,49 @@
             ]
         };
 
-        // Auth Listener
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUser = user;
-                const npwp = user.email.split('@')[0];
-                document.getElementById('authOverlay').style.display = 'none';
-                document.getElementById('displayUserNpwp').textContent = `NPWP: ${npwp}`;
-                document.getElementById('nomorNPWP').value = npwp;
-
-                await loadUserDataFromCloud(user.uid, npwp);
-            } else {
-                currentUser = null;
-                document.getElementById('authOverlay').style.display = 'flex';
-                window.showAuthPage('login');
+        function getStoredLocalData() {
+            try {
+                const local = localStorage.getItem(LOCAL_STORAGE_KEY);
+                return local ? JSON.parse(local) : defaultState;
+            } catch (e) {
+                return defaultState;
             }
-        });
+        }
+
+        window.appState = getStoredLocalData();
+
+        // Save local backup immediately
+        function saveLocalState() {
+            try {
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(window.appState));
+            } catch (e) {
+                console.error("Local save error:", e);
+            }
+        }
+
+        // Auth Listener
+        if (auth) {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    currentUser = user;
+                    const npwp = user.email.split('@')[0];
+                    document.getElementById('authOverlay').style.display = 'none';
+                    document.getElementById('displayUserNpwp').textContent = `NPWP: ${npwp}`;
+                    document.getElementById('nomorNPWP').value = npwp;
+
+                    await loadUserDataFromCloud(user.uid, npwp);
+                } else {
+                    currentUser = null;
+                    document.getElementById('authOverlay').style.display = 'flex';
+                    window.showAuthPage('login');
+                }
+            });
+        } else {
+            // Fallback for offline mode without auth
+            document.getElementById('authOverlay').style.display = 'none';
+            document.getElementById('displayUserNpwp').textContent = `NPWP: Offline`;
+            initUI();
+        }
 
         window.showAuthPage = function(page) {
             document.getElementById('loginCard').style.display = page === 'login' ? 'block' : 'none';
@@ -956,7 +989,10 @@
                     monthsData: [{ name: 'Januari', year: 2026, omzet: 0, beban: 0, billing: '' }]
                 };
 
-                await setDoc(doc(db, "users", user.uid), initialData);
+                window.appState = initialData;
+                saveLocalState();
+
+                if (db) await setDoc(doc(db, "users", user.uid), initialData);
                 alert("Pendaftaran berhasil! Selamat datang.");
             } catch (err) {
                 alert("Gagal mendaftar: " + err.message);
@@ -971,7 +1007,7 @@
             try {
                 const email = npwpToEmail(npwp);
                 await sendPasswordResetEmail(auth, email);
-                alert(`Instruksi reset password telah dikirimkan ke email sistem terdaftar (${email}).`);
+                alert(`Instruksi reset password telah dikirimkan ke email terdaftar (${email}).`);
                 window.showAuthPage('login');
             } catch (err) {
                 alert("Reset gagal: " + err.message);
@@ -980,50 +1016,55 @@
 
         window.handleLogout = async function() {
             if (confirm("Apakah Anda yakin ingin keluar dari akun ini?")) {
-                await signOut(auth);
+                if (auth) await signOut(auth);
+                location.reload();
             }
         };
 
         async function loadUserDataFromCloud(uid, npwp) {
             try {
-                const docRef = doc(db, "users", uid);
-                const docSnap = await getDoc(docRef);
+                if (db) {
+                    const docRef = doc(db, "users", uid);
+                    const docSnap = await getDoc(docRef);
 
-                if (docSnap.exists()) {
-                    window.appState = docSnap.data();
-                } else {
-                    window.appState = {
-                        profile: { namaUsaha: "UMKM Baru", npwp: npwp, jenisWP: "OP" },
-                        selectedYear: 2026,
-                        activeTabIndex: 0,
-                        monthsData: [{ name: 'Januari', year: 2026, omzet: 0, beban: 0, billing: '' }]
-                    };
-                    await setDoc(docRef, window.appState);
+                    if (docSnap.exists()) {
+                        window.appState = docSnap.data();
+                    } else {
+                        window.appState.profile.npwp = npwp;
+                        await setDoc(docRef, window.appState);
+                    }
                 }
-
-                if (!window.appState.selectedYear) window.appState.selectedYear = 2026;
-
-                document.getElementById('namaUsaha').value = window.appState.profile.namaUsaha || '';
-                document.getElementById('jenisWP').value = window.appState.profile.jenisWP || 'OP';
-
-                window.populateYearDropdown();
-                window.renderTabs();
-                window.calculateAll();
-                window.runSimulasiKalkulator();
             } catch (e) {
-                console.error("Error loading cloud data:", e);
+                console.warn("Could not reach cloud database, using local saved data:", e);
+            } finally {
+                saveLocalState();
+                initUI();
             }
         }
 
+        function initUI() {
+            if (!window.appState.selectedYear) window.appState.selectedYear = 2026;
+
+            document.getElementById('namaUsaha').value = window.appState.profile.namaUsaha || '';
+            document.getElementById('jenisWP').value = window.appState.profile.jenisWP || 'OP';
+
+            window.populateYearDropdown();
+            window.renderTabs();
+            window.calculateAll();
+            window.runSimulasiKalkulator();
+        }
+
         window.saveDataToCloud = function() {
-            if (!currentUser) return;
+            saveLocalState(); // Local persistence on every change
+            if (!currentUser || !db) return;
+
             clearTimeout(saveTimeout);
             saveTimeout = setTimeout(async () => {
                 try {
                     const docRef = doc(db, "users", currentUser.uid);
                     await setDoc(docRef, window.appState, { merge: true });
                 } catch (err) {
-                    console.error("Cloud Save Error:", err);
+                    console.warn("Cloud Sync Error (Saved locally):", err);
                 }
             }, 500);
         };
@@ -1329,9 +1370,10 @@
             });
         }
 
-        window.exportToCSV = function() {
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Tahun,Bulan,Omzet Bruto,Beban Operasional,Laba Bersih,DPP Pajak,Pajak UMKM (0.5%),Kode Billing / NTPN\n";
+        // Export Spreadsheet (.csv format compatible with Excel & Google Sheets)
+        window.exportSpreadsheet = function() {
+            let csvContent = "\uFEFF"; // UTF-8 BOM for Excel opening
+            csvContent += "Tahun,Bulan,Omzet Bruto (Rp),Beban Operasional (Rp),Laba Bersih (Rp),DPP Pajak (Rp),PPh Final 0.5% (Rp),Kode Billing / NTPN\n";
 
             window.appState.monthsData.forEach(item => {
                 const row = [
@@ -1347,10 +1389,32 @@
                 csvContent += row.join(",") + "\n";
             });
 
-            const encodedUri = encodeURI(csvContent);
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `Riwayat_Pajak_UMKM_${(window.appState.profile.namaUsaha || 'Toko').replace(/\s+/g, '_')}.csv`);
+            const url = URL.createObjectURL(blob);
+            const namaFile = `Rekap_Pajak_UMKM_${(window.appState.profile.namaUsaha || 'Toko').replace(/\s+/g, '_')}_${window.appState.selectedYear}.csv`;
+            
+            link.setAttribute("href", url);
+            link.setAttribute("download", namaFile);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+
+        // Download Template Impor
+        window.downloadTemplate = function() {
+            let templateContent = "\uFEFF";
+            templateContent += "Tahun,Bulan,Omzet Bruto,Beban Operasional,NTPN_Billing\n";
+            templateContent += "2026,Januari,85000000,42000000,NTPN-8821931\n";
+            templateContent += "2026,Februari,92000000,45000000,NTPN-8821932\n";
+            templateContent += "2026,Maret,0,0,\n";
+
+            const blob = new Blob([templateContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute("href", url);
+            link.setAttribute("download", "Template_Impor_Pajak_UMKM.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -1375,11 +1439,11 @@
                     const cols = line.split(',').map(c => c.replace(/^"|"$/g, '').trim());
                     if (cols.length >= 3) {
                         newMonthsData.push({
-                            year: parseInt(cols[0]) || 2026,
+                            year: parseInt(cols[0]) || window.appState.selectedYear || 2026,
                             name: cols[1] || `Bulan ${i}`,
                             omzet: parseFloat(cols[2]) || 0,
                             beban: parseFloat(cols[3]) || 0,
-                            billing: cols[7] || ''
+                            billing: cols[4] || cols[7] || ''
                         });
                     }
                 }
@@ -1390,7 +1454,7 @@
                     window.renderTabs();
                     window.calculateAll();
                     window.saveDataToCloud();
-                    alert('Data Riwayat CSV berhasil diimpor ke Cloud!');
+                    alert('Data riwayat berhasil diimpor!');
                 }
             };
             reader.readAsText(file);
