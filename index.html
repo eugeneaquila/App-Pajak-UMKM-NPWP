@@ -186,8 +186,6 @@
 
         .btn-primary { background-color: var(--primary); color: white; }
         .btn-primary:hover { background-color: var(--primary-dark); }
-        .btn-success { background-color: #059669; color: white; }
-        .btn-success:hover { background-color: #047857; }
         .btn-outline { background-color: transparent; border: 1px solid #475569; color: #f1f5f9; }
         .btn-outline:hover { background-color: #334155; color: white; }
         .btn-secondary { background-color: #e2e8f0; color: #334155; }
@@ -423,7 +421,7 @@
         /* Chart */
         .chart-container {
             position: relative;
-            height: 320px;
+            height: 350px;
             width: 100%;
         }
 
@@ -435,6 +433,49 @@
             font-size: 0.85rem;
             color: #1e40af;
             margin-bottom: 20px;
+        }
+
+        /* Quick Calculator Box */
+        .calc-widget {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .calc-widget label {
+            color: #94a3b8;
+        }
+
+        .calc-result-box {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .calc-result-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+
+        .calc-result-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .calc-result-item.highlight {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #60a5fa;
         }
 
         /* Modals */
@@ -496,7 +537,7 @@
                 <h2>Masuk ke NPWP UMKM</h2>
                 <p>Kelola perhitungan PPh Final 0,5% bisnis Anda</p>
             </div>
-            <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
+            <form id="loginForm" class="auth-form" onsubmit="window.handleLogin(event)">
                 <div class="form-group">
                     <label for="loginNpwp">NIK / Nomor NPWP (16 Digit)</label>
                     <input type="text" id="loginNpwp" class="form-control" placeholder="Masukkan 16 digit NIK/NPWP" required>
@@ -508,8 +549,8 @@
                 <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-right-to-bracket"></i> Masuk Sekarang</button>
             </form>
             <div class="auth-links">
-                <p><a href="#" onclick="showAuthPage('forgot')">Lupa Password?</a></p>
-                <p style="margin-top: 8px;">Belum punya akun? <a href="#" onclick="showAuthPage('signup')">Daftar Akun Baru</a></p>
+                <p><a href="#" onclick="window.showAuthPage('forgot')">Lupa Password?</a></p>
+                <p style="margin-top: 8px;">Belum punya akun? <a href="#" onclick="window.showAuthPage('signup')">Daftar Akun Baru</a></p>
             </div>
         </div>
 
@@ -520,7 +561,7 @@
                 <h2>Pendaftaran Akun UMKM</h2>
                 <p>Daftarkan NPWP/NIK untuk menyimpan data di Cloud</p>
             </div>
-            <form id="signupForm" class="auth-form" onsubmit="handleSignup(event)">
+            <form id="signupForm" class="auth-form" onsubmit="window.handleSignup(event)">
                 <div class="form-group">
                     <label for="signupNpwp">NIK / NPWP (16 Digit)</label>
                     <input type="text" id="signupNpwp" class="form-control" placeholder="3273xxxxxxxxxxxx" required>
@@ -540,7 +581,7 @@
                 <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-user-check"></i> Buat Akun UMKM</button>
             </form>
             <div class="auth-links">
-                <p>Sudah mendaftar? <a href="#" onclick="showAuthPage('login')">Masuk di sini</a></p>
+                <p>Sudah mendaftar? <a href="#" onclick="window.showAuthPage('login')">Masuk di sini</a></p>
             </div>
         </div>
 
@@ -549,21 +590,17 @@
             <div class="auth-header">
                 <i class="fa-solid fa-key"></i>
                 <h2>Reset Kata Sandi</h2>
-                <p>Masukkan NIK/NPWP & No. WhatsApp terdaftar</p>
+                <p>Masukkan NIK/NPWP terdaftar</p>
             </div>
-            <form id="forgotForm" class="auth-form" onsubmit="handleForgot(event)">
+            <form id="forgotForm" class="auth-form" onsubmit="window.handleForgot(event)">
                 <div class="form-group">
                     <label for="forgotNpwp">NIK / Nomor NPWP</label>
                     <input type="text" id="forgotNpwp" class="form-control" placeholder="3273xxxxxxxxxxxx" required>
                 </div>
-                <div class="form-group">
-                    <label for="forgotPhone">Nomor WhatsApp Terdaftar</label>
-                    <input type="tel" id="forgotPhone" class="form-control" placeholder="081234567890" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-paper-plane"></i> Kirim Insttruksi Reset</button>
+                <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-paper-plane"></i> Kirim Instruksi Reset</button>
             </form>
             <div class="auth-links">
-                <p><a href="#" onclick="showAuthPage('login')"><i class="fa-solid fa-arrow-left"></i> Kembali ke Login</a></p>
+                <p><a href="#" onclick="window.showAuthPage('login')"><i class="fa-solid fa-arrow-left"></i> Kembali ke Login</a></p>
             </div>
         </div>
 
@@ -580,10 +617,10 @@
                 <div class="user-badge" id="userBadgeArea">
                     <i class="fa-solid fa-circle-user"></i> <span id="displayUserNpwp">Loading...</span>
                 </div>
-                <button class="btn btn-outline" onclick="exportToCSV()"><i class="fa-solid fa-file-csv"></i> Ekspor CSV</button>
-                <button class="btn btn-outline" onclick="triggerImport()"><i class="fa-solid fa-file-import"></i> Impor CSV</button>
-                <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="importCSV(event)">
-                <button class="btn btn-danger" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+                <button class="btn btn-outline" onclick="window.exportToCSV()"><i class="fa-solid fa-file-csv"></i> Ekspor CSV</button>
+                <button class="btn btn-outline" onclick="window.triggerImport()"><i class="fa-solid fa-file-import"></i> Impor CSV</button>
+                <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="window.importCSV(event)">
+                <button class="btn btn-danger" onclick="window.handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
             </div>
         </div>
     </header>
@@ -596,7 +633,7 @@
                 <span class="card-title"><i class="fa-solid fa-id-card"></i> Profil Usaha & Filter Tahun Pajak</span>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <label for="filterTahun" style="font-weight: 700; font-size: 0.85rem; color: var(--text-muted);"><i class="fa-solid fa-filter"></i> TAHUN PAJAK:</label>
-                    <select id="filterTahun" class="form-control" style="width: 120px; font-weight: 700; color: var(--primary);" onchange="changeSelectedYear()">
+                    <select id="filterTahun" class="form-control" style="width: 130px; font-weight: 700; color: var(--primary);" onchange="window.changeSelectedYear()">
                         <!-- Dynamic Options -->
                     </select>
                 </div>
@@ -604,7 +641,7 @@
             <div class="grid-3">
                 <div class="form-group">
                     <label for="namaUsaha">Nama Usaha / Toko (UMKM)</label>
-                    <input type="text" id="namaUsaha" class="form-control" value="Kopi Berkah Nusantara" onchange="saveProfileToCloud()">
+                    <input type="text" id="namaUsaha" class="form-control" value="Kopi Berkah Nusantara" onchange="window.saveProfileToCloud()">
                 </div>
                 <div class="form-group">
                     <label for="nomorNPWP">Nomor NPWP / NIK (16 Digit)</label>
@@ -612,10 +649,37 @@
                 </div>
                 <div class="form-group">
                     <label for="jenisWP">Jenis Wajib Pajak</label>
-                    <select id="jenisWP" class="form-control" onchange="saveProfileToCloud(); calculateAll();">
+                    <select id="jenisWP" class="form-control" onchange="window.saveProfileToCloud(); window.calculateAll();">
                         <option value="OP">Orang Pribadi (Bebas Pajak s/d Omzet 500 Juta/Thn)</option>
                         <option value="Badan">Badan Usaha (PT/CV) - Pajak 0.5% Tanpa Ambang Limit</option>
                     </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kalkulator Simulasi Cepat Pajak UMKM -->
+        <div class="calc-widget">
+            <div class="card-title" style="color: white; margin-bottom: 16px;">
+                <i class="fa-solid fa-wand-magic-sparkles" style="color: #60a5fa;"></i> Kalkulator Simulasi Cepat PPh Final UMKM
+            </div>
+            <div class="grid-3" style="align-items: center;">
+                <div class="form-group">
+                    <label for="simulasiOmzet">Input Omzet Bruto Simulasi (Rp)</label>
+                    <input type="number" id="simulasiOmzet" class="form-control" placeholder="Contoh: 150000000" value="100000000" oninput="window.runSimulasiKalkulator()">
+                </div>
+                <div class="form-group">
+                    <label for="simulasiAkumulasi">Akumulasi Omzet Sebelumnya (Rp)</label>
+                    <input type="number" id="simulasiAkumulasi" class="form-control" placeholder="Contoh: 450000000" value="400000000" oninput="window.runSimulasiKalkulator()">
+                </div>
+                <div class="calc-result-box">
+                    <div class="calc-result-item">
+                        <span>Omzet Kena PPh (DPP):</span>
+                        <strong id="simulasiDPPText">Rp 0</strong>
+                    </div>
+                    <div class="calc-result-item highlight">
+                        <span>Pajak Terutang (0,5%):</span>
+                        <strong id="simulasiPajakText">Rp 0</strong>
+                    </div>
                 </div>
             </div>
         </div>
@@ -654,22 +718,22 @@
         <div class="card">
             <div class="tabs-header-wrapper">
                 <ul class="nav-tabs" id="tabList"></ul>
-                <button class="btn btn-primary btn-sm" onclick="openAddTabModal()"><i class="fa-solid fa-plus"></i> Tambah Bulan/Tahun</button>
+                <button class="btn btn-primary btn-sm" onclick="window.openAddTabModal()"><i class="fa-solid fa-plus"></i> Tambah Bulan/Tahun</button>
             </div>
 
             <div id="tabContentArea">
                 <div class="grid-3" style="margin-bottom: 20px;">
                     <div class="form-group">
                         <label for="inputOmzet">Omzet Bruto Bulan Ini (Rp)</label>
-                        <input type="number" id="inputOmzet" class="form-control" placeholder="0" oninput="updateCurrentTabData()">
+                        <input type="number" id="inputOmzet" class="form-control" placeholder="0" oninput="window.updateCurrentTabData()">
                     </div>
                     <div class="form-group">
                         <label for="inputBeban">Beban / Pengeluaran Operasional (Rp)</label>
-                        <input type="number" id="inputBeban" class="form-control" placeholder="0" oninput="updateCurrentTabData()">
+                        <input type="number" id="inputBeban" class="form-control" placeholder="0" oninput="window.updateCurrentTabData()">
                     </div>
                     <div class="form-group">
                         <label for="inputKodeBilling">Kode Billing ID / No. NTPN</label>
-                        <input type="text" id="inputKodeBilling" class="form-control" placeholder="Contoh: 123456789012345" oninput="updateCurrentTabData()">
+                        <input type="text" id="inputKodeBilling" class="form-control" placeholder="Contoh: 123456789012345" oninput="window.updateCurrentTabData()">
                     </div>
                 </div>
 
@@ -756,7 +820,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 style="font-size: 1.1rem; font-weight: 700;"><i class="fa-solid fa-calendar-plus"></i> Tambah Bulan / Periode Baru</h3>
-                <button style="border:none; background:none; cursor:pointer;" onclick="closeAddTabModal()"><i class="fa-solid fa-xmark"></i></button>
+                <button style="border:none; background:none; cursor:pointer;" onclick="window.closeAddTabModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="grid-3" style="grid-template-columns: 1fr 1fr; gap: 12px;">
                 <div class="form-group">
@@ -782,17 +846,17 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeAddTabModal()">Batal</button>
-                <button class="btn btn-primary" onclick="addNewTab()"><i class="fa-solid fa-check"></i> Tambahkan</button>
+                <button class="btn btn-secondary" onclick="window.closeAddTabModal()">Batal</button>
+                <button class="btn btn-primary" onclick="window.addNewTab()"><i class="fa-solid fa-check"></i> Tambahkan</button>
             </div>
         </div>
     </div>
 
-    <!-- Firebase App Module Integration -->
+    <!-- Unified Single Script Module -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // Your Firebase configuration
         const firebaseConfig = {
@@ -810,11 +874,28 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Helper: Convert NPWP to Synthetic Email
         const npwpToEmail = (npwp) => `${npwp.trim()}@umkm-pajak.id`;
 
         let currentUser = null;
         let saveTimeout = null;
+        let chartInstance = null;
+
+        const monthOrder = {
+            'Januari': 1, 'Februari': 2, 'Maret': 3, 'April': 4,
+            'Mei': 5, 'Juni': 6, 'Juli': 7, 'Agustus': 8,
+            'September': 9, 'Oktober': 10, 'November': 11, 'Desember': 12
+        };
+
+        // Initialize Global State
+        window.appState = {
+            profile: { namaUsaha: "Kopi Berkah Nusantara", npwp: "", jenisWP: "OP" },
+            selectedYear: 2026,
+            activeTabIndex: 0,
+            monthsData: [
+                { name: 'Januari', year: 2026, omzet: 85000000, beban: 42000000, billing: 'NTPN-8821931' },
+                { name: 'Februari', year: 2026, omzet: 92000000, beban: 45000000, billing: 'NTPN-8821932' }
+            ]
+        };
 
         // Auth Listener
         onAuthStateChanged(auth, async (user) => {
@@ -825,16 +906,14 @@
                 document.getElementById('displayUserNpwp').textContent = `NPWP: ${npwp}`;
                 document.getElementById('nomorNPWP').value = npwp;
 
-                // Fetch User Data from Firestore
                 await loadUserDataFromCloud(user.uid, npwp);
             } else {
                 currentUser = null;
                 document.getElementById('authOverlay').style.display = 'flex';
-                showAuthPage('login');
+                window.showAuthPage('login');
             }
         });
 
-        // Global functions mapped to window object
         window.showAuthPage = function(page) {
             document.getElementById('loginCard').style.display = page === 'login' ? 'block' : 'none';
             document.getElementById('signupCard').style.display = page === 'signup' ? 'block' : 'none';
@@ -870,19 +949,11 @@
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Save Initial Profile to Firestore
                 const initialData = {
-                    profile: {
-                        namaUsaha: namaUsaha,
-                        npwp: npwp,
-                        phone: phone,
-                        jenisWP: "OP"
-                    },
+                    profile: { namaUsaha: namaUsaha, npwp: npwp, phone: phone, jenisWP: "OP" },
                     selectedYear: 2026,
                     activeTabIndex: 0,
-                    monthsData: [
-                        { name: 'Januari', year: 2026, omzet: 0, beban: 0, billing: '' }
-                    ]
+                    monthsData: [{ name: 'Januari', year: 2026, omzet: 0, beban: 0, billing: '' }]
                 };
 
                 await setDoc(doc(db, "users", user.uid), initialData);
@@ -901,7 +972,7 @@
                 const email = npwpToEmail(npwp);
                 await sendPasswordResetEmail(auth, email);
                 alert(`Instruksi reset password telah dikirimkan ke email sistem terdaftar (${email}).`);
-                showAuthPage('login');
+                window.showAuthPage('login');
             } catch (err) {
                 alert("Reset gagal: " + err.message);
             }
@@ -913,7 +984,6 @@
             }
         };
 
-        // Cloud Data Management
         async function loadUserDataFromCloud(uid, npwp) {
             try {
                 const docRef = doc(db, "users", uid);
@@ -922,7 +992,6 @@
                 if (docSnap.exists()) {
                     window.appState = docSnap.data();
                 } else {
-                    // Fallback create initial
                     window.appState = {
                         profile: { namaUsaha: "UMKM Baru", npwp: npwp, jenisWP: "OP" },
                         selectedYear: 2026,
@@ -932,13 +1001,15 @@
                     await setDoc(docRef, window.appState);
                 }
 
-                // Sync UI with state
+                if (!window.appState.selectedYear) window.appState.selectedYear = 2026;
+
                 document.getElementById('namaUsaha').value = window.appState.profile.namaUsaha || '';
                 document.getElementById('jenisWP').value = window.appState.profile.jenisWP || 'OP';
 
                 window.populateYearDropdown();
                 window.renderTabs();
                 window.calculateAll();
+                window.runSimulasiKalkulator();
             } catch (e) {
                 console.error("Error loading cloud data:", e);
             }
@@ -946,8 +1017,6 @@
 
         window.saveDataToCloud = function() {
             if (!currentUser) return;
-            
-            // Debounce save
             clearTimeout(saveTimeout);
             saveTimeout = setTimeout(async () => {
                 try {
@@ -956,37 +1025,21 @@
                 } catch (err) {
                     console.error("Cloud Save Error:", err);
                 }
-            }, 600);
+            }, 500);
         };
-    </script>
-
-    <script>
-        // Core Dashboard Logic
-        const monthOrder = {
-            'Januari': 1, 'Februari': 2, 'Maret': 3, 'April': 4,
-            'Mei': 5, 'Juni': 6, 'Juli': 7, 'Agustus': 8,
-            'September': 9, 'Oktober': 10, 'November': 11, 'Desember': 12
-        };
-
-        // Global State placeholder
-        window.appState = {
-            profile: { namaUsaha: "", npwp: "", jenisWP: "OP" },
-            selectedYear: 2026,
-            activeTabIndex: 0,
-            monthsData: []
-        };
-
-        let chartInstance = null;
 
         window.saveProfileToCloud = function() {
             window.appState.profile.namaUsaha = document.getElementById('namaUsaha').value;
             window.appState.profile.jenisWP = document.getElementById('jenisWP').value;
-            if (window.saveDataToCloud) window.saveDataToCloud();
+            window.saveDataToCloud();
         };
 
         window.populateYearDropdown = function() {
             const yearSelect = document.getElementById('filterTahun');
-            const years = [...new Set(window.appState.monthsData.map(m => m.year || 2026))].sort((a,b) => b - a);
+            let years = [...new Set(window.appState.monthsData.map(m => parseInt(m.year) || 2026))].sort((a,b) => b - a);
+
+            if (years.length === 0) years = [2026];
+            if (!window.appState.selectedYear) window.appState.selectedYear = years[0];
 
             if (!years.includes(window.appState.selectedYear)) {
                 years.push(window.appState.selectedYear);
@@ -1006,17 +1059,17 @@
         };
 
         window.changeSelectedYear = function() {
-            window.appState.selectedYear = parseInt(document.getElementById('filterTahun').value);
+            window.appState.selectedYear = parseInt(document.getElementById('filterTahun').value) || 2026;
             window.appState.activeTabIndex = 0;
             document.querySelectorAll('.selected-year-label').forEach(el => el.textContent = window.appState.selectedYear);
             window.renderTabs();
             window.calculateAll();
-            if (window.saveDataToCloud) window.saveDataToCloud();
+            window.saveDataToCloud();
         };
 
         function getFilteredYearData() {
             return window.appState.monthsData
-                .filter(m => (m.year || 2026) === window.appState.selectedYear)
+                .filter(m => (parseInt(m.year) || 2026) === window.appState.selectedYear)
                 .sort((a,b) => (monthOrder[a.name] || 0) - (monthOrder[b.name] || 0));
         }
 
@@ -1054,8 +1107,8 @@
 
             const activeData = currentYearData[window.appState.activeTabIndex];
             if (activeData) {
-                document.getElementById('inputOmzet').value = activeData.omzet || '';
-                document.getElementById('inputBeban').value = activeData.beban || '';
+                document.getElementById('inputOmzet').value = activeData.omzet !== undefined ? activeData.omzet : '';
+                document.getElementById('inputBeban').value = activeData.beban !== undefined ? activeData.beban : '';
                 document.getElementById('inputKodeBilling').value = activeData.billing || '';
             }
         };
@@ -1068,7 +1121,7 @@
 
         window.openAddTabModal = function() {
             document.getElementById('addTabModal').classList.add('active');
-            document.getElementById('newTabYear').value = window.appState.selectedYear;
+            document.getElementById('newTabYear').value = window.appState.selectedYear || 2026;
         };
 
         window.closeAddTabModal = function() {
@@ -1079,7 +1132,7 @@
             const month = document.getElementById('newTabMonth').value;
             const year = parseInt(document.getElementById('newTabYear').value) || 2026;
 
-            const exists = window.appState.monthsData.some(m => m.name === month && m.year === year);
+            const exists = window.appState.monthsData.some(m => m.name === month && (parseInt(m.year) || 2026) === year);
             if (exists) return alert(`Periode ${month} ${year} sudah ada!`);
 
             window.appState.monthsData.push({ name: month, year: year, omzet: 0, beban: 0, billing: '' });
@@ -1087,12 +1140,12 @@
             window.populateYearDropdown();
 
             const filtered = getFilteredYearData();
-            window.appState.activeTabIndex = filtered.findIndex(m => m.name === month && m.year === year);
+            window.appState.activeTabIndex = filtered.findIndex(m => m.name === month && (parseInt(m.year) || 2026) === year);
 
             window.closeAddTabModal();
             window.renderTabs();
             window.calculateAll();
-            if (window.saveDataToCloud) window.saveDataToCloud();
+            window.saveDataToCloud();
         };
 
         window.deleteTab = function(e, globalIndex) {
@@ -1103,7 +1156,7 @@
                 window.populateYearDropdown();
                 window.renderTabs();
                 window.calculateAll();
-                if (window.saveDataToCloud) window.saveDataToCloud();
+                window.saveDataToCloud();
             }
         };
 
@@ -1117,7 +1170,7 @@
             activeData.billing = document.getElementById('inputKodeBilling').value;
 
             window.calculateAll();
-            if (window.saveDataToCloud) window.saveDataToCloud();
+            window.saveDataToCloud();
         };
 
         window.calculateAll = function() {
@@ -1199,6 +1252,11 @@
                     document.getElementById('calcBebasPajak').textContent = "Tidak Berlaku (Badan Usaha)";
                     document.getElementById('calcStatusBebas').textContent = "Badan Usaha dikenakan PPh 0,5% langsung dari omzet bruto";
                 }
+            } else {
+                document.getElementById('calcLabaBersih').textContent = 'Rp 0';
+                document.getElementById('calcKumulatifOmzet').textContent = 'Rp 0';
+                document.getElementById('calcDPP').textContent = 'Rp 0';
+                document.getElementById('calcPajakBulan').textContent = 'Rp 0';
             }
 
             document.getElementById('summaryTotalOmzet').textContent = formatRupiah(totalOmzetAll);
@@ -1209,20 +1267,52 @@
             updateChart(chartLabels, chartOmzet, chartLaba, chartPajak);
         };
 
+        window.runSimulasiKalkulator = function() {
+            const omzet = parseFloat(document.getElementById('simulasiOmzet').value) || 0;
+            const akumulasi = parseFloat(document.getElementById('simulasiAkumulasi').value) || 0;
+            const isOP = (document.getElementById('jenisWP').value || 'OP') === 'OP';
+
+            let dpp = 0;
+            if (isOP) {
+                const LIMIT = 500000000;
+                const totalAkumulasi = akumulasi + omzet;
+                if (akumulasi >= LIMIT) {
+                    dpp = omzet;
+                } else if (totalAkumulasi > LIMIT) {
+                    dpp = totalAkumulasi - LIMIT;
+                } else {
+                    dpp = 0;
+                }
+            } else {
+                dpp = omzet;
+            }
+
+            const pajak = dpp * 0.005;
+            document.getElementById('simulasiDPPText').textContent = formatRupiah(dpp);
+            document.getElementById('simulasiPajakText').textContent = formatRupiah(pajak);
+        };
+
         function formatRupiah(amount) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount);
         }
 
-        function initChart() {
-            const ctx = document.getElementById('taxChart').getContext('2d');
+        function updateChart(labels, omzet, laba, pajak) {
+            const canvas = document.getElementById('taxChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
             chartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: [],
+                    labels: labels,
                     datasets: [
-                        { label: 'Omzet Bruto (Rp)', data: [], backgroundColor: 'rgba(37, 99, 235, 0.7)', borderColor: '#2563eb', borderWidth: 1, borderRadius: 6 },
-                        { label: 'Laba Bersih (Rp)', data: [], backgroundColor: 'rgba(16, 185, 129, 0.7)', borderColor: '#10b981', borderWidth: 1, borderRadius: 6 },
-                        { label: 'Pajak UMKM 0.5% (Rp)', data: [], type: 'line', borderColor: '#ef4444', backgroundColor: '#ef4444', borderWidth: 3, fill: false, tension: 0.3 }
+                        { label: 'Omzet Bruto (Rp)', data: omzet, backgroundColor: 'rgba(37, 99, 235, 0.7)', borderColor: '#2563eb', borderWidth: 1, borderRadius: 6 },
+                        { label: 'Laba Bersih (Rp)', data: laba, backgroundColor: 'rgba(16, 185, 129, 0.7)', borderColor: '#10b981', borderWidth: 1, borderRadius: 6 },
+                        { label: 'Pajak UMKM 0.5% (Rp)', data: pajak, type: 'line', borderColor: '#ef4444', backgroundColor: '#ef4444', borderWidth: 3, fill: false, tension: 0.3 }
                     ]
                 },
                 options: {
@@ -1232,26 +1322,16 @@
                         legend: { position: 'top' },
                         tooltip: { callbacks: { label: function(context) { return context.dataset.label + ': ' + formatRupiah(context.raw); } } }
                     },
-                    scales: { y: { beginAtZero: true, ticks: { callback: function(value) { return 'Rp ' + (value / 1000000).toLocaleString('id-ID') + ' Jt'; } } } }
+                    scales: {
+                        y: { beginAtZero: true, ticks: { callback: function(value) { return 'Rp ' + (value / 1000000).toLocaleString('id-ID') + ' Jt'; } } }
+                    }
                 }
             });
         }
 
-        function updateChart(labels, omzet, laba, pajak) {
-            if (!chartInstance) {
-                initChart();
-            }
-            chartInstance.data.labels = labels;
-            chartInstance.data.datasets[0].data = omzet;
-            chartInstance.data.datasets[1].data = laba;
-            chartInstance.data.datasets[2].data = pajak;
-            chartInstance.update();
-        }
-
         window.exportToCSV = function() {
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Tahun,Bulan,Omzet Bruto,Beban Operasional,Laba Bersih,DPP Pajak,Pajak UMKM (0.5%),Kode Billing / NTPN
-";
+            csvContent += "Tahun,Bulan,Omzet Bruto,Beban Operasional,Laba Bersih,DPP Pajak,Pajak UMKM (0.5%),Kode Billing / NTPN\n";
 
             window.appState.monthsData.forEach(item => {
                 const row = [
@@ -1264,14 +1344,13 @@
                     item.computedPajak || 0,
                     `"${item.billing || ''}"`
                 ];
-                csvContent += row.join(",") + "
-";
+                csvContent += row.join(",") + "\n";
             });
 
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `Riwayat_Pajak_UMKM_${window.appState.profile.namaUsaha.replace(/\s+/g, '_')}.csv`);
+            link.setAttribute("download", `Riwayat_Pajak_UMKM_${(window.appState.profile.namaUsaha || 'Toko').replace(/\s+/g, '_')}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -1286,8 +1365,7 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const text = e.target.result;
-                const lines = text.split('
-');
+                const lines = text.split('\n');
                 const newMonthsData = [];
 
                 for (let i = 1; i < lines.length; i++) {
@@ -1311,7 +1389,7 @@
                     window.populateYearDropdown();
                     window.renderTabs();
                     window.calculateAll();
-                    if (window.saveDataToCloud) window.saveDataToCloud();
+                    window.saveDataToCloud();
                     alert('Data Riwayat CSV berhasil diimpor ke Cloud!');
                 }
             };
