@@ -892,7 +892,6 @@
             'September': 9, 'Oktober': 10, 'November': 11, 'Desember': 12
         };
 
-        // Load initial local data if available
         const defaultState = {
             profile: { namaUsaha: "Kopi Berkah Nusantara", npwp: "7326011206010003", jenisWP: "OP" },
             selectedYear: 2026,
@@ -914,7 +913,6 @@
 
         window.appState = getStoredLocalData();
 
-        // Save local backup immediately
         function saveLocalState() {
             try {
                 localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(window.appState));
@@ -923,7 +921,6 @@
             }
         }
 
-        // Auth Listener
         if (auth) {
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
@@ -941,7 +938,6 @@
                 }
             });
         } else {
-            // Fallback for offline mode without auth
             document.getElementById('authOverlay').style.display = 'none';
             document.getElementById('displayUserNpwp').textContent = `NPWP: Offline`;
             initUI();
@@ -1055,7 +1051,7 @@
         }
 
         window.saveDataToCloud = function() {
-            saveLocalState(); // Local persistence on every change
+            saveLocalState();
             if (!currentUser || !db) return;
 
             clearTimeout(saveTimeout);
@@ -1370,9 +1366,8 @@
             });
         }
 
-        // Export Spreadsheet (.csv format compatible with Excel & Google Sheets)
         window.exportSpreadsheet = function() {
-            let csvContent = "\uFEFF"; // UTF-8 BOM for Excel opening
+            let csvContent = "\uFEFF";
             csvContent += "Tahun,Bulan,Omzet Bruto (Rp),Beban Operasional (Rp),Laba Bersih (Rp),DPP Pajak (Rp),PPh Final 0.5% (Rp),Kode Billing / NTPN\n";
 
             window.appState.monthsData.forEach(item => {
@@ -1401,11 +1396,10 @@
             document.body.removeChild(link);
         };
 
-        // Download Template Impor
         window.downloadTemplate = function() {
             let templateContent = "\uFEFF";
             templateContent += "Tahun,Bulan,Omzet Bruto,Beban Operasional,NTPN_Billing\n";
-            templateContent += "2026,Januari,85000000,42000000,NTPN-8821931\n";
+            templateContent += "2026,Januari,85.000.000,42.000.000,NTPN-8821931\n";
             templateContent += "2026,Februari,92000000,45000000,NTPN-8821932\n";
             templateContent += "2026,Maret,0,0,\n";
 
@@ -1422,6 +1416,52 @@
 
         window.triggerImport = function() { document.getElementById('csvFileInput').click(); };
 
+        // Helper untuk parse baris CSV berkuotasi & dengan separator koma/titik-koma
+        function parseCSVLine(line, delimiter) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === delimiter && !inQuotes) {
+                    result.push(current.trim().replace(/^"|"$/g, ''));
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current.trim().replace(/^"|"$/g, ''));
+            return result;
+        }
+
+        // Helper untuk membersihkan angka berformat Rp, titik ribuan, atau koma desimal
+        function cleanNumberInput(valStr) {
+            if (!valStr) return 0;
+            let str = valStr.toString().trim().replace(/Rp|rp|\s/g, '');
+            if (str.includes('.') && str.includes(',')) {
+                // Format Indonesia: 10.000,00 -> hilangkan titik, ubah koma ke titik
+                str = str.replace(/\./g, '').replace(',', '.');
+            } else if (str.includes('.') && !str.includes(',')) {
+                // Format titik ribuan (misal: 85.000.000)
+                const parts = str.split('.');
+                if (parts.length > 2 || (parts.length === 2 && parts[1].length === 3)) {
+                    str = str.replace(/\./g, '');
+                }
+            } else if (str.includes(',') && !str.includes('.')) {
+                // Format koma desimal/ribuan
+                const parts = str.split(',');
+                if (parts.length > 2 || (parts.length === 2 && parts[1].length === 3)) {
+                    str = str.replace(/,/g, '');
+                } else {
+                    str = str.replace(',', '.');
+                }
+            }
+            return parseFloat(str) || 0;
+        }
+
         window.importCSV = function(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1429,21 +1469,33 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const text = e.target.result;
-                const lines = text.split('\n');
+                const lines = text.split(/\r\n|\n/);
+                if (lines.length <= 1) return alert("File CSV kosong!");
+
+                // Deteksi otomatis separator (titik-koma atau koma)
+                const firstLine = lines[0];
+                const delimiter = firstLine.includes(';') ? ';' : ',';
+
                 const newMonthsData = [];
 
                 for (let i = 1; i < lines.length; i++) {
                     const line = lines[i].trim();
                     if (!line) continue;
                     
-                    const cols = line.split(',').map(c => c.replace(/^"|"$/g, '').trim());
+                    const cols = parseCSVLine(line, delimiter);
                     if (cols.length >= 3) {
+                        const yearVal = parseInt(cols[0]) || window.appState.selectedYear || 2026;
+                        const monthName = cols[1] || `Bulan ${i}`;
+                        const omzetVal = cleanNumberInput(cols[2]);
+                        const bebanVal = cleanNumberInput(cols[3]);
+                        const billingVal = cols[7] || cols[4] || '';
+
                         newMonthsData.push({
-                            year: parseInt(cols[0]) || window.appState.selectedYear || 2026,
-                            name: cols[1] || `Bulan ${i}`,
-                            omzet: parseFloat(cols[2]) || 0,
-                            beban: parseFloat(cols[3]) || 0,
-                            billing: cols[4] || cols[7] || ''
+                            year: yearVal,
+                            name: monthName,
+                            omzet: omzetVal,
+                            beban: bebanVal,
+                            billing: billingVal
                         });
                     }
                 }
@@ -1454,7 +1506,9 @@
                     window.renderTabs();
                     window.calculateAll();
                     window.saveDataToCloud();
-                    alert('Data riwayat berhasil diimpor!');
+                    alert(`Data riwayat (${newMonthsData.length} bulan) berhasil diimpor dengan rapi!`);
+                } else {
+                    alert("Format CSV tidak cocok atau data tidak dapat dibaca.");
                 }
             };
             reader.readAsText(file);
