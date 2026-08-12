@@ -17,5 +17,7 @@
       "type": "image/png"
     }
   ],
-  "dir": "auto"
+  "dir": "auto",
+  "id": "com.apppun.pajak",
+  "description": "\"description\": \"Aplikasi manajemen dan kalkulator pajak terpadu untuk UMKM (PPh Final 0,5%) serta Perorangan (PPh 21 Karyawan &amp; Pekerja Lepas/NPPN).\""
 }
