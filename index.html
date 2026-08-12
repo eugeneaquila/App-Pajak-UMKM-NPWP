@@ -653,6 +653,29 @@
                 </div>
             </div>
 
+            <!-- TABEL RIWAYAT PAJAK BULANAN PERSEORANGAN -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Pajak Bulanan Perorangan (1 Tahun / 12 Bulan)</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Bulan</th>
+                                <th>Tipe Pekerjaan</th>
+                                <th>Bruto Bulan Ini</th>
+                                <th>Netto Bulan Ini</th>
+                                <th>PTKP Alokasi</th>
+                                <th>PPh 21 Bulan Ini</th>
+                                <th>Status PPh</th>
+                            </tr>
+                        </thead>
+                        <tbody id="personalHistoryTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- Kalkulator Pajak Kendaraan -->
             <div class="card">
                 <div class="card-header">
@@ -1209,6 +1232,28 @@
             document.getElementById('resPersonalPKP').textContent = formatRupiah(pkp);
             document.getElementById('resPersonalPphBulan').textContent = formatRupiah(pphBulan);
             document.getElementById('resPersonalPphTahun').textContent = formatRupiah(pphTahun);
+
+            // RENDRERING RIWAYAT PAJAK BULANAN PERSEORANGAN (12 BULAN)
+            const pHistoryBody = document.getElementById('personalHistoryTableBody');
+            if (pHistoryBody) {
+                pHistoryBody.innerHTML = '';
+                const ptkpBulan = ptkp / 12;
+                const labelTipe = jobType === 'freelance' ? 'Freelancer (NPPN)' : 'Karyawan (PPh 21)';
+
+                allMonthsList.forEach((mName) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${mName}</strong></td>
+                        <td>${labelTipe}</td>
+                        <td>${formatRupiah(brutoBulan)}</td>
+                        <td>${formatRupiah(nettoBulan)}</td>
+                        <td>${formatRupiah(ptkpBulan)}</td>
+                        <td style="color: #2563eb; font-weight: 700;">${formatRupiah(pphBulan)}</td>
+                        <td><span class="badge ${pphBulan > 0 ? 'badge-warning' : 'badge-success'}">${pphBulan > 0 ? 'Kena Pajak' : 'Nihil / Bebas'}</span></td>
+                    `;
+                    pHistoryBody.appendChild(tr);
+                });
+            }
         };
 
         window.calculatePajakKendaraan = function() {
