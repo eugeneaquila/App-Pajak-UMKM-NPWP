@@ -793,7 +793,13 @@
             appId: "1:583484388383:web:f37687349961b2ac08112a"
         };
 
-        const LOCAL_STORAGE_KEY = "apppun_tax_manager_local_state";
+        // PENTING: key ini di-namespace PER AKUN (uid), bukan satu key global.
+        // Sebelumnya semua akun di device yang sama berbagi 1 key localStorage,
+        // sehingga data akun lain bisa "bocor" tampil/tersimpan untuk akun yang baru login.
+        const LOCAL_STORAGE_PREFIX = "apppun_tax_manager_local_state";
+        function getLocalStorageKey(uid) {
+            return uid ? `${LOCAL_STORAGE_PREFIX}_${uid}` : `${LOCAL_STORAGE_PREFIX}_guest`;
+        }
 
         let app, auth, db;
         try {
@@ -807,13 +813,17 @@
         const npwpToEmail = (npwp) => `${npwp.trim()}@umkm-pajak.id`;
 
         let currentUser = null;
+        let currentLocalKey = null;
         let unsubscribeRealtime = null;
         let isRemoteUpdate = false;
         let chartInstance = null;
+        let cloudSaveTimer = null;
 
         const allMonthsList = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
         const monthOrder = { 'Januari': 1, 'Februari': 2, 'Maret': 3, 'April': 4, 'Mei': 5, 'Juni': 6, 'Juli': 7, 'Agustus': 8, 'September': 9, 'Oktober': 10, 'November': 11, 'Desember': 12 };
 
+        // Placeholder yang HANYA dipakai sebelum login berhasil (masih ketutup authOverlay).
+        // JANGAN PERNAH menulis object ini ke Firestore untuk akun sungguhan.
         const defaultState = {
             entityMode: "umkm",
             activeStoreId: "store_default",
@@ -833,7 +843,29 @@
             }]
         };
 
-        window.appState = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || defaultState;
+        // Factory data BERSIH untuk akun/NIK baru. Dipakai setiap kali membuat
+        // dokumen cloud baru (signup ATAU saat listener mendapati dokumen belum ada),
+        // supaya tidak pernah "mewarisi" window.appState dari akun lain di device yang sama.
+        function buildDefaultState(npwp, namaUsaha) {
+            const year = new Date().getFullYear();
+            return {
+                entityMode: "umkm",
+                activeStoreId: "store_1",
+                personalProfile: {
+                    nama: namaUsaha || "", tipePekerjaan: "karyawan", statusPTKP: "54000000",
+                    gajiPokok: 0, tunjangan: 0, iuran: 0,
+                    freelanceBruto: 0, freelanceNorma: "0.5", jenisKendaraan: "mobil", njkb: 0, kepemilikan: "0.02"
+                },
+                stores: [{
+                    id: "store_1",
+                    profile: { namaUsaha: namaUsaha || "", npwp: npwp || "", jenisWP: "OP", kategoriUsaha: "Retail & Kelontong", targetOmzet: 500000000 },
+                    selectedYear: year, activeTabIndex: 0,
+                    monthsData: [{ name: 'Januari', year: year, omzet: 0, beban: 0, billing: '' }]
+                }]
+            };
+        }
+
+        window.appState = defaultState;
 
         function getActiveStore() {
             let store = window.appState.stores.find(s => s.id === window.appState.activeStoreId);
@@ -845,8 +877,9 @@
         }
 
         function saveLocalState() {
+            if (!currentLocalKey) return; // belum login / belum tahu akun -> jangan simpan apa pun
             try {
-                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(window.appState));
+                localStorage.setItem(currentLocalKey, JSON.stringify(window.appState));
             } catch (e) {
                 console.error("Local save error:", e);
             }
@@ -866,26 +899,38 @@
             }
         }
 
-        // AUTH & REALTIME LISTENERS PER NIK
+        // AUTH & REALTIME LISTENERS PER NIK / PER UID
         if (auth) {
             onAuthStateChanged(auth, (user) => {
+                if (cloudSaveTimer) { clearTimeout(cloudSaveTimer); cloudSaveTimer = null; }
                 if (user) {
                     currentUser = user;
                     const npwp = user.email.split('@')[0];
+                    currentLocalKey = getLocalStorageKey(user.uid);
+
                     document.getElementById('authOverlay').style.display = 'none';
                     document.getElementById('displayUserNpwp').textContent = `NPWP: ${npwp}`;
                     document.getElementById('nomorNPWP').value = npwp;
 
-                    // Mengaktifkan Listener Realtime Firestore
+                    // Mengaktifkan Listener Realtime Firestore (sumber kebenaran = cloud,
+                    // bukan localStorage device ini)
                     listenToCloudData(user.uid, npwp);
                 } else {
                     if (unsubscribeRealtime) unsubscribeRealtime();
                     currentUser = null;
+                    currentLocalKey = null;
+                    window.appState = defaultState;
                     document.getElementById('authOverlay').style.display = 'flex';
                     window.showAuthPage('login');
                 }
             });
         } else {
+            currentLocalKey = getLocalStorageKey(null);
+            try {
+                window.appState = JSON.parse(localStorage.getItem(currentLocalKey)) || defaultState;
+            } catch (e) {
+                window.appState = defaultState;
+            }
             document.getElementById('authOverlay').style.display = 'none';
             initUI();
         }
@@ -898,32 +943,66 @@
             unsubscribeRealtime = onSnapshot(docRef, (docSnap) => {
                 setSyncIndicatorStatus(false);
                 if (docSnap.exists()) {
+                    // Cloud SELALU jadi sumber kebenaran begitu ada dokumen -> device manapun
+                    // yang login akan menampilkan data yang sama persis.
                     isRemoteUpdate = true;
                     window.appState = docSnap.data();
                     saveLocalState();
                     initUI();
                     isRemoteUpdate = false;
                 } else {
-                    // Inisialisasi awal untuk NIK baru di cloud
-                    const activeStore = getActiveStore();
-                    activeStore.profile.npwp = npwp;
-                    setDoc(docRef, window.appState);
+                    // NIK/akun baru di cloud -> WAJIB mulai dari data bersih (buildDefaultState),
+                    // JANGAN pernah pakai window.appState apa adanya di titik ini. Sebelumnya bug
+                    // di sini menyebabkan data akun/percobaan sebelumnya di device yang sama
+                    // ikut ter-upload jadi milik akun yang baru login.
+                    const freshState = buildDefaultState(npwp);
+                    isRemoteUpdate = true;
+                    window.appState = freshState;
+                    saveLocalState();
+                    initUI();
+                    isRemoteUpdate = false;
+                    setDoc(docRef, { ...freshState, updatedAt: Date.now() });
                 }
             }, (error) => {
                 console.error("Realtime sync error:", error);
                 setSyncIndicatorStatus(false);
+                // Firestore tidak terjangkau (mis. offline) -> baru di titik ini boleh
+                // fallback ke cache lokal milik AKUN INI SAJA (key sudah per-uid).
+                if (currentLocalKey) {
+                    try {
+                        const cached = localStorage.getItem(currentLocalKey);
+                        window.appState = cached ? JSON.parse(cached) : buildDefaultState(npwp);
+                    } catch (e) {
+                        window.appState = buildDefaultState(npwp);
+                    }
+                    initUI();
+                }
             });
         }
 
         window.saveDataToCloud = function() {
-            saveLocalState();
+            saveLocalState(); // backup lokal instan, sudah aman karena per-akun
             if (isRemoteUpdate || !currentUser || !db) return;
 
+            // Debounce penulisan ke cloud: input diketik huruf demi huruf sebelumnya
+            // memicu 1 write Firestore PER KETUKAN TOMBOL untuk SELURUH appState (termasuk
+            // seluruh array stores). Ini memperbesar peluang tulisan dari 2 device yang
+            // saling menimpa satu sama lain ("last write wins" atas seluruh dokumen).
+            // Dengan debounce, perubahan yang beruntun digabung jadi 1 kali kirim.
             setSyncIndicatorStatus(true);
-            const docRef = doc(db, "users", currentUser.uid);
-            setDoc(docRef, window.appState, { merge: true })
-                .then(() => setSyncIndicatorStatus(false))
-                .catch(err => console.error("Cloud Save Error:", err));
+            if (cloudSaveTimer) clearTimeout(cloudSaveTimer);
+            cloudSaveTimer = setTimeout(() => {
+                cloudSaveTimer = null;
+                if (!currentUser || !db) return;
+                const docRef = doc(db, "users", currentUser.uid);
+                const payload = { ...window.appState, updatedAt: Date.now() };
+                setDoc(docRef, payload, { merge: true })
+                    .then(() => setSyncIndicatorStatus(false))
+                    .catch(err => {
+                        console.error("Cloud Save Error:", err);
+                        setSyncIndicatorStatus(false);
+                    });
+            }, 700);
         };
 
         window.showAuthPage = function(page) {
@@ -961,21 +1040,13 @@
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                const initialData = {
-                    entityMode: "umkm",
-                    activeStoreId: "store_1",
-                    personalProfile: { nama: namaUsaha, tipePekerjaan: "karyawan", statusPTKP: "54000000", gajiPokok: 10000000, tunjangan: 0, iuran: 0, freelanceBruto: 0, freelanceNorma: "0.5", jenisKendaraan: "mobil", njkb: 0, kepemilikan: "0.02" },
-                    stores: [{
-                        id: "store_1",
-                        profile: { namaUsaha: namaUsaha, npwp: npwp, phone: phone, jenisWP: "OP", kategoriUsaha: "Retail & Kelontong", targetOmzet: 500000000 },
-                        selectedYear: 2026, activeTabIndex: 0,
-                        monthsData: [{ name: 'Januari', year: 2026, omzet: 0, beban: 0, billing: '' }]
-                    }]
-                };
+                const initialData = buildDefaultState(npwp, namaUsaha);
+                initialData.stores[0].profile.phone = phone;
 
+                currentLocalKey = getLocalStorageKey(user.uid);
                 window.appState = initialData;
                 saveLocalState();
-                if (db) await setDoc(doc(db, "users", user.uid), initialData);
+                if (db) await setDoc(doc(db, "users", user.uid), { ...initialData, updatedAt: Date.now() });
                 alert("Pendaftaran berhasil!");
             } catch (err) {
                 alert("Gagal mendaftar: " + err.message);
@@ -998,8 +1069,9 @@
 
         window.handleLogout = async function() {
             if (confirm("Keluar dari akun?")) {
+                if (cloudSaveTimer) { clearTimeout(cloudSaveTimer); cloudSaveTimer = null; }
                 if (auth) await signOut(auth);
-                localStorage.removeItem(LOCAL_STORAGE_KEY);
+                if (currentLocalKey) localStorage.removeItem(currentLocalKey);
                 location.reload();
             }
         };
