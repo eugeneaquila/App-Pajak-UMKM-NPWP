@@ -551,6 +551,11 @@
             <div class="card">
                 <div class="card-header">
                     <span class="card-title"><i class="fa-solid fa-id-card-clip"></i> Profil & Tipe Pekerjaan</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label for="personalFilterTahun" style="font-weight: 700; font-size: 0.75rem; color: var(--text-muted);">TAHUN:</label>
+                        <select id="personalFilterTahun" class="form-control" style="width: 100px; min-height: 36px; padding: 4px 8px; font-weight: 700; color: var(--primary);" onchange="window.changePersonalSelectedYear()">
+                        </select>
+                    </div>
                 </div>
                 <div class="grid-3">
                     <div class="form-group">
@@ -580,37 +585,43 @@
                 </div>
             </div>
 
-            <!-- Kalkulator Pajak Perorangan -->
+            <!-- Kalkulator Pajak Perorangan Dinamis (Tab Bulan UI) -->
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title" id="personalCalcTitle"><i class="fa-solid fa-calculator"></i> Kalkulator PPh 21 Karyawan</span>
+                    <span class="card-title" id="personalCalcTitle"><i class="fa-solid fa-calculator"></i> Kalkulator PPh Perorangan</span>
                 </div>
 
-                <!-- Input Karyawan -->
+                <!-- Tab Header UI seperti Toko UMKM -->
+                <div class="tabs-header-wrapper">
+                    <ul class="nav-tabs" id="personalTabList"></ul>
+                    <button class="btn btn-primary" style="padding: 6px 12px; min-height:36px; flex-shrink: 0;" onclick="window.openAddPersonalTabModal()"><i class="fa-solid fa-plus"></i></button>
+                </div>
+
+                <!-- Input Karyawan Dinamis per Bulan -->
                 <div id="formKaryawanInputs" class="grid-3" style="margin-bottom: 16px;">
                     <div class="form-group">
                         <label for="personalGajiPokok">Gaji Pokok / Bulan (Rp)</label>
-                        <input type="number" id="personalGajiPokok" class="form-control" placeholder="10000000" value="10000000" oninput="window.calculatePersonalPph21()">
+                        <input type="number" id="personalGajiPokok" class="form-control" placeholder="10000000" value="10000000" oninput="window.updateCurrentPersonalTabData()">
                     </div>
                     <div class="form-group">
                         <label for="personalTunjangan">Tunjangan & Bonus / Bulan (Rp)</label>
-                        <input type="number" id="personalTunjangan" class="form-control" placeholder="2000000" value="2000000" oninput="window.calculatePersonalPph21()">
+                        <input type="number" id="personalTunjangan" class="form-control" placeholder="2000000" value="2000000" oninput="window.updateCurrentPersonalTabData()">
                     </div>
                     <div class="form-group">
                         <label for="personalIuranSip">Iuran Pensiun / BPJS (Rp)</label>
-                        <input type="number" id="personalIuranSip" class="form-control" placeholder="200000" value="200000" oninput="window.calculatePersonalPph21()">
+                        <input type="number" id="personalIuranSip" class="form-control" placeholder="200000" value="200000" oninput="window.updateCurrentPersonalTabData()">
                     </div>
                 </div>
 
-                <!-- Input Freelancer -->
+                <!-- Input Freelancer Dinamis per Bulan -->
                 <div id="formFreelanceInputs" class="grid-3" style="margin-bottom: 16px; display: none;">
                     <div class="form-group">
-                        <label for="freelancePenghasilanBruto">Penghasilan Bruto / Bulan (Rp)</label>
-                        <input type="number" id="freelancePenghasilanBruto" class="form-control" placeholder="15000000" value="15000000" oninput="window.calculatePersonalPph21()">
+                        <label for="freelancePenghasilanBruto">Penghasilan Bruto Bulan Ini (Rp)</label>
+                        <input type="number" id="freelancePenghasilanBruto" class="form-control" placeholder="15000000" value="15000000" oninput="window.updateCurrentPersonalTabData()">
                     </div>
                     <div class="form-group">
                         <label for="freelanceNorma">Norma Penghitungan Netto (NPPN)</label>
-                        <select id="freelanceNorma" class="form-control" onchange="window.calculatePersonalPph21()">
+                        <select id="freelanceNorma" class="form-control" onchange="window.updateCurrentPersonalTabData()">
                             <option value="0.5">50% (Desainer, Penulis, Konsultan, Artis)</option>
                             <option value="0.45">45% (Jasa Teknik & Komputer)</option>
                             <option value="0.35">35% (Pekerja Bebas Lainnya)</option>
@@ -622,9 +633,9 @@
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>Parameter</th>
-                                <th>Per Bulan</th>
-                                <th>Per Tahun</th>
+                                <th>Parameter Bulan Ini</th>
+                                <th>Per Bulan (Aktif)</th>
+                                <th>Proyeksi Tahunan (<span class="personal-selected-year-label">2026</span>)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -656,12 +667,13 @@
             <!-- TABEL RIWAYAT PAJAK BULANAN PERSEORANGAN -->
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Pajak Bulanan Perorangan (1 Tahun / 12 Bulan)</span>
+                    <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Pajak Bulanan Perorangan (<span class="personal-selected-year-label">2026</span>)</span>
                 </div>
                 <div class="table-responsive">
                     <table class="data-table">
                         <thead>
                             <tr>
+                                <th>Thn</th>
                                 <th>Bulan</th>
                                 <th>Tipe Pekerjaan</th>
                                 <th>Bruto Bulan Ini</th>
@@ -737,7 +749,7 @@
     <div class="modal" id="addTabModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 style="font-size: 1rem; font-weight: 700;"><i class="fa-solid fa-calendar-plus"></i> Tambah Periode Baru</h3>
+                <h3 style="font-size: 1rem; font-weight: 700;"><i class="fa-solid fa-calendar-plus"></i> Tambah Periode UMKM</h3>
                 <button style="border:none; background:none; cursor:pointer;" onclick="window.closeAddTabModal()"><i class="fa-solid fa-xmark fa-lg"></i></button>
             </div>
             <div class="grid-3" style="grid-template-columns: 1fr 1fr; gap: 10px;">
@@ -766,6 +778,42 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="window.closeAddTabModal()">Batal</button>
                 <button class="btn btn-primary" onclick="window.addNewTab()"><i class="fa-solid fa-check"></i> Tambah</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="addPersonalTabModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="font-size: 1rem; font-weight: 700;"><i class="fa-solid fa-calendar-plus"></i> Tambah Periode Perseorangan</h3>
+                <button style="border:none; background:none; cursor:pointer;" onclick="window.closeAddPersonalTabModal()"><i class="fa-solid fa-xmark fa-lg"></i></button>
+            </div>
+            <div class="grid-3" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="form-group">
+                    <label for="newPersonalTabMonth">Bulan</label>
+                    <select id="newPersonalTabMonth" class="form-control">
+                        <option value="Januari">Januari</option>
+                        <option value="Februari">Februari</option>
+                        <option value="Maret">Maret</option>
+                        <option value="April">April</option>
+                        <option value="Mei">Mei</option>
+                        <option value="Juni">Juni</option>
+                        <option value="Juli">Juli</option>
+                        <option value="Agustus">Agustus</option>
+                        <option value="September">September</option>
+                        <option value="Oktober">Oktober</option>
+                        <option value="November">November</option>
+                        <option value="Desember">Desember</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="newPersonalTabYear">Tahun</label>
+                    <input type="number" id="newPersonalTabYear" class="form-control" value="2026">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="window.closeAddPersonalTabModal()">Batal</button>
+                <button class="btn btn-primary" onclick="window.addNewPersonalTab()"><i class="fa-solid fa-check"></i> Tambah</button>
             </div>
         </div>
     </div>
@@ -847,9 +895,13 @@
             entityMode: "umkm",
             activeStoreId: "store_default",
             personalProfile: {
-                nama: "Eugene Siby", tipePekerjaan: "karyawan", statusPTKP: "54000000",
-                gajiPokok: 10000000, tunjangan: 2000000, iuran: 200000,
-                freelanceBruto: 15000000, freelanceNorma: "0.5", jenisKendaraan: "mobil", njkb: 150000000, kepemilikan: "0.02"
+                nama: "Eugene Siby", tipePekerjaan: "freelance", statusPTKP: "54000000",
+                freelanceNorma: "0.5", jenisKendaraan: "mobil", njkb: 150000000, kepemilikan: "0.02",
+                selectedYear: 2026, activeTabIndex: 0,
+                monthsData: [
+                    { name: 'Januari', year: 2026, gajiPokok: 10000000, tunjangan: 2000000, iuran: 200000, freelanceBruto: 15000000 },
+                    { name: 'Februari', year: 2026, gajiPokok: 10000000, tunjangan: 2000000, iuran: 200000, freelanceBruto: 18000000 }
+                ]
             },
             stores: [{
                 id: "store_default",
@@ -869,8 +921,9 @@
                 activeStoreId: "store_1",
                 personalProfile: {
                     nama: namaUsaha || "", tipePekerjaan: "karyawan", statusPTKP: "54000000",
-                    gajiPokok: 0, tunjangan: 0, iuran: 0,
-                    freelanceBruto: 0, freelanceNorma: "0.5", jenisKendaraan: "mobil", njkb: 0, kepemilikan: "0.02"
+                    freelanceNorma: "0.5", jenisKendaraan: "mobil", njkb: 0, kepemilikan: "0.02",
+                    selectedYear: year, activeTabIndex: 0,
+                    monthsData: [{ name: 'Januari', year: year, gajiPokok: 0, tunjangan: 0, iuran: 0, freelanceBruto: 0 }]
                 },
                 stores: [{
                     id: "store_1",
@@ -1108,19 +1161,22 @@
             document.getElementById('sectionPersonalMode').style.display = mode === 'personal' ? 'block' : 'none';
 
             if (mode === 'personal') {
-                if (window.appState.personalProfile) {
-                    document.getElementById('personalNama').value = window.appState.personalProfile.nama || '';
-                    document.getElementById('personalTipePekerjaan').value = window.appState.personalProfile.tipePekerjaan || 'karyawan';
-                    document.getElementById('personalStatusPTKP').value = window.appState.personalProfile.statusPTKP || '54000000';
-                    document.getElementById('personalGajiPokok').value = window.appState.personalProfile.gajiPokok || 0;
-                    document.getElementById('personalTunjangan').value = window.appState.personalProfile.tunjangan || 0;
-                    document.getElementById('personalIuranSip').value = window.appState.personalProfile.iuran || 0;
-                    document.getElementById('freelancePenghasilanBruto').value = window.appState.personalProfile.freelanceBruto || 0;
-                    document.getElementById('freelanceNorma').value = window.appState.personalProfile.freelanceNorma || '0.5';
-                    document.getElementById('personalJenisKendaraan').value = window.appState.personalProfile.jenisKendaraan || 'mobil';
-                    document.getElementById('personalNJKB').value = window.appState.personalProfile.njkb || 0;
-                    document.getElementById('personalKepemilikan').value = window.appState.personalProfile.kepemilikan || '0.02';
-                }
+                if (!window.appState.personalProfile) window.appState.personalProfile = defaultState.personalProfile;
+                const p = window.appState.personalProfile;
+                if (!p.monthsData) p.monthsData = [{ name: 'Januari', year: 2026, gajiPokok: 0, tunjangan: 0, iuran: 0, freelanceBruto: 0 }];
+                if (!p.selectedYear) p.selectedYear = 2026;
+                if (p.activeTabIndex === undefined) p.activeTabIndex = 0;
+
+                document.getElementById('personalNama').value = p.nama || '';
+                document.getElementById('personalTipePekerjaan').value = p.tipePekerjaan || 'karyawan';
+                document.getElementById('personalStatusPTKP').value = p.statusPTKP || '54000000';
+                document.getElementById('freelanceNorma').value = p.freelanceNorma || '0.5';
+                document.getElementById('personalJenisKendaraan').value = p.jenisKendaraan || 'mobil';
+                document.getElementById('personalNJKB').value = p.njkb || 0;
+                document.getElementById('personalKepemilikan').value = p.kepemilikan || '0.02';
+
+                window.populatePersonalYearDropdown();
+                window.renderPersonalTabs();
                 window.togglePersonalJobType();
                 window.calculatePajakKendaraan();
             } else {
@@ -1149,17 +1205,14 @@
 
         window.savePersonalData = function() {
             if (!window.appState.personalProfile) window.appState.personalProfile = {};
-            window.appState.personalProfile.nama = document.getElementById('personalNama').value;
-            window.appState.personalProfile.tipePekerjaan = document.getElementById('personalTipePekerjaan').value;
-            window.appState.personalProfile.statusPTKP = document.getElementById('personalStatusPTKP').value;
-            window.appState.personalProfile.gajiPokok = parseFloat(document.getElementById('personalGajiPokok').value) || 0;
-            window.appState.personalProfile.tunjangan = parseFloat(document.getElementById('personalTunjangan').value) || 0;
-            window.appState.personalProfile.iuran = parseFloat(document.getElementById('personalIuranSip').value) || 0;
-            window.appState.personalProfile.freelanceBruto = parseFloat(document.getElementById('freelancePenghasilanBruto').value) || 0;
-            window.appState.personalProfile.freelanceNorma = document.getElementById('freelanceNorma').value;
-            window.appState.personalProfile.jenisKendaraan = document.getElementById('personalJenisKendaraan').value;
-            window.appState.personalProfile.njkb = parseFloat(document.getElementById('personalNJKB').value) || 0;
-            window.appState.personalProfile.kepemilikan = document.getElementById('personalKepemilikan').value;
+            const p = window.appState.personalProfile;
+            p.nama = document.getElementById('personalNama').value;
+            p.tipePekerjaan = document.getElementById('personalTipePekerjaan').value;
+            p.statusPTKP = document.getElementById('personalStatusPTKP').value;
+            p.freelanceNorma = document.getElementById('freelanceNorma').value;
+            p.jenisKendaraan = document.getElementById('personalJenisKendaraan').value;
+            p.njkb = parseFloat(document.getElementById('personalNJKB').value) || 0;
+            p.kepemilikan = document.getElementById('personalKepemilikan').value;
             window.saveDataToCloud();
         };
 
@@ -1187,33 +1240,204 @@
             window.runSimulasiKalkulator();
         }
 
+        /* --- SCRIPT MANAJEMEN TAB DINAMIS PERSEORANGAN & FREELANCER --- */
+        function getFilteredPersonalYearData() {
+            const p = window.appState.personalProfile;
+            if (!p || !p.monthsData) return [];
+            return p.monthsData
+                .filter(m => (parseInt(m.year) || 2026) === p.selectedYear)
+                .sort((a,b) => (monthOrder[a.name] || 0) - (monthOrder[b.name] || 0));
+        }
+
+        window.populatePersonalYearDropdown = function() {
+            const p = window.appState.personalProfile;
+            if (!p || !p.monthsData) return;
+            const yearSelect = document.getElementById('personalFilterTahun');
+            let years = [...new Set(p.monthsData.map(m => parseInt(m.year) || 2026))].sort((a,b) => b - a);
+
+            if (years.length === 0) years = [2026];
+            if (!p.selectedYear) p.selectedYear = years[0];
+
+            yearSelect.innerHTML = '';
+            years.forEach(y => {
+                const opt = document.createElement('option');
+                opt.value = y;
+                opt.textContent = y;
+                if (y === p.selectedYear) opt.selected = true;
+                yearSelect.appendChild(opt);
+            });
+
+            document.querySelectorAll('.personal-selected-year-label').forEach(el => el.textContent = p.selectedYear);
+        };
+
+        window.changePersonalSelectedYear = function() {
+            const p = window.appState.personalProfile;
+            p.selectedYear = parseInt(document.getElementById('personalFilterTahun').value) || 2026;
+            p.activeTabIndex = 0;
+            document.querySelectorAll('.personal-selected-year-label').forEach(el => el.textContent = p.selectedYear);
+            window.renderPersonalTabs();
+            window.calculatePersonalPph21();
+            window.saveDataToCloud();
+        };
+
+        window.renderPersonalTabs = function() {
+            const p = window.appState.personalProfile;
+            const tabList = document.getElementById('personalTabList');
+            tabList.innerHTML = '';
+
+            const currentYearData = getFilteredPersonalYearData();
+
+            if (currentYearData.length === 0) {
+                tabList.innerHTML = '<li class="nav-tab-item"><i>Belum ada data</i></li>';
+                document.getElementById('personalGajiPokok').value = '';
+                document.getElementById('personalTunjangan').value = '';
+                document.getElementById('personalIuranSip').value = '';
+                document.getElementById('freelancePenghasilanBruto').value = '';
+                return;
+            }
+
+            if (p.activeTabIndex >= currentYearData.length) p.activeTabIndex = 0;
+
+            currentYearData.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.className = `nav-tab-item ${index === p.activeTabIndex ? 'active' : ''}`;
+                li.onclick = () => window.switchPersonalTab(index);
+                
+                const globalIndex = p.monthsData.indexOf(item);
+
+                li.innerHTML = `
+                    <span>${item.name}</span>
+                    <span class="close-tab" onclick="window.deletePersonalTab(event, ${globalIndex})"><i class="fa-solid fa-xmark"></i></span>
+                `;
+                tabList.appendChild(li);
+            });
+
+            const activeData = currentYearData[p.activeTabIndex];
+            if (activeData) {
+                document.getElementById('personalGajiPokok').value = activeData.gajiPokok !== undefined ? activeData.gajiPokok : '';
+                document.getElementById('personalTunjangan').value = activeData.tunjangan !== undefined ? activeData.tunjangan : '';
+                document.getElementById('personalIuranSip').value = activeData.iuran !== undefined ? activeData.iuran : '';
+                document.getElementById('freelancePenghasilanBruto').value = activeData.freelanceBruto !== undefined ? activeData.freelanceBruto : '';
+            }
+        };
+
+        window.switchPersonalTab = function(index) {
+            const p = window.appState.personalProfile;
+            p.activeTabIndex = index;
+            window.renderPersonalTabs();
+            window.calculatePersonalPph21();
+            window.saveDataToCloud();
+        };
+
+        window.openAddPersonalTabModal = function() {
+            const p = window.appState.personalProfile;
+            document.getElementById('addPersonalTabModal').classList.add('active');
+            document.getElementById('newPersonalTabYear').value = p.selectedYear || 2026;
+        };
+
+        window.closeAddPersonalTabModal = function() { document.getElementById('addPersonalTabModal').classList.remove('active'); };
+
+        window.addNewPersonalTab = function() {
+            const p = window.appState.personalProfile;
+            const month = document.getElementById('newPersonalTabMonth').value;
+            const year = parseInt(document.getElementById('newPersonalTabYear').value) || 2026;
+
+            const exists = p.monthsData.some(m => m.name === month && (parseInt(m.year) || 2026) === year);
+            if (exists) return alert(`Periode Perseorangan ${month} ${year} sudah ada!`);
+
+            p.monthsData.push({ name: month, year: year, gajiPokok: 0, tunjangan: 0, iuran: 0, freelanceBruto: 0 });
+            p.selectedYear = year;
+            window.populatePersonalYearDropdown();
+
+            const filtered = getFilteredPersonalYearData();
+            p.activeTabIndex = filtered.findIndex(m => m.name === month && (parseInt(m.year) || 2026) === year);
+
+            window.closeAddPersonalTabModal();
+            window.renderPersonalTabs();
+            window.calculatePersonalPph21();
+            window.saveDataToCloud();
+        };
+
+        window.deletePersonalTab = function(e, globalIndex) {
+            e.stopPropagation();
+            const p = window.appState.personalProfile;
+            const item = p.monthsData[globalIndex];
+            if (confirm(`Hapus data perseorangan ${item.name} ${item.year}?`)) {
+                p.monthsData.splice(globalIndex, 1);
+                window.populatePersonalYearDropdown();
+                window.renderPersonalTabs();
+                window.calculatePersonalPph21();
+                window.saveDataToCloud();
+            }
+        };
+
+        window.updateCurrentPersonalTabData = function() {
+            const p = window.appState.personalProfile;
+            const currentYearData = getFilteredPersonalYearData();
+            const activeData = currentYearData[p.activeTabIndex];
+            if (!activeData) return;
+
+            activeData.gajiPokok = parseFloat(document.getElementById('personalGajiPokok').value) || 0;
+            activeData.tunjangan = parseFloat(document.getElementById('personalTunjangan').value) || 0;
+            activeData.iuran = parseFloat(document.getElementById('personalIuranSip').value) || 0;
+            activeData.freelanceBruto = parseFloat(document.getElementById('freelancePenghasilanBruto').value) || 0;
+
+            window.calculatePersonalPph21();
+            window.saveDataToCloud();
+        };
+
         window.calculatePersonalPph21 = function() {
             window.savePersonalData();
+            const p = window.appState.personalProfile;
             const jobType = document.getElementById('personalTipePekerjaan').value;
             const ptkp = parseFloat(document.getElementById('personalStatusPTKP').value) || 54000000;
 
-            let brutoBulan = 0, brutoTahun = 0, nettoBulan = 0, nettoTahun = 0;
+            const currentYearData = getFilteredPersonalYearData();
+            const activeData = currentYearData[p.activeTabIndex] || { gajiPokok: 0, tunjangan: 0, iuran: 0, freelanceBruto: 0 };
+
+            let activeBrutoBulan = 0, activeNettoBulan = 0;
 
             if (jobType === 'freelance') {
-                brutoBulan = parseFloat(document.getElementById('freelancePenghasilanBruto').value) || 0;
-                const norma = parseFloat(document.getElementById('freelanceNorma').value) || 0.5;
-                brutoTahun = brutoBulan * 12;
-                nettoBulan = brutoBulan * norma;
-                nettoTahun = brutoTahun * norma;
+                activeBrutoBulan = activeData.freelanceBruto || 0;
+                const norma = parseFloat(p.freelanceNorma) || 0.5;
+                activeNettoBulan = activeBrutoBulan * norma;
             } else {
-                const gaji = parseFloat(document.getElementById('personalGajiPokok').value) || 0;
-                const tunjangan = parseFloat(document.getElementById('personalTunjangan').value) || 0;
-                const iuran = parseFloat(document.getElementById('personalIuranSip').value) || 0;
-
-                brutoBulan = gaji + tunjangan;
-                brutoTahun = brutoBulan * 12;
-
-                const biayaJabatan = Math.min(brutoBulan * 0.05, 500000);
-                nettoBulan = brutoBulan - biayaJabatan - iuran;
-                nettoTahun = nettoBulan * 12;
+                const gaji = activeData.gajiPokok || 0;
+                const tunj = activeData.tunjangan || 0;
+                const iuran = activeData.iuran || 0;
+                activeBrutoBulan = gaji + tunj;
+                const biayaJabatan = Math.min(activeBrutoBulan * 0.05, 500000);
+                activeNettoBulan = activeBrutoBulan - biayaJabatan - iuran;
             }
 
-            const pkp = Math.max(0, nettoTahun - ptkp);
+            // Hitung Total Tahunan berdasarkan data bulan yang ada
+            let totalNettoTahun = 0, totalBrutoTahun = 0;
+            currentYearData.forEach(m => {
+                if (jobType === 'freelance') {
+                    const b = m.freelanceBruto || 0;
+                    const norma = parseFloat(p.freelanceNorma) || 0.5;
+                    totalBrutoTahun += b;
+                    totalNettoTahun += (b * norma);
+                } else {
+                    const g = m.gajiPokok || 0;
+                    const t = m.tunjangan || 0;
+                    const i = m.iuran || 0;
+                    const b = g + t;
+                    const bj = Math.min(b * 0.05, 500000);
+                    totalBrutoTahun += b;
+                    totalNettoTahun += (b - bj - i);
+                }
+            });
+
+            // Proyeksi sisa bulan jika data bulanan kurang dari 12
+            const monthCount = currentYearData.length;
+            if (monthCount > 0 && monthCount < 12) {
+                const multi = 12 - monthCount;
+                totalBrutoTahun += (activeBrutoBulan * multi);
+                totalNettoTahun += (activeNettoBulan * multi);
+            }
+
+            const pkp = Math.max(0, totalNettoTahun - ptkp);
 
             let pphTahun = 0;
             if (pkp > 0) {
@@ -1223,33 +1447,47 @@
                 else pphTahun = (60000000 * 0.05) + (190000000 * 0.15) + (250000000 * 0.25) + ((pkp - 500000000) * 0.30);
             }
 
-            const pphBulan = pphTahun / 12;
+            const pphBulanActive = pphTahun / 12;
 
-            document.getElementById('resPersonalBrutoBulan').textContent = formatRupiah(brutoBulan);
-            document.getElementById('resPersonalBrutoTahun').textContent = formatRupiah(brutoTahun);
-            document.getElementById('resPersonalNettoBulan').textContent = formatRupiah(nettoBulan);
-            document.getElementById('resPersonalNettoTahun').textContent = formatRupiah(nettoTahun);
+            document.getElementById('resPersonalBrutoBulan').textContent = formatRupiah(activeBrutoBulan);
+            document.getElementById('resPersonalBrutoTahun').textContent = formatRupiah(totalBrutoTahun);
+            document.getElementById('resPersonalNettoBulan').textContent = formatRupiah(activeNettoBulan);
+            document.getElementById('resPersonalNettoTahun').textContent = formatRupiah(totalNettoTahun);
             document.getElementById('resPersonalPKP').textContent = formatRupiah(pkp);
-            document.getElementById('resPersonalPphBulan').textContent = formatRupiah(pphBulan);
+            document.getElementById('resPersonalPphBulan').textContent = formatRupiah(pphBulanActive);
             document.getElementById('resPersonalPphTahun').textContent = formatRupiah(pphTahun);
 
-            // RENDRERING RIWAYAT PAJAK BULANAN PERSEORANGAN (12 BULAN)
+            // RENDRERING RIWAYAT PAJAK BULANAN PERSEORANGAN / FREELANCER
             const pHistoryBody = document.getElementById('personalHistoryTableBody');
             if (pHistoryBody) {
                 pHistoryBody.innerHTML = '';
                 const ptkpBulan = ptkp / 12;
                 const labelTipe = jobType === 'freelance' ? 'Freelancer (NPPN)' : 'Karyawan (PPh 21)';
 
-                allMonthsList.forEach((mName) => {
+                currentYearData.forEach((m) => {
+                    let bBulan = 0, nBulan = 0;
+                    if (jobType === 'freelance') {
+                        bBulan = m.freelanceBruto || 0;
+                        nBulan = bBulan * (parseFloat(p.freelanceNorma) || 0.5);
+                    } else {
+                        const g = m.gajiPokok || 0;
+                        const t = m.tunjangan || 0;
+                        const i = m.iuran || 0;
+                        bBulan = g + t;
+                        const bj = Math.min(bBulan * 0.05, 500000);
+                        nBulan = bBulan - bj - i;
+                    }
+
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td><strong>${mName}</strong></td>
+                        <td><strong>${m.year || p.selectedYear}</strong></td>
+                        <td>${m.name}</td>
                         <td>${labelTipe}</td>
-                        <td>${formatRupiah(brutoBulan)}</td>
-                        <td>${formatRupiah(nettoBulan)}</td>
+                        <td>${formatRupiah(bBulan)}</td>
+                        <td>${formatRupiah(nBulan)}</td>
                         <td>${formatRupiah(ptkpBulan)}</td>
-                        <td style="color: #2563eb; font-weight: 700;">${formatRupiah(pphBulan)}</td>
-                        <td><span class="badge ${pphBulan > 0 ? 'badge-warning' : 'badge-success'}">${pphBulan > 0 ? 'Kena Pajak' : 'Nihil / Bebas'}</span></td>
+                        <td style="color: #2563eb; font-weight: 700;">${formatRupiah(pphBulanActive)}</td>
+                        <td><span class="badge ${pphBulanActive > 0 ? 'badge-warning' : 'badge-success'}">${pphBulanActive > 0 ? 'Kena Pajak' : 'Nihil / Bebas'}</span></td>
                     `;
                     pHistoryBody.appendChild(tr);
                 });
@@ -1668,21 +1906,23 @@
             });
         }
 
+        /* --- FUNGSI EKSPORT & UNDUH TEMPLATE SPESIFIK ENTITAS --- */
         window.exportSpreadsheet = function() {
             const mode = window.appState.entityMode || 'umkm';
             let csvContent = "\uFEFF";
 
             if (mode === 'personal') {
                 const p = window.appState.personalProfile || {};
-                csvContent += "Kategori,Parameter,Nilai\n";
-                csvContent += `Profile,Nama Lengkap,"${p.nama || ''}"\n`;
-                csvContent += `Profile,Tipe Pekerjaan,"${p.tipePekerjaan || 'karyawan'}"\n`;
-                csvContent += `Profile,PTKP Nilai,${p.statusPTKP || 54000000}\n`;
-                csvContent += `Gaji,Gaji Pokok / Bulan,${p.gajiPokok || 0}\n`;
-                csvContent += `Gaji,Tunjangan / Bulan,${p.tunjangan || 0}\n`;
-                csvContent += `Gaji,Iuran / Bulan,${p.iuran || 0}\n`;
-                csvContent += `Freelance,Penghasilan Bruto / Bulan,${p.freelanceBruto || 0}\n`;
-                csvContent += `Freelance,Norma NPPN,${p.freelanceNorma || 0.5}\n`;
+                csvContent += "Tahun,Bulan,Tipe Pekerjaan,Penghasilan Bruto (Rp),Iuran BPJS / Norma (NPPN)\n";
+                if (p.monthsData && p.monthsData.length > 0) {
+                    p.monthsData.forEach(item => {
+                        const isFreelance = p.tipePekerjaan === 'freelance';
+                        const bruto = isFreelance ? (item.freelanceBruto || 0) : ((item.gajiPokok || 0) + (item.tunjangan || 0));
+                        const extraVal = isFreelance ? (p.freelanceNorma || 0.5) : (item.iuran || 0);
+                        const row = [ item.year || 2026, `"${item.name}"`, `"${p.tipePekerjaan || 'karyawan'}"`, bruto, extraVal ];
+                        csvContent += row.join(",") + "\n";
+                    });
+                }
             } else {
                 const store = getActiveStore();
                 csvContent += "Tahun,Bulan,Omzet Bruto (Rp),Beban Operasional (Rp),Laba Bersih (Rp),DPP Pajak (Rp),PPh Final 0.5% (Rp),Kode Billing / NTPN\n";
@@ -1695,18 +1935,31 @@
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = `AppPUN_Export_${Date.now()}.csv`;
+            link.download = `AppPUN_${mode.toUpperCase()}_Export_${Date.now()}.csv`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         };
 
         window.downloadTemplate = function() {
-            let templateContent = "\uFEFFTahun,Bulan,Omzet Bruto,Beban Operasional,NTPN_Billing\n2026,Januari,85000000,42000000,NTPN-8821931\n";
+            const mode = window.appState.entityMode || 'umkm';
+            let templateContent = "\uFEFF";
+
+            if (mode === 'personal') {
+                const jobType = (window.appState.personalProfile && window.appState.personalProfile.tipePekerjaan) || 'karyawan';
+                if (jobType === 'freelance') {
+                    templateContent += "Tahun,Bulan,Penghasilan Bruto,Norma NPPN\n2026,Januari,15000000,0.5\n2026,Februari,18000000,0.5\n";
+                } else {
+                    templateContent += "Tahun,Bulan,Penghasilan Bruto,Iuran BPJS Pensiun\n2026,Januari,12000000,200000\n2026,Februari,12000000,200000\n";
+                }
+            } else {
+                templateContent += "Tahun,Bulan,Omzet Bruto,Beban Operasional,NTPN_Billing\n2026,Januari,85000000,42000000,NTPN-8821931\n2026,Februari,92000000,45000000,NTPN-8821932\n";
+            }
+
             const blob = new Blob([templateContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = "Template_Impor_UMKM_AppPUN.csv";
+            link.download = `Template_Impor_${mode.toUpperCase()}_AppPUN.csv`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -1718,36 +1971,69 @@
             const file = event.target.files[0];
             if (!file) return;
 
+            const mode = window.appState.entityMode || 'umkm';
             const reader = new FileReader();
+
             reader.onload = function(e) {
                 const lines = e.target.result.split(/\r\n|\n/);
-                if (lines.length <= 1) return alert("File kosong!");
+                if (lines.length <= 1) return alert("File CSV kosong!");
 
-                const store = getActiveStore();
-                const newMonthsData = [];
+                if (mode === 'personal') {
+                    const p = window.appState.personalProfile;
+                    const newPersonalMonths = [];
 
-                for (let i = 1; i < lines.length; i++) {
-                    const line = lines[i].trim();
-                    if (!line) continue;
-                    const cols = line.split(',');
-                    if (cols.length >= 3) {
-                        newMonthsData.push({
-                            year: parseInt(cols[0]) || 2026,
-                            name: cols[1].replace(/"/g, ''),
-                            omzet: parseFloat(cols[2]) || 0,
-                            beban: parseFloat(cols[3]) || 0,
-                            billing: cols[4] ? cols[4].replace(/"/g, '') : ''
-                        });
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (!line) continue;
+                        const cols = line.split(',');
+                        if (cols.length >= 3) {
+                            const y = parseInt(cols[0]) || 2026;
+                            const m = cols[1].replace(/"/g, '');
+                            const bruto = parseFloat(cols[2]) || 0;
+                            const extraVal = parseFloat(cols[3]) || 0;
+
+                            newPersonalMonths.push({
+                                year: y, name: m,
+                                gajiPokok: bruto, tunjangan: 0, iuran: extraVal, freelanceBruto: bruto
+                            });
+                        }
                     }
-                }
 
-                if (newMonthsData.length > 0) {
-                    store.monthsData = newMonthsData;
-                    window.populateYearDropdown();
-                    window.renderTabs();
-                    window.calculateAll();
-                    window.saveDataToCloud();
-                    alert("Data berhasil diimpor & disinkronkan ke Cloud!");
+                    if (newPersonalMonths.length > 0) {
+                        p.monthsData = newPersonalMonths;
+                        window.populatePersonalYearDropdown();
+                        window.renderPersonalTabs();
+                        window.calculatePersonalPph21();
+                        window.saveDataToCloud();
+                        alert("Data Perseorangan/Freelance berhasil diimpor!");
+                    }
+                } else {
+                    const store = getActiveStore();
+                    const newMonthsData = [];
+
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (!line) continue;
+                        const cols = line.split(',');
+                        if (cols.length >= 3) {
+                            newMonthsData.push({
+                                year: parseInt(cols[0]) || 2026,
+                                name: cols[1].replace(/"/g, ''),
+                                omzet: parseFloat(cols[2]) || 0,
+                                beban: parseFloat(cols[3]) || 0,
+                                billing: cols[4] ? cols[4].replace(/"/g, '') : ''
+                            });
+                        }
+                    }
+
+                    if (newMonthsData.length > 0) {
+                        store.monthsData = newMonthsData;
+                        window.populateYearDropdown();
+                        window.renderTabs();
+                        window.calculateAll();
+                        window.saveDataToCloud();
+                        alert("Data UMKM berhasil diimpor & disinkronkan!");
+                    }
                 }
             };
             reader.readAsText(file);
