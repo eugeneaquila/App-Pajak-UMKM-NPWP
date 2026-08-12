@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AppPUN - Manager Pajak UMKM & Perorangan</title>
     
-    <!-- Favicon SVG untuk Tab Browser -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230f172a'/%3E%3Cstop offset='100%25' stop-color='%231e293b'/%3E%3C/linearGradient%3E%3ClinearGradient id='ic' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%233b82f6'/%3E%3Cstop offset='100%25' stop-color='%231d4ed8'/%3E%3C/linearGradient%3E%3ClinearGradient id='ac' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2310b981'/%3E%3Cstop offset='100%25' stop-color='%2360a5fa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='500' height='500' rx='100' fill='url(%23bg)'/%3E%3Cpath d='M 170 120 L 330 120 C 352 120, 370 138, 370 160 L 370 340 C 370 362, 352 380, 330 380 L 170 380 C 148 380, 130 362, 130 340 L 130 160 C 130 138, 148 120, 170 120 Z' fill='url(%23ic)'/%3E%3Crect x='165' y='155' width='170' height='55' rx='10' fill='%23ffffff'/%3E%3Crect x='180' y='175' width='60' height='15' rx='4' fill='%232563eb'/%3E%3Crect x='290' y='175' width='30' height='15' rx='4' fill='%2310b981'/%3E%3Crect x='165' y='235' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='230' y='235' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='295' y='235' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='165' y='280' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='230' y='280' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='295' y='280' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Cpath d='M 130 320 Q 200 310, 240 250 T 370 160' fill='none' stroke='url(%23ac)' stroke-width='14' stroke-linecap='round'/%3E%3Ccircle cx='370' cy='160' r='10' fill='%2310b981'/%3E%3C/svg%3E">
 
-    <!-- Meta Tag PWA -->
     <meta name="theme-color" content="#0f172a">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,11 +14,8 @@
     <meta name="apple-mobile-web-app-title" content="AppPUN">
     <link rel="manifest" href="manifest.json">
 
-    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
@@ -42,175 +37,41 @@
             --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-body); color: var(--text-main); line-height: 1.5; padding-bottom: 60px; }
 
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            line-height: 1.5;
-            padding-bottom: 60px;
-        }
-
-        .app-logo-svg {
-            height: 42px;
-            width: auto;
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .app-logo-svg-large {
-            height: 72px;
-            width: auto;
-            margin-bottom: 12px;
-        }
+        .app-logo-svg { height: 42px; width: auto; display: inline-block; vertical-align: middle; }
+        .app-logo-svg-large { height: 72px; width: auto; margin-bottom: 12px; }
 
         .auth-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-            overflow-y: auto;
+            z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 16px; overflow-y: auto;
         }
 
-        .auth-card {
-            background: white;
-            padding: 28px 24px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
-            width: 100%;
-            max-width: 420px;
-        }
-
-        .auth-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .auth-header h2 {
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: var(--secondary);
-        }
-
-        .auth-header p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-
-        .auth-form .form-group {
-            margin-bottom: 14px;
-        }
-
-        .auth-form .btn-block {
-            width: 100%;
-            justify-content: center;
-            padding: 12px;
-            margin-top: 8px;
-            font-size: 0.95rem;
-        }
-
-        .auth-links {
-            margin-top: 16px;
-            text-align: center;
-            font-size: 0.85rem;
-        }
-
-        .auth-links a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
+        .auth-card { background: white; padding: 28px 24px; border-radius: var(--radius); box-shadow: var(--shadow-lg); width: 100%; max-width: 420px; }
+        .auth-header { text-align: center; margin-bottom: 20px; }
+        .auth-header h2 { font-size: 1.35rem; font-weight: 800; color: var(--secondary); }
+        .auth-header p { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+        .auth-form .form-group { margin-bottom: 14px; }
+        .auth-form .btn-block { width: 100%; justify-content: center; padding: 12px; margin-top: 8px; font-size: 0.95rem; }
+        .auth-links { margin-top: 16px; text-align: center; font-size: 0.85rem; }
+        .auth-links a { color: var(--primary); text-decoration: none; font-weight: 600; }
 
         header {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: white;
-            padding: 16px 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            color: white; padding: 16px 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 100;
         }
 
-        .header-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
+        .header-container { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand h1 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; color: #ffffff; display: flex; align-items: center; gap: 8px; }
+        .brand p { font-size: 0.775rem; color: #94a3b8; }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .header-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .user-badge { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #f1f5f9; display: flex; align-items: center; gap: 6px; }
 
-        .brand h1 {
-            font-size: 1.4rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .brand p {
-            font-size: 0.775rem;
-            color: #94a3b8;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .user-badge {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: #f1f5f9;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            padding: 10px 16px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: none;
-            outline: none;
-            min-height: 42px;
-        }
-
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 16px; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; border: none; outline: none; min-height: 42px; }
         .btn-primary { background-color: var(--primary); color: white; }
         .btn-primary:active { background-color: var(--primary-dark); }
         .btn-outline { background-color: transparent; border: 1px solid #475569; color: #f1f5f9; }
@@ -218,379 +79,77 @@
         .btn-secondary { background-color: #e2e8f0; color: #334155; }
         .btn-danger { background-color: #fee2e2; color: #dc2626; }
 
-        .main-container {
-            max-width: 1280px;
-            margin: 16px auto 0;
-            padding: 0 16px;
-        }
+        .main-container { max-width: 1280px; margin: 16px auto 0; padding: 0 16px; }
+        .card { background-color: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); padding: 18px; box-shadow: var(--shadow); margin-bottom: 16px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px; }
+        .card-title { font-size: 1rem; font-weight: 700; color: var(--secondary); display: flex; align-items: center; gap: 8px; }
 
-        .card {
-            background-color: var(--bg-card);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            padding: 18px;
-            box-shadow: var(--shadow);
-            margin-bottom: 16px;
-        }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        .form-group label { font-size: 0.775rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; }
+        .form-control { padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.95rem; width: 100%; background-color: #fff; min-height: 42px; }
+        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 14px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
-            gap: 8px;
-        }
+        .entity-toggle-container { display: flex; background: #e2e8f0; padding: 4px; border-radius: 12px; margin-bottom: 16px; gap: 4px; }
+        .entity-btn { flex: 1; padding: 10px; text-align: center; font-size: 0.85rem; font-weight: 700; border-radius: 8px; cursor: pointer; transition: all 0.2s; color: var(--text-muted); }
+        .entity-btn.active { background: white; color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
 
-        .card-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--secondary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .store-switcher-bar { display: flex; align-items: center; justify-content: space-between; background: #f1f5f9; padding: 10px 14px; border-radius: 10px; margin-bottom: 14px; gap: 10px; }
+        .store-switcher-select { font-weight: 700; color: var(--primary); background: white; border: 1px solid var(--border); }
 
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 12px;
-        }
+        .progress-box { background: var(--primary-light); border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px; margin-top: 10px; }
+        .progress-bar-bg { background: #dbeafe; height: 10px; border-radius: 5px; overflow: hidden; margin-top: 6px; }
+        .progress-bar-fill { background: var(--accent); height: 100%; width: 0%; transition: width 0.4s ease; }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .form-group label {
-            font-size: 0.775rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-        }
-
-        .form-control {
-            padding: 10px 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            font-size: 0.95rem;
-            width: 100%;
-            background-color: #fff;
-            min-height: 42px;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .entity-toggle-container {
-            display: flex;
-            background: #e2e8f0;
-            padding: 4px;
-            border-radius: 12px;
-            margin-bottom: 16px;
-            gap: 4px;
-        }
-
-        .entity-btn {
-            flex: 1;
-            padding: 10px;
-            text-align: center;
-            font-size: 0.85rem;
-            font-weight: 700;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: var(--text-muted);
-        }
-
-        .entity-btn.active {
-            background: white;
-            color: var(--primary);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-        }
-
-        .store-switcher-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #f1f5f9;
-            padding: 10px 14px;
-            border-radius: 10px;
-            margin-bottom: 14px;
-            gap: 10px;
-        }
-
-        .store-switcher-select {
-            font-weight: 700;
-            color: var(--primary);
-            background: white;
-            border: 1px solid var(--border);
-        }
-
-        .progress-box {
-            background: var(--primary-light);
-            border: 1px solid #bfdbfe;
-            border-radius: 10px;
-            padding: 12px;
-            margin-top: 10px;
-        }
-
-        .progress-bar-bg {
-            background: #dbeafe;
-            height: 10px;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-top: 6px;
-        }
-
-        .progress-bar-fill {
-            background: var(--accent);
-            height: 100%;
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-
-        .metric-card {
-            background: white;
-            border-radius: var(--radius);
-            padding: 14px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .metric-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-        }
-
+        .metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+        .metric-card { background: white; border-radius: var(--radius); padding: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); position: relative; overflow: hidden; }
+        .metric-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; }
         .metric-card.blue::before { background-color: var(--primary); }
         .metric-card.green::before { background-color: var(--accent); }
         .metric-card.amber::before { background-color: var(--warning); }
         .metric-card.purple::before { background-color: #8b5cf6; }
 
-        .metric-label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
+        .metric-label { font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .metric-value { font-size: 1.15rem; font-weight: 800; color: var(--secondary); margin: 4px 0 2px; word-break: break-all; }
+        .metric-desc { font-size: 0.7rem; color: var(--text-muted); }
 
-        .metric-value {
-            font-size: 1.15rem;
-            font-weight: 800;
-            color: var(--secondary);
-            margin: 4px 0 2px;
-            word-break: break-all;
-        }
+        .tabs-header-wrapper { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--border); margin-bottom: 16px; gap: 8px; padding-bottom: 2px; }
+        .nav-tabs { display: flex; gap: 6px; list-style: none; overflow-x: auto; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; padding-bottom: 4px; width: 100%; }
+        .nav-tab-item { padding: 8px 14px; font-size: 0.825rem; font-weight: 600; color: var(--text-muted); border-radius: 8px; cursor: pointer; white-space: nowrap; transition: all 0.2s; background-color: #f1f5f9; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .nav-tab-item.active { background-color: var(--primary); color: white; }
+        .nav-tab-item .close-tab { font-size: 0.75rem; border-radius: 50%; padding: 2px 4px; }
 
-        .metric-desc {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
+        .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; }
+        table.data-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; white-space: nowrap; }
+        table.data-table th, table.data-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        table.data-table th { background-color: #f8fafc; color: var(--text-muted); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
 
-        .tabs-header-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 2px solid var(--border);
-            margin-bottom: 16px;
-            gap: 8px;
-            padding-bottom: 2px;
-        }
-
-        .nav-tabs {
-            display: flex;
-            gap: 6px;
-            list-style: none;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 4px;
-            width: 100%;
-        }
-
-        .nav-tab-item {
-            padding: 8px 14px;
-            font-size: 0.825rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            border-radius: 8px;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s;
-            background-color: #f1f5f9;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
-        }
-
-        .nav-tab-item.active {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .nav-tab-item .close-tab {
-            font-size: 0.75rem;
-            border-radius: 50%;
-            padding: 2px 4px;
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border-radius: 8px;
-        }
-
-        table.data-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 0.85rem;
-            white-space: nowrap;
-        }
-
-        table.data-table th, table.data-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        table.data-table th {
-            background-color: #f8fafc;
-            color: var(--text-muted);
-            font-weight: 700;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 700;
-        }
-
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; }
         .badge-success { background-color: #d1fae5; color: #065f46; }
         .badge-warning { background-color: #fef3c7; color: #92400e; }
         .badge-info { background-color: #e0f2fe; color: #075985; }
 
-        .chart-container {
-            position: relative;
-            height: 280px;
-            width: 100%;
-        }
+        .chart-container { position: relative; height: 280px; width: 100%; }
+        .tax-info-box { background-color: #eff6ff; border-left: 4px solid var(--primary); padding: 12px; border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.8rem; color: #1e40af; margin-bottom: 16px; }
 
-        .tax-info-box {
-            background-color: #eff6ff;
-            border-left: 4px solid var(--primary);
-            padding: 12px;
-            border-radius: 0 var(--radius) var(--radius) 0;
-            font-size: 0.8rem;
-            color: #1e40af;
-            margin-bottom: 16px;
-        }
+        .calc-widget { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: white; border-radius: var(--radius); padding: 18px; margin-bottom: 16px; box-shadow: var(--shadow-lg); }
+        .calc-result-box { background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+        .calc-result-item { display: flex; justify-content: space-between; font-size: 0.85rem; border-bottom: 1px dashed rgba(255, 255, 255, 0.1); padding-bottom: 6px; }
+        .calc-result-item.highlight { font-size: 1.05rem; font-weight: 800; color: #60a5fa; border-bottom: none; }
 
-        .calc-widget {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: white;
-            border-radius: var(--radius);
-            padding: 18px;
-            margin-bottom: 16px;
-            box-shadow: var(--shadow-lg);
-        }
+        .sync-indicator { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; padding: 4px 8px; border-radius: 12px; background: rgba(255,255,255,0.15); }
+        .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; }
+        .sync-dot.syncing { background: #f59e0b; animation: pulse 1s infinite; }
 
-        .calc-result-box {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 10px;
-        }
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
 
-        .calc-result-item {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-            padding-bottom: 6px;
-        }
-
-        .calc-result-item.highlight {
-            font-size: 1.05rem;
-            font-weight: 800;
-            color: #60a5fa;
-            border-bottom: none;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: flex-end;
-            padding: 0;
-        }
-
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 1000; justify-content: center; align-items: flex-end; padding: 0; }
         .modal.active { display: flex; }
+        .modal-content { background: white; padding: 24px; border-radius: 20px 20px 0 0; width: 100%; max-width: 500px; box-shadow: var(--shadow-lg); animation: slideUp 0.3s ease-out; }
 
-        .modal-content {
-            background: white;
-            padding: 24px;
-            border-radius: 20px 20px 0 0;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: var(--shadow-lg);
-            animation: slideUp 0.3s ease-out;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            margin-top: 20px;
-        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
 
         @media (min-width: 768px) {
             .metrics-grid { grid-template-columns: repeat(4, 1fr); }
@@ -609,18 +168,9 @@
             <div class="auth-header">
                 <svg class="app-logo-svg-large" viewBox="0 0 500 500">
                     <defs>
-                        <linearGradient id="bgGradL" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#0f172a"/>
-                            <stop offset="100%" stop-color="#1e293b"/>
-                        </linearGradient>
-                        <linearGradient id="iconGradL" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#3b82f6"/>
-                            <stop offset="100%" stop-color="#1d4ed8"/>
-                        </linearGradient>
-                        <linearGradient id="accentGradL" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#10b981"/>
-                            <stop offset="100%" stop-color="#60a5fa"/>
-                        </linearGradient>
+                        <linearGradient id="bgGradL" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0f172a"/><stop offset="100%" stop-color="#1e293b"/></linearGradient>
+                        <linearGradient id="iconGradL" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+                        <linearGradient id="accentGradL" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient>
                     </defs>
                     <rect width="500" height="500" rx="100" fill="url(#bgGradL)"/>
                     <path d="M 170 120 L 330 120 C 352 120, 370 138, 370 160 L 370 340 C 370 362, 352 380, 330 380 L 170 380 C 148 380, 130 362, 130 340 L 130 160 C 130 138, 148 120, 170 120 Z" fill="url(#iconGradL)"/>
@@ -709,18 +259,9 @@
             <div class="brand">
                 <svg class="app-logo-svg" viewBox="0 0 500 500">
                     <defs>
-                        <linearGradient id="bgGradH" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#0f172a"/>
-                            <stop offset="100%" stop-color="#1e293b"/>
-                        </linearGradient>
-                        <linearGradient id="iconGradH" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#3b82f6"/>
-                            <stop offset="100%" stop-color="#1d4ed8"/>
-                        </linearGradient>
-                        <linearGradient id="accentGradH" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#10b981"/>
-                            <stop offset="100%" stop-color="#60a5fa"/>
-                        </linearGradient>
+                        <linearGradient id="bgGradH" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0f172a"/><stop offset="100%" stop-color="#1e293b"/></linearGradient>
+                        <linearGradient id="iconGradH" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+                        <linearGradient id="accentGradH" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient>
                     </defs>
                     <rect width="500" height="500" rx="100" fill="url(#bgGradH)"/>
                     <path d="M 170 120 L 330 120 C 352 120, 370 138, 370 160 L 370 340 C 370 362, 352 380, 330 380 L 170 380 C 148 380, 130 362, 130 340 L 130 160 C 130 138, 148 120, 170 120 Z" fill="url(#iconGradH)"/>
@@ -730,6 +271,9 @@
                     <rect x="165" y="235" width="40" height="30" rx="8" fill="#ffffff" opacity="0.25"/>
                     <rect x="230" y="235" width="40" height="30" rx="8" fill="#ffffff" opacity="0.25"/>
                     <rect x="295" y="235" width="40" height="30" rx="8" fill="#ffffff" opacity="0.25"/>
+                    <rect x="165" y="280" width="40" height="30" rx="8" fill="#ffffff" opacity="0.25"/>
+                    <rect x="230" y="280" width="40" height="30" rx="8" fill="#ffffff" opacity="0.25"/>
+                    <rect x="295" y="280" width="40" height="30" rx="8" fill="#ffffff" opacity="0.25"/>
                     <path d="M 130 320 Q 200 310, 240 250 T 370 160" fill="none" stroke="url(#accentGradH)" stroke-width="14" stroke-linecap="round"/>
                     <circle cx="370" cy="160" r="10" fill="#10b981"/>
                 </svg>
@@ -739,12 +283,16 @@
                 </div>
             </div>
             <div class="header-actions">
+                <div class="sync-indicator">
+                    <span class="sync-dot" id="syncStatusDot"></span>
+                    <span id="syncStatusText">Tersinkronisasi</span>
+                </div>
                 <div class="user-badge" id="userBadgeArea">
                     <i class="fa-solid fa-circle-user"></i> <span id="displayUserNpwp">Loading...</span>
                 </div>
-                <button class="btn btn-outline" onclick="window.exportSpreadsheet()" title="Cadangkan Data Ke Spreadsheet"><i class="fa-solid fa-file-excel"></i> <span class="hide-mobile">Cadangkan</span></button>
-                <button class="btn btn-outline" onclick="window.downloadTemplate()" title="Unduh Template"><i class="fa-solid fa-file-arrow-down"></i> <span class="hide-mobile">Template</span></button>
-                <button class="btn btn-outline" onclick="window.triggerImport()" title="Impor CSV"><i class="fa-solid fa-file-import"></i> <span class="hide-mobile">Impor</span></button>
+                <button class="btn btn-outline" onclick="window.exportSpreadsheet()" title="Cadangkan Data"><i class="fa-solid fa-file-excel"></i></button>
+                <button class="btn btn-outline" onclick="window.downloadTemplate()" title="Unduh Template"><i class="fa-solid fa-file-arrow-down"></i></button>
+                <button class="btn btn-outline" onclick="window.triggerImport()" title="Impor CSV"><i class="fa-solid fa-file-import"></i></button>
                 <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="window.importCSV(event)">
                 <button class="btn btn-danger" onclick="window.handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
@@ -753,26 +301,24 @@
 
     <div class="main-container">
 
-        <!-- FITUR PERGANTIAN ENTITAS: Toko UMKM vs Perorangan -->
+        <!-- FITUR PERGANTIAN ENTITAS -->
         <div class="entity-toggle-container">
             <div class="entity-btn active" id="btnModeUmkm" onclick="window.switchEntityMode('umkm')">
                 <i class="fa-solid fa-store"></i> Toko UMKM (PPh 0.5%)
             </div>
             <div class="entity-btn" id="btnModePersonal" onclick="window.switchEntityMode('personal')">
-                <i class="fa-solid fa-user-gear"></i> Perorangan (Karyawan & Kendaraan)
+                <i class="fa-solid fa-user-gear"></i> Perorangan (Karyawan & Freelancer)
             </div>
         </div>
 
         <!-- ================= SECTION 1: TOKO UMKM MODE ================= -->
         <div id="sectionUmkmMode">
-            <!-- Profil & Personalisasi Toko -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title"><i class="fa-solid fa-store"></i> Personalisasi & Profil Toko</span>
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label for="filterTahun" style="font-weight: 700; font-size: 0.75rem; color: var(--text-muted);">TAHUN:</label>
                         <select id="filterTahun" class="form-control" style="width: 100px; min-height: 36px; padding: 4px 8px; font-weight: 700; color: var(--primary);" onchange="window.changeSelectedYear()">
-                            <!-- Dynamic Options -->
                         </select>
                     </div>
                 </div>
@@ -782,7 +328,6 @@
                     <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
                         <i class="fa-solid fa-shop" style="color: var(--primary);"></i>
                         <select id="storeSelectDropdown" class="form-control store-switcher-select" onchange="window.switchStore(this.value)">
-                            <!-- Dynamic Store Options -->
                         </select>
                     </div>
                     <button class="btn btn-primary" style="min-height: 36px; padding: 6px 12px; white-space: nowrap;" onclick="window.openAddStoreModal()"><i class="fa-solid fa-plus"></i> <span class="hide-mobile">Tambah Toko</span></button>
@@ -834,7 +379,6 @@
                     </div>
                 </div>
 
-                <!-- Progress Bar Target Omzet -->
                 <div class="progress-box">
                     <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700;">
                         <span>Pencapaian Target Omzet Tahunan (<span class="selected-year-label">2026</span>)</span>
@@ -846,7 +390,7 @@
                 </div>
             </div>
 
-            <!-- Metric Cards UMKM -->
+            <!-- Metrics UMKM -->
             <div class="metrics-grid">
                 <div class="metric-card blue">
                     <div class="metric-label">Total Omzet (<span class="selected-year-label">2026</span>)</div>
@@ -1001,12 +545,11 @@
             </div>
         </div>
 
-        <!-- ================= SECTION 2: PERORANGAN MODE (KARYAWAN & PAJAK LAIN) ================= -->
+        <!-- ================= SECTION 2: PERORANGAN MODE ================= -->
         <div id="sectionPersonalMode" style="display: none;">
-            <!-- Profil Pribadi Karyawan -->
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title"><i class="fa-solid fa-id-card-clip"></i> Profil & Kategori Pajak Pribadi</span>
+                    <span class="card-title"><i class="fa-solid fa-id-card-clip"></i> Profil & Tipe Pekerjaan</span>
                 </div>
                 <div class="grid-3">
                     <div class="form-group">
@@ -1014,7 +557,14 @@
                         <input type="text" id="personalNama" class="form-control" value="Eugene Siby" onchange="window.savePersonalData()">
                     </div>
                     <div class="form-group">
-                        <label for="personalStatusPTKP">Status Perkawinan & Tanggungan (PTKP)</label>
+                        <label for="personalTipePekerjaan">Tipe Pekerjaan / Pajak</label>
+                        <select id="personalTipePekerjaan" class="form-control" onchange="window.togglePersonalJobType()">
+                            <option value="karyawan">Karyawan Swasta / Pegawai (PPh 21 Umum)</option>
+                            <option value="freelance">Pekerja Lepas / Freelancer (NPPN 50%)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="personalStatusPTKP">Status Perkawinan (PTKP)</label>
                         <select id="personalStatusPTKP" class="form-control" onchange="window.calculatePersonalPph21()">
                             <option value="54000000">TK/0 - Tidak Kawin (Rp 54 Jt/Thn)</option>
                             <option value="58500000">TK/1 - Tanggungan 1 (Rp 58.5 Jt/Thn)</option>
@@ -1026,19 +576,17 @@
                             <option value="72000000">K/3 - Kawin Tanggungan 3 (Rp 72 Jt/Thn)</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="personalJabatan">Pekerjaan / Jabatan</label>
-                        <input type="text" id="personalJabatan" class="form-control" value="Karyawan Swasta" onchange="window.savePersonalData()">
-                    </div>
                 </div>
             </div>
 
-            <!-- Kalkulator PPh 21 Karyawan -->
+            <!-- Kalkulator Pajak Perorangan -->
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title"><i class="fa-solid fa-calculator"></i> Kalkulator PPh 21 Karyawan (Gaji & Tunjangan)</span>
+                    <span class="card-title" id="personalCalcTitle"><i class="fa-solid fa-calculator"></i> Kalkulator PPh 21 Karyawan</span>
                 </div>
-                <div class="grid-3" style="margin-bottom: 16px;">
+
+                <!-- Input Karyawan -->
+                <div id="formKaryawanInputs" class="grid-3" style="margin-bottom: 16px;">
                     <div class="form-group">
                         <label for="personalGajiPokok">Gaji Pokok / Bulan (Rp)</label>
                         <input type="number" id="personalGajiPokok" class="form-control" placeholder="10000000" value="10000000" oninput="window.calculatePersonalPph21()">
@@ -1053,13 +601,29 @@
                     </div>
                 </div>
 
+                <!-- Input Freelancer -->
+                <div id="formFreelanceInputs" class="grid-3" style="margin-bottom: 16px; display: none;">
+                    <div class="form-group">
+                        <label for="freelancePenghasilanBruto">Penghasilan Bruto / Bulan (Rp)</label>
+                        <input type="number" id="freelancePenghasilanBruto" class="form-control" placeholder="15000000" value="15000000" oninput="window.calculatePersonalPph21()">
+                    </div>
+                    <div class="form-group">
+                        <label for="freelanceNorma">Norma Penghitungan Netto (NPPN)</label>
+                        <select id="freelanceNorma" class="form-control" onchange="window.calculatePersonalPph21()">
+                            <option value="0.5">50% (Desainer, Penulis, Konsultan, Artis)</option>
+                            <option value="0.45">45% (Jasa Teknik & Komputer)</option>
+                            <option value="0.35">35% (Pekerja Bebas Lainnya)</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="table-responsive">
                     <table class="data-table">
                         <thead>
                             <tr>
                                 <th>Parameter</th>
-                                <th>Kalkulasi Per Bulan</th>
-                                <th>Kalkulasi Per Tahun</th>
+                                <th>Per Bulan</th>
+                                <th>Per Tahun</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1069,7 +633,7 @@
                                 <td id="resPersonalBrutoTahun">Rp 0</td>
                             </tr>
                             <tr>
-                                <td><strong>Penghasilan Netto (Potong Jabatan & Iuran)</strong></td>
+                                <td><strong id="labelNettoParam">Penghasilan Netto</strong></td>
                                 <td id="resPersonalNettoBulan">Rp 0</td>
                                 <td id="resPersonalNettoTahun">Rp 0</td>
                             </tr>
@@ -1088,7 +652,7 @@
                 </div>
             </div>
 
-            <!-- Kalkulator Pajak Kendaraan Bermotor (PKB) -->
+            <!-- Kalkulator Pajak Kendaraan -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title"><i class="fa-solid fa-car"></i> Kalkulator Pajak Kendaraan Bermotor (STNK / PKB)</span>
@@ -1145,7 +709,7 @@
 
     </div>
 
-    <!-- Modal Modals -->
+    <!-- Modals -->
     <div class="modal" id="addTabModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1192,15 +756,20 @@
                 <label for="newStoreName">Nama Toko Baru</label>
                 <input type="text" id="newStoreName" class="form-control" placeholder="Contoh: Toko Cabang Bandung">
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom: 12px;">
                 <label for="newStoreCategory">Kategori Sektor Business</label>
-                <select id="newStoreCategory" class="form-control">
+                <select id="newStoreCategory" class="form-control" onchange="window.handleStoreCategoryChange(this.value)">
                     <option value="Kuliner / Makanan & Minuman">Kuliner / Makanan & Minuman</option>
                     <option value="Fashion & Pakaian">Fashion & Pakaian</option>
                     <option value="Retail & Kelontong">Retail & Kelontong</option>
                     <option value="Jasa & Konsultan">Jasa & Konsultan</option>
                     <option value="Produk Digital / Kreatif">Produk Digital / Kreatif</option>
+                    <option value="Lainnya">Lainnya / Tulis Sendiri...</option>
                 </select>
+            </div>
+            <div class="form-group" id="customStoreCategoryGroup" style="display: none;">
+                <label for="newStoreCategoryCustom">Tulis Kategori Sendiri</label>
+                <input type="text" id="newStoreCategoryCustom" class="form-control" placeholder="Contoh: Otomotif & Bengkel">
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="window.closeAddStoreModal()">Batal</button>
@@ -1209,11 +778,11 @@
         </div>
     </div>
 
-    <!-- Script Module -->
+    <!-- Script Module Firestore Sync -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDdmiCbU40lfgHdXEpvbmYdcxonIao9CC4",
@@ -1221,8 +790,7 @@
             projectId: "app-pajak-umkm-npwp",
             storageBucket: "app-pajak-umkm-npwp.firebasestorage.app",
             messagingSenderId: "583484388383",
-            appId: "1:583484388383:web:f37687349961b2ac08112a",
-            measurementId: "G-REMEK0H9JT"
+            appId: "1:583484388383:web:f37687349961b2ac08112a"
         };
 
         const LOCAL_STORAGE_KEY = "apppun_tax_manager_local_state";
@@ -1239,84 +807,39 @@
         const npwpToEmail = (npwp) => `${npwp.trim()}@umkm-pajak.id`;
 
         let currentUser = null;
-        let saveTimeout = null;
+        let unsubscribeRealtime = null;
+        let isRemoteUpdate = false;
         let chartInstance = null;
 
         const allMonthsList = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-
-        const monthOrder = {
-            'Januari': 1, 'Februari': 2, 'Maret': 3, 'April': 4,
-            'Mei': 5, 'Juni': 6, 'Juli': 7, 'Agustus': 8,
-            'September': 9, 'Oktober': 10, 'November': 11, 'Desember': 12
-        };
+        const monthOrder = { 'Januari': 1, 'Februari': 2, 'Maret': 3, 'April': 4, 'Mei': 5, 'Juni': 6, 'Juli': 7, 'Agustus': 8, 'September': 9, 'Oktober': 10, 'November': 11, 'Desember': 12 };
 
         const defaultState = {
-            entityMode: "umkm", // 'umkm' or 'personal'
+            entityMode: "umkm",
             activeStoreId: "store_default",
             personalProfile: {
-                nama: "Eugene Siby",
-                statusPTKP: "54000000",
-                jabatan: "Karyawan Swasta",
-                gajiPokok: 10000000,
-                tunjangan: 2000000,
-                iuran: 200000,
-                jenisKendaraan: "mobil",
-                njkb: 150000000,
-                kepemilikan: "0.02"
+                nama: "Eugene Siby", tipePekerjaan: "karyawan", statusPTKP: "54000000",
+                gajiPokok: 10000000, tunjangan: 2000000, iuran: 200000,
+                freelanceBruto: 15000000, freelanceNorma: "0.5", jenisKendaraan: "mobil", njkb: 150000000, kepemilikan: "0.02"
             },
-            stores: [
-                {
-                    id: "store_default",
-                    profile: { 
-                        namaUsaha: "Kopi Berkah Nusantara", 
-                        npwp: "7326011206010003", 
-                        jenisWP: "OP",
-                        kategoriUsaha: "Kuliner / Makanan & Minuman",
-                        targetOmzet: 500000000,
-                        lokasiUsaha: "Makassar"
-                    },
-                    selectedYear: 2026,
-                    activeTabIndex: 0,
-                    monthsData: [
-                        { name: 'Januari', year: 2026, omzet: 85000000, beban: 42000000, billing: 'NTPN-8821931' },
-                        { name: 'Februari', year: 2026, omzet: 92000000, beban: 45000000, billing: 'NTPN-8821932' }
-                    ]
-                }
-            ]
+            stores: [{
+                id: "store_default",
+                profile: { namaUsaha: "Kopi Berkah Nusantara", npwp: "7326011206010003", jenisWP: "OP", kategoriUsaha: "Kuliner / Makanan & Minuman", targetOmzet: 500000000 },
+                selectedYear: 2026, activeTabIndex: 0,
+                monthsData: [
+                    { name: 'Januari', year: 2026, omzet: 85000000, beban: 42000000, billing: 'NTPN-8821931' },
+                    { name: 'Februari', year: 2026, omzet: 92000000, beban: 45000000, billing: 'NTPN-8821932' }
+                ]
+            }]
         };
 
-        function getStoredLocalData() {
-            try {
-                const local = localStorage.getItem(LOCAL_STORAGE_KEY);
-                if (!local) return defaultState;
-                const parsed = JSON.parse(local);
-                if (!parsed.stores) {
-                    return {
-                        entityMode: "umkm",
-                        activeStoreId: "store_default",
-                        personalProfile: defaultState.personalProfile,
-                        stores: [{
-                            id: "store_default",
-                            profile: parsed.profile || defaultState.stores[0].profile,
-                            selectedYear: parsed.selectedYear || 2026,
-                            activeTabIndex: parsed.activeTabIndex || 0,
-                            monthsData: parsed.monthsData || defaultState.stores[0].monthsData
-                        }]
-                    };
-                }
-                return parsed;
-            } catch (e) {
-                return defaultState;
-            }
-        }
-
-        window.appState = getStoredLocalData();
+        window.appState = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || defaultState;
 
         function getActiveStore() {
             let store = window.appState.stores.find(s => s.id === window.appState.activeStoreId);
             if (!store) {
                 store = window.appState.stores[0];
-                window.appState.activeStoreId = store.id;
+                window.appState.activeStoreId = store ? store.id : "store_default";
             }
             return store;
         }
@@ -1329,8 +852,23 @@
             }
         }
 
+        function setSyncIndicatorStatus(syncing) {
+            const dot = document.getElementById('syncStatusDot');
+            const txt = document.getElementById('syncStatusText');
+            if (dot && txt) {
+                if (syncing) {
+                    dot.className = 'sync-dot syncing';
+                    txt.textContent = 'Menyinkronkan...';
+                } else {
+                    dot.className = 'sync-dot';
+                    txt.textContent = 'Tersinkronisasi';
+                }
+            }
+        }
+
+        // AUTH & REALTIME LISTENERS PER NIK
         if (auth) {
-            onAuthStateChanged(auth, async (user) => {
+            onAuthStateChanged(auth, (user) => {
                 if (user) {
                     currentUser = user;
                     const npwp = user.email.split('@')[0];
@@ -1338,8 +876,10 @@
                     document.getElementById('displayUserNpwp').textContent = `NPWP: ${npwp}`;
                     document.getElementById('nomorNPWP').value = npwp;
 
-                    await loadUserDataFromCloud(user.uid, npwp);
+                    // Mengaktifkan Listener Realtime Firestore
+                    listenToCloudData(user.uid, npwp);
                 } else {
+                    if (unsubscribeRealtime) unsubscribeRealtime();
                     currentUser = null;
                     document.getElementById('authOverlay').style.display = 'flex';
                     window.showAuthPage('login');
@@ -1347,9 +887,44 @@
             });
         } else {
             document.getElementById('authOverlay').style.display = 'none';
-            document.getElementById('displayUserNpwp').textContent = `NPWP: Offline`;
             initUI();
         }
+
+        function listenToCloudData(uid, npwp) {
+            if (!db) return;
+            setSyncIndicatorStatus(true);
+
+            const docRef = doc(db, "users", uid);
+            unsubscribeRealtime = onSnapshot(docRef, (docSnap) => {
+                setSyncIndicatorStatus(false);
+                if (docSnap.exists()) {
+                    isRemoteUpdate = true;
+                    window.appState = docSnap.data();
+                    saveLocalState();
+                    initUI();
+                    isRemoteUpdate = false;
+                } else {
+                    // Inisialisasi awal untuk NIK baru di cloud
+                    const activeStore = getActiveStore();
+                    activeStore.profile.npwp = npwp;
+                    setDoc(docRef, window.appState);
+                }
+            }, (error) => {
+                console.error("Realtime sync error:", error);
+                setSyncIndicatorStatus(false);
+            });
+        }
+
+        window.saveDataToCloud = function() {
+            saveLocalState();
+            if (isRemoteUpdate || !currentUser || !db) return;
+
+            setSyncIndicatorStatus(true);
+            const docRef = doc(db, "users", currentUser.uid);
+            setDoc(docRef, window.appState, { merge: true })
+                .then(() => setSyncIndicatorStatus(false))
+                .catch(err => console.error("Cloud Save Error:", err));
+        };
 
         window.showAuthPage = function(page) {
             document.getElementById('loginCard').style.display = page === 'login' ? 'block' : 'none';
@@ -1389,19 +964,17 @@
                 const initialData = {
                     entityMode: "umkm",
                     activeStoreId: "store_1",
-                    personalProfile: { nama: namaUsaha, statusPTKP: "54000000", jabatan: "Karyawan Swasta", gajiPokok: 10000000, tunjangan: 0, iuran: 0, jenisKendaraan: "mobil", njkb: 150000000, kepemilikan: "0.02" },
+                    personalProfile: { nama: namaUsaha, tipePekerjaan: "karyawan", statusPTKP: "54000000", gajiPokok: 10000000, tunjangan: 0, iuran: 0, freelanceBruto: 0, freelanceNorma: "0.5", jenisKendaraan: "mobil", njkb: 0, kepemilikan: "0.02" },
                     stores: [{
                         id: "store_1",
                         profile: { namaUsaha: namaUsaha, npwp: npwp, phone: phone, jenisWP: "OP", kategoriUsaha: "Retail & Kelontong", targetOmzet: 500000000 },
-                        selectedYear: 2026,
-                        activeTabIndex: 0,
+                        selectedYear: 2026, activeTabIndex: 0,
                         monthsData: [{ name: 'Januari', year: 2026, omzet: 0, beban: 0, billing: '' }]
                     }]
                 };
 
                 window.appState = initialData;
                 saveLocalState();
-
                 if (db) await setDoc(doc(db, "users", user.uid), initialData);
                 alert("Pendaftaran berhasil!");
             } catch (err) {
@@ -1415,9 +988,8 @@
             if (npwp.length !== 16) return alert("NIK/NPWP harus 16 digit!");
 
             try {
-                const email = npwpToEmail(npwp);
-                await sendPasswordResetEmail(auth, email);
-                alert(`Instruksi reset password dikirim ke ${email}.`);
+                await sendPasswordResetEmail(auth, npwpToEmail(npwp));
+                alert(`Instruksi reset password dikirim.`);
                 window.showAuthPage('login');
             } catch (err) {
                 alert("Reset gagal: " + err.message);
@@ -1427,33 +999,11 @@
         window.handleLogout = async function() {
             if (confirm("Keluar dari akun?")) {
                 if (auth) await signOut(auth);
+                localStorage.removeItem(LOCAL_STORAGE_KEY);
                 location.reload();
             }
         };
 
-        async function loadUserDataFromCloud(uid, npwp) {
-            try {
-                if (db) {
-                    const docRef = doc(db, "users", uid);
-                    const docSnap = await getDoc(docRef);
-
-                    if (docSnap.exists()) {
-                        window.appState = docSnap.data();
-                    } else {
-                        const activeStore = getActiveStore();
-                        activeStore.profile.npwp = npwp;
-                        await setDoc(docRef, window.appState);
-                    }
-                }
-            } catch (e) {
-                console.warn("Offline, using local saved data:", e);
-            } finally {
-                saveLocalState();
-                initUI();
-            }
-        }
-
-        // FITUR PERGANTIAN ENTITAS (UMKM vs Perorangan)
         window.switchEntityMode = function(mode) {
             window.appState.entityMode = mode;
             document.getElementById('btnModeUmkm').classList.toggle('active', mode === 'umkm');
@@ -1465,31 +1015,53 @@
             if (mode === 'personal') {
                 if (window.appState.personalProfile) {
                     document.getElementById('personalNama').value = window.appState.personalProfile.nama || '';
+                    document.getElementById('personalTipePekerjaan').value = window.appState.personalProfile.tipePekerjaan || 'karyawan';
                     document.getElementById('personalStatusPTKP').value = window.appState.personalProfile.statusPTKP || '54000000';
-                    document.getElementById('personalJabatan').value = window.appState.personalProfile.jabatan || '';
                     document.getElementById('personalGajiPokok').value = window.appState.personalProfile.gajiPokok || 0;
                     document.getElementById('personalTunjangan').value = window.appState.personalProfile.tunjangan || 0;
                     document.getElementById('personalIuranSip').value = window.appState.personalProfile.iuran || 0;
+                    document.getElementById('freelancePenghasilanBruto').value = window.appState.personalProfile.freelanceBruto || 0;
+                    document.getElementById('freelanceNorma').value = window.appState.personalProfile.freelanceNorma || '0.5';
                     document.getElementById('personalJenisKendaraan').value = window.appState.personalProfile.jenisKendaraan || 'mobil';
                     document.getElementById('personalNJKB').value = window.appState.personalProfile.njkb || 0;
                     document.getElementById('personalKepemilikan').value = window.appState.personalProfile.kepemilikan || '0.02';
                 }
-                window.calculatePersonalPph21();
+                window.togglePersonalJobType();
                 window.calculatePajakKendaraan();
             } else {
                 window.calculateAll();
             }
-            saveLocalState();
+            window.saveDataToCloud();
+        };
+
+        window.togglePersonalJobType = function() {
+            const type = document.getElementById('personalTipePekerjaan').value;
+            const isFreelance = type === 'freelance';
+
+            document.getElementById('formKaryawanInputs').style.display = isFreelance ? 'none' : 'grid';
+            document.getElementById('formFreelanceInputs').style.display = isFreelance ? 'grid' : 'none';
+
+            document.getElementById('personalCalcTitle').innerHTML = isFreelance 
+                ? '<i class="fa-solid fa-laptop-code"></i> Kalkulator PPh Pekerja Lepas (NPPN 50%)' 
+                : '<i class="fa-solid fa-calculator"></i> Kalkulator PPh 21 Karyawan';
+
+            document.getElementById('labelNettoParam').textContent = isFreelance 
+                ? 'Penghasilan Netto (Bruto x Norma NPPN)' 
+                : 'Penghasilan Netto (Potong Biaya Jabatan)';
+
+            window.calculatePersonalPph21();
         };
 
         window.savePersonalData = function() {
             if (!window.appState.personalProfile) window.appState.personalProfile = {};
             window.appState.personalProfile.nama = document.getElementById('personalNama').value;
+            window.appState.personalProfile.tipePekerjaan = document.getElementById('personalTipePekerjaan').value;
             window.appState.personalProfile.statusPTKP = document.getElementById('personalStatusPTKP').value;
-            window.appState.personalProfile.jabatan = document.getElementById('personalJabatan').value;
             window.appState.personalProfile.gajiPokok = parseFloat(document.getElementById('personalGajiPokok').value) || 0;
             window.appState.personalProfile.tunjangan = parseFloat(document.getElementById('personalTunjangan').value) || 0;
             window.appState.personalProfile.iuran = parseFloat(document.getElementById('personalIuranSip').value) || 0;
+            window.appState.personalProfile.freelanceBruto = parseFloat(document.getElementById('freelancePenghasilanBruto').value) || 0;
+            window.appState.personalProfile.freelanceNorma = document.getElementById('freelanceNorma').value;
             window.appState.personalProfile.jenisKendaraan = document.getElementById('personalJenisKendaraan').value;
             window.appState.personalProfile.njkb = parseFloat(document.getElementById('personalNJKB').value) || 0;
             window.appState.personalProfile.kepemilikan = document.getElementById('personalKepemilikan').value;
@@ -1512,9 +1084,7 @@
 
             const filteredMonths = getFilteredYearData();
             const countSel = document.getElementById('jumlahTabProfile');
-            if (countSel) {
-                countSel.value = filteredMonths.length <= 12 ? filteredMonths.length.toString() : "12";
-            }
+            if (countSel) countSel.value = filteredMonths.length <= 12 ? filteredMonths.length.toString() : "12";
 
             window.populateYearDropdown();
             window.renderTabs();
@@ -1522,34 +1092,40 @@
             window.runSimulasiKalkulator();
         }
 
-        // PERORANGAN: Kalkulator PPh 21
         window.calculatePersonalPph21 = function() {
             window.savePersonalData();
-            const gaji = parseFloat(document.getElementById('personalGajiPokok').value) || 0;
-            const tunjangan = parseFloat(document.getElementById('personalTunjangan').value) || 0;
-            const iuran = parseFloat(document.getElementById('personalIuranSip').value) || 0;
+            const jobType = document.getElementById('personalTipePekerjaan').value;
             const ptkp = parseFloat(document.getElementById('personalStatusPTKP').value) || 54000000;
 
-            const brutoBulan = gaji + tunjangan;
-            const brutoTahun = brutoBulan * 12;
+            let brutoBulan = 0, brutoTahun = 0, nettoBulan = 0, nettoTahun = 0;
 
-            const biayaJabatan = Math.min(brutoBulan * 0.05, 500000);
-            const nettoBulan = brutoBulan - biayaJabatan - iuran;
-            const nettoTahun = nettoBulan * 12;
+            if (jobType === 'freelance') {
+                brutoBulan = parseFloat(document.getElementById('freelancePenghasilanBruto').value) || 0;
+                const norma = parseFloat(document.getElementById('freelanceNorma').value) || 0.5;
+                brutoTahun = brutoBulan * 12;
+                nettoBulan = brutoBulan * norma;
+                nettoTahun = brutoTahun * norma;
+            } else {
+                const gaji = parseFloat(document.getElementById('personalGajiPokok').value) || 0;
+                const tunjangan = parseFloat(document.getElementById('personalTunjangan').value) || 0;
+                const iuran = parseFloat(document.getElementById('personalIuranSip').value) || 0;
+
+                brutoBulan = gaji + tunjangan;
+                brutoTahun = brutoBulan * 12;
+
+                const biayaJabatan = Math.min(brutoBulan * 0.05, 500000);
+                nettoBulan = brutoBulan - biayaJabatan - iuran;
+                nettoTahun = nettoBulan * 12;
+            }
 
             const pkp = Math.max(0, nettoTahun - ptkp);
 
             let pphTahun = 0;
             if (pkp > 0) {
-                if (pkp <= 60000000) {
-                    pphTahun = pkp * 0.05;
-                } else if (pkp <= 250000000) {
-                    pphTahun = (60000000 * 0.05) + ((pkp - 60000000) * 0.15);
-                } else if (pkp <= 500000000) {
-                    pphTahun = (60000000 * 0.05) + (190000000 * 0.15) + ((pkp - 250000000) * 0.25);
-                } else {
-                    pphTahun = (60000000 * 0.05) + (190000000 * 0.15) + (250000000 * 0.25) + ((pkp - 500000000) * 0.30);
-                }
+                if (pkp <= 60000000) pphTahun = pkp * 0.05;
+                else if (pkp <= 250000000) pphTahun = (60000000 * 0.05) + ((pkp - 60000000) * 0.15);
+                else if (pkp <= 500000000) pphTahun = (60000000 * 0.05) + (190000000 * 0.15) + ((pkp - 250000000) * 0.25);
+                else pphTahun = (60000000 * 0.05) + (190000000 * 0.15) + (250000000 * 0.25) + ((pkp - 500000000) * 0.30);
             }
 
             const pphBulan = pphTahun / 12;
@@ -1563,7 +1139,6 @@
             document.getElementById('resPersonalPphTahun').textContent = formatRupiah(pphTahun);
         };
 
-        // PERORANGAN: Kalkulator Pajak Kendaraan
         window.calculatePajakKendaraan = function() {
             window.savePersonalData();
             const jenis = document.getElementById('personalJenisKendaraan').value;
@@ -1593,22 +1168,32 @@
 
         window.switchStore = function(storeId) {
             window.appState.activeStoreId = storeId;
-            saveLocalState();
+            window.saveDataToCloud();
             initUI();
         };
 
         window.openAddStoreModal = function() {
             document.getElementById('addStoreModal').classList.add('active');
             document.getElementById('newStoreName').value = '';
+            document.getElementById('newStoreCategory').value = 'Kuliner / Makanan & Minuman';
+            document.getElementById('customStoreCategoryGroup').style.display = 'none';
         };
 
-        window.closeAddStoreModal = function() {
-            document.getElementById('addStoreModal').classList.remove('active');
+        window.closeAddStoreModal = function() { document.getElementById('addStoreModal').classList.remove('active'); };
+
+        window.handleStoreCategoryChange = function(val) {
+            document.getElementById('customStoreCategoryGroup').style.display = val === 'Lainnya' ? 'flex' : 'none';
         };
 
         window.addNewStore = function() {
             const name = document.getElementById('newStoreName').value.trim();
-            const category = document.getElementById('newStoreCategory').value;
+            let category = document.getElementById('newStoreCategory').value;
+            
+            if (category === 'Lainnya') {
+                const customVal = document.getElementById('newStoreCategoryCustom').value.trim();
+                category = customVal || 'Lainnya';
+            }
+
             if (!name) return alert("Masukkan nama toko!");
 
             const newId = "store_" + Date.now();
@@ -1623,8 +1208,7 @@
                     kategoriUsaha: category,
                     targetOmzet: 500000000
                 },
-                selectedYear: 2026,
-                activeTabIndex: 0,
+                selectedYear: 2026, activeTabIndex: 0,
                 monthsData: [{ name: 'Januari', year: 2026, omzet: 0, beban: 0, billing: '' }]
             });
 
@@ -1640,16 +1224,13 @@
             const currentYear = store.selectedYear || 2026;
 
             const otherYearData = store.monthsData.filter(m => (parseInt(m.year) || 2026) !== currentYear);
-
             const newYearMonths = [];
+
             for (let i = 0; i < count; i++) {
                 const mName = allMonthsList[i];
                 const existing = store.monthsData.find(m => m.name === mName && (parseInt(m.year) || 2026) === currentYear);
-                if (existing) {
-                    newYearMonths.push(existing);
-                } else {
-                    newYearMonths.push({ name: mName, year: currentYear, omzet: 0, beban: 0, billing: '' });
-                }
+                if (existing) newYearMonths.push(existing);
+                else newYearMonths.push({ name: mName, year: currentYear, omzet: 0, beban: 0, billing: '' });
             }
 
             store.monthsData = [...otherYearData, ...newYearMonths];
@@ -1658,21 +1239,6 @@
             window.renderTabs();
             window.calculateAll();
             window.saveDataToCloud();
-        };
-
-        window.saveDataToCloud = function() {
-            saveLocalState();
-            if (!currentUser || !db) return;
-
-            clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(async () => {
-                try {
-                    const docRef = doc(db, "users", currentUser.uid);
-                    await setDoc(docRef, window.appState, { merge: true });
-                } catch (err) {
-                    console.warn("Cloud Sync Error (Saved locally):", err);
-                }
-            }, 500);
         };
 
         window.saveProfileToCloud = function() {
@@ -1693,11 +1259,6 @@
 
             if (years.length === 0) years = [2026];
             if (!store.selectedYear) store.selectedYear = years[0];
-
-            if (!years.includes(store.selectedYear)) {
-                years.push(store.selectedYear);
-                years.sort((a,b) => b - a);
-            }
 
             yearSelect.innerHTML = '';
             years.forEach(y => {
@@ -1743,9 +1304,7 @@
                 return;
             }
 
-            if (store.activeTabIndex >= currentYearData.length) {
-                store.activeTabIndex = 0;
-            }
+            if (store.activeTabIndex >= currentYearData.length) store.activeTabIndex = 0;
 
             currentYearData.forEach((item, index) => {
                 const li = document.createElement('li');
@@ -1774,6 +1333,7 @@
             store.activeTabIndex = index;
             window.renderTabs();
             window.calculateAll();
+            window.saveDataToCloud();
         };
 
         window.openAddTabModal = function() {
@@ -1782,9 +1342,7 @@
             document.getElementById('newTabYear').value = store.selectedYear || 2026;
         };
 
-        window.closeAddTabModal = function() {
-            document.getElementById('addTabModal').classList.remove('active');
-        };
+        window.closeAddTabModal = function() { document.getElementById('addTabModal').classList.remove('active'); };
 
         window.addNewTab = function() {
             const store = getActiveStore();
@@ -1855,13 +1413,9 @@
                 let dpp = 0;
                 if (isOP) {
                     const LIMIT = 500000000;
-                    if (prevCumulative >= LIMIT) {
-                        dpp = omzet;
-                    } else if (cumulativeOmzet > LIMIT) {
-                        dpp = cumulativeOmzet - LIMIT;
-                    } else {
-                        dpp = 0;
-                    }
+                    if (prevCumulative >= LIMIT) dpp = omzet;
+                    else if (cumulativeOmzet > LIMIT) dpp = cumulativeOmzet - LIMIT;
+                    else dpp = 0;
                 } else {
                     dpp = omzet;
                 }
@@ -1942,7 +1496,6 @@
         };
 
         window.runSimulasiKalkulator = function() {
-            const store = getActiveStore();
             const omzet = parseFloat(document.getElementById('simulasiOmzet').value) || 0;
             const akumulasi = parseFloat(document.getElementById('simulasiAkumulasi').value) || 0;
             const isOP = (document.getElementById('jenisWP').value || 'OP') === 'OP';
@@ -1951,13 +1504,9 @@
             if (isOP) {
                 const LIMIT = 500000000;
                 const totalAkumulasi = akumulasi + omzet;
-                if (akumulasi >= LIMIT) {
-                    dpp = omzet;
-                } else if (totalAkumulasi > LIMIT) {
-                    dpp = totalAkumulasi - LIMIT;
-                } else {
-                    dpp = 0;
-                }
+                if (akumulasi >= LIMIT) dpp = omzet;
+                else if (totalAkumulasi > LIMIT) dpp = totalAkumulasi - LIMIT;
+                else dpp = 0;
             } else {
                 dpp = omzet;
             }
@@ -1976,9 +1525,7 @@
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
 
-            if (chartInstance) {
-                chartInstance.destroy();
-            }
+            if (chartInstance) chartInstance.destroy();
 
             chartInstance = new Chart(ctx, {
                 type: 'bar',
@@ -2004,7 +1551,6 @@
             });
         }
 
-        // ================= IMPORT & EXPORT DINAMIS (UMKM VS PERORANGAN) =================
         window.exportSpreadsheet = function() {
             const mode = window.appState.entityMode || 'umkm';
             let csvContent = "\uFEFF";
@@ -2013,232 +1559,82 @@
                 const p = window.appState.personalProfile || {};
                 csvContent += "Kategori,Parameter,Nilai\n";
                 csvContent += `Profile,Nama Lengkap,"${p.nama || ''}"\n`;
+                csvContent += `Profile,Tipe Pekerjaan,"${p.tipePekerjaan || 'karyawan'}"\n`;
                 csvContent += `Profile,PTKP Nilai,${p.statusPTKP || 54000000}\n`;
-                csvContent += `Profile,Jabatan,"${p.jabatan || ''}"\n`;
                 csvContent += `Gaji,Gaji Pokok / Bulan,${p.gajiPokok || 0}\n`;
                 csvContent += `Gaji,Tunjangan / Bulan,${p.tunjangan || 0}\n`;
                 csvContent += `Gaji,Iuran / Bulan,${p.iuran || 0}\n`;
-                csvContent += `Kendaraan,Jenis Kendaraan,"${p.jenisKendaraan || 'mobil'}"\n`;
-                csvContent += `Kendaraan,NJKB,${p.njkb || 0}\n`;
-                csvContent += `Kendaraan,Tarif Kepemilikan,${p.kepemilikan || 0.02}\n`;
-
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement("a");
-                const url = URL.createObjectURL(blob);
-                link.setAttribute("href", url);
-                link.setAttribute("download", `AppPUN_Perorangan_${(p.nama || 'User').replace(/\s+/g, '_')}.csv`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                csvContent += `Freelance,Penghasilan Bruto / Bulan,${p.freelanceBruto || 0}\n`;
+                csvContent += `Freelance,Norma NPPN,${p.freelanceNorma || 0.5}\n`;
             } else {
                 const store = getActiveStore();
                 csvContent += "Tahun,Bulan,Omzet Bruto (Rp),Beban Operasional (Rp),Laba Bersih (Rp),DPP Pajak (Rp),PPh Final 0.5% (Rp),Kode Billing / NTPN\n";
-
                 store.monthsData.forEach(item => {
-                    const row = [
-                        item.year || 2026,
-                        `"${item.name}"`,
-                        item.omzet || 0,
-                        item.beban || 0,
-                        item.computedLaba || 0,
-                        item.computedDPP || 0,
-                        item.computedPajak || 0,
-                        `"${item.billing || ''}"`
-                    ];
+                    const row = [ item.year || 2026, `"${item.name}"`, item.omzet || 0, item.beban || 0, item.computedLaba || 0, item.computedDPP || 0, item.computedPajak || 0, `"${item.billing || ''}"` ];
                     csvContent += row.join(",") + "\n";
                 });
-
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement("a");
-                const url = URL.createObjectURL(blob);
-                const namaFile = `AppPUN_Cadangan_${(store.profile.namaUsaha || 'Toko').replace(/\s+/g, '_')}_${store.selectedYear}.csv`;
-                
-                link.setAttribute("href", url);
-                link.setAttribute("download", namaFile);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
             }
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `AppPUN_Export_${Date.now()}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         };
 
         window.downloadTemplate = function() {
-            const mode = window.appState.entityMode || 'umkm';
-            let templateContent = "\uFEFF";
-
-            if (mode === 'personal') {
-                templateContent += "Kategori,Parameter,Nilai\n";
-                templateContent += "Profile,Nama Lengkap,Eugene Siby\n";
-                templateContent += "Profile,PTKP Nilai,54000000\n";
-                templateContent += "Profile,Jabatan,Karyawan Swasta\n";
-                templateContent += "Gaji,Gaji Pokok / Bulan,10000000\n";
-                templateContent += "Gaji,Tunjangan / Bulan,2000000\n";
-                templateContent += "Gaji,Iuran / Bulan,200000\n";
-                templateContent += "Kendaraan,Jenis Kendaraan,mobil\n";
-                templateContent += "Kendaraan,NJKB,150000000\n";
-                templateContent += "Kendaraan,Tarif Kepemilikan,0.02\n";
-
-                const blob = new Blob([templateContent], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement("a");
-                const url = URL.createObjectURL(blob);
-                link.setAttribute("href", url);
-                link.setAttribute("download", "Template_Impor_Perorangan_AppPUN.csv");
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } else {
-                templateContent += "Tahun,Bulan,Omzet Bruto,Beban Operasional,NTPN_Billing\n";
-                templateContent += "2026,Januari,85.000.000,42.000.000,NTPN-8821931\n";
-                templateContent += "2026,Februari,92000000,45000000,NTPN-8821932\n";
-                templateContent += "2026,Maret,0,0,\n";
-
-                const blob = new Blob([templateContent], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement("a");
-                const url = URL.createObjectURL(blob);
-                
-                link.setAttribute("href", url);
-                link.setAttribute("download", "Template_Impor_UMKM_AppPUN.csv");
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
+            let templateContent = "\uFEFFTahun,Bulan,Omzet Bruto,Beban Operasional,NTPN_Billing\n2026,Januari,85000000,42000000,NTPN-8821931\n";
+            const blob = new Blob([templateContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "Template_Impor_UMKM_AppPUN.csv";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         };
 
         window.triggerImport = function() { document.getElementById('csvFileInput').click(); };
-
-        function parseCSVLine(line, delimiter) {
-            const result = [];
-            let current = '';
-            let inQuotes = false;
-
-            for (let i = 0; i < line.length; i++) {
-                const char = line[i];
-                if (char === '"') {
-                    inQuotes = !inQuotes;
-                } else if (char === delimiter && !inQuotes) {
-                    result.push(current.trim().replace(/^"|"$/g, ''));
-                    current = '';
-                } else {
-                    current += char;
-                }
-            }
-            result.push(current.trim().replace(/^"|"$/g, ''));
-            return result;
-        }
-
-        function cleanNumberInput(valStr) {
-            if (!valStr) return 0;
-            let str = valStr.toString().trim().replace(/Rp|rp|\s/g, '');
-            if (str.includes('.') && str.includes(',')) {
-                str = str.replace(/\./g, '').replace(',', '.');
-            } else if (str.includes('.') && !str.includes(',')) {
-                const parts = str.split('.');
-                if (parts.length > 2 || (parts.length === 2 && parts[1].length === 3)) {
-                    str = str.replace(/\./g, '');
-                }
-            } else if (str.includes(',') && !str.includes('.')) {
-                const parts = str.split(',');
-                if (parts.length > 2 || (parts.length === 2 && parts[1].length === 3)) {
-                    str = str.replace(/,/g, '');
-                } else {
-                    str = str.replace(',', '.');
-                }
-            }
-            return parseFloat(str) || 0;
-        }
 
         window.importCSV = function(event) {
             const file = event.target.files[0];
             if (!file) return;
 
-            const mode = window.appState.entityMode || 'umkm';
-
             const reader = new FileReader();
             reader.onload = function(e) {
-                const text = e.target.result;
-                const lines = text.split(/\r\n|\n/);
-                if (lines.length <= 1) return alert("File CSV kosong!");
+                const lines = e.target.result.split(/\r\n|\n/);
+                if (lines.length <= 1) return alert("File kosong!");
 
-                const firstLine = lines[0];
-                const delimiter = firstLine.includes(';') ? ';' : ',';
+                const store = getActiveStore();
+                const newMonthsData = [];
 
-                if (mode === 'personal') {
-                    if (!window.appState.personalProfile) window.appState.personalProfile = {};
-
-                    for (let i = 1; i < lines.length; i++) {
-                        const line = lines[i].trim();
-                        if (!line) continue;
-                        const cols = parseCSVLine(line, delimiter);
-                        if (cols.length >= 3) {
-                            const param = cols[1].toLowerCase();
-                            const val = cols[2];
-
-                            if (param.includes('nama')) window.appState.personalProfile.nama = val;
-                            if (param.includes('ptkp')) window.appState.personalProfile.statusPTKP = val;
-                            if (param.includes('jabatan')) window.appState.personalProfile.jabatan = val;
-                            if (param.includes('gaji pokok')) window.appState.personalProfile.gajiPokok = cleanNumberInput(val);
-                            if (param.includes('tunjangan')) window.appState.personalProfile.tunjangan = cleanNumberInput(val);
-                            if (param.includes('iuran')) window.appState.personalProfile.iuran = cleanNumberInput(val);
-                            if (param.includes('jenis kendaraan')) window.appState.personalProfile.jenisKendaraan = val.toLowerCase();
-                            if (param.includes('njkb')) window.appState.personalProfile.njkb = cleanNumberInput(val);
-                            if (param.includes('tarif kepemilikan')) window.appState.personalProfile.kepemilikan = val;
-                        }
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    const cols = line.split(',');
+                    if (cols.length >= 3) {
+                        newMonthsData.push({
+                            year: parseInt(cols[0]) || 2026,
+                            name: cols[1].replace(/"/g, ''),
+                            omzet: parseFloat(cols[2]) || 0,
+                            beban: parseFloat(cols[3]) || 0,
+                            billing: cols[4] ? cols[4].replace(/"/g, '') : ''
+                        });
                     }
+                }
 
-                    window.switchEntityMode('personal');
+                if (newMonthsData.length > 0) {
+                    store.monthsData = newMonthsData;
+                    window.populateYearDropdown();
+                    window.renderTabs();
+                    window.calculateAll();
                     window.saveDataToCloud();
-                    alert("Data Perorangan berhasil diimpor!");
-                } else {
-                    const newMonthsData = [];
-                    for (let i = 1; i < lines.length; i++) {
-                        const line = lines[i].trim();
-                        if (!line) continue;
-                        
-                        const cols = parseCSVLine(line, delimiter);
-                        if (cols.length >= 3) {
-                            const store = getActiveStore();
-                            const yearVal = parseInt(cols[0]) || store.selectedYear || 2026;
-                            const monthName = cols[1] || `Bulan ${i}`;
-                            const omzetVal = cleanNumberInput(cols[2]);
-                            const bebanVal = cleanNumberInput(cols[3]);
-                            const billingVal = cols[7] || cols[4] || '';
-
-                            newMonthsData.push({
-                                year: yearVal,
-                                name: monthName,
-                                omzet: omzetVal,
-                                beban: bebanVal,
-                                billing: billingVal
-                            });
-                        }
-                    }
-
-                    if (newMonthsData.length > 0) {
-                        const store = getActiveStore();
-                        store.monthsData = newMonthsData;
-                        window.populateYearDropdown();
-                        window.renderTabs();
-                        window.calculateAll();
-                        window.saveDataToCloud();
-                        alert(`Data Toko UMKM (${newMonthsData.length} bulan) berhasil diimpor untuk ${store.profile.namaUsaha}!`);
-                    } else {
-                        alert("Format CSV tidak cocok.");
-                    }
+                    alert("Data berhasil diimpor & disinkronkan ke Cloud!");
                 }
             };
             reader.readAsText(file);
         };
-		// Pendaftaran Service Worker dari PWABuilder
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./pwabuilder-sw.js')
-      .then((reg) => {
-        console.log('PWABuilder Service Worker berhasil didaftarkan dengan scope:', reg.scope);
-      })
-      .catch((err) => {
-        console.error('Gagal mendaftarkan PWABuilder Service Worker:', err);
-      });
-  });
-}
     </script>
 </body>
 </html>
