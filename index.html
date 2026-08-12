@@ -2227,6 +2227,18 @@
             };
             reader.readAsText(file);
         };
+		// Pendaftaran Service Worker dari PWABuilder
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./pwabuilder-sw.js')
+      .then((reg) => {
+        console.log('PWABuilder Service Worker berhasil didaftarkan dengan scope:', reg.scope);
+      })
+      .catch((err) => {
+        console.error('Gagal mendaftarkan PWABuilder Service Worker:', err);
+      });
+  });
+}
     </script>
 </body>
 </html>
