@@ -794,9 +794,6 @@
             appId: "1:583484388383:web:f37687349961b2ac08112a"
         };
 
-        // PENTING: key ini di-namespace PER AKUN (uid), bukan satu key global.
-        // Sebelumnya semua akun di device yang sama berbagi 1 key localStorage,
-        // sehingga data akun lain bisa "bocor" tampil/tersimpan untuk akun yang baru login.
         const LOCAL_STORAGE_PREFIX = "apppun_tax_manager_local_state";
         function getLocalStorageKey(uid) {
             return uid ? `${LOCAL_STORAGE_PREFIX}_${uid}` : `${LOCAL_STORAGE_PREFIX}_guest`;
@@ -823,8 +820,6 @@
         const allMonthsList = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
         const monthOrder = { 'Januari': 1, 'Februari': 2, 'Maret': 3, 'April': 4, 'Mei': 5, 'Juni': 6, 'Juli': 7, 'Agustus': 8, 'September': 9, 'Oktober': 10, 'November': 11, 'Desember': 12 };
 
-        // Placeholder yang HANYA dipakai sebelum login berhasil (masih ketutup authOverlay).
-        // JANGAN PERNAH menulis object ini ke Firestore untuk akun sungguhan.
         const defaultState = {
             entityMode: "umkm",
             activeStoreId: "store_default",
@@ -844,9 +839,6 @@
             }]
         };
 
-        // Factory data BERSIH untuk akun/NIK baru. Dipakai setiap kali membuat
-        // dokumen cloud baru (signup ATAU saat listener mendapati dokumen belum ada),
-        // supaya tidak pernah "mewarisi" window.appState dari akun lain di device yang sama.
         function buildDefaultState(npwp, namaUsaha) {
             const year = new Date().getFullYear();
             return {
@@ -878,7 +870,7 @@
         }
 
         function saveLocalState() {
-            if (!currentLocalKey) return; // belum login / belum tahu akun -> jangan simpan apa pun
+            if (!currentLocalKey) return;
             try {
                 localStorage.setItem(currentLocalKey, JSON.stringify(window.appState));
             } catch (e) {
@@ -900,10 +892,6 @@
             }
         }
 
-        // Ditampilkan kalau sync gagal karena sebab yang butuh perhatian (mis. Firestore
-        // Security Rules menolak akses) — beda dari status "offline biasa", supaya tidak
-        // silent-fail seperti sebelumnya (dulu cuma console.error, user tidak pernah tahu
-        // datanya nggak pernah kekirim ke cloud).
         let syncErrorShown = false;
         function setSyncErrorStatus(reason) {
             const dot = document.getElementById('syncStatusDot');
@@ -915,12 +903,11 @@
             if (!syncErrorShown) {
                 syncErrorShown = true;
                 if (reason === 'permission-denied') {
-                    alert("Sinkronisasi cloud DITOLAK oleh Firestore Security Rules.\n\nData yang kamu lihat/ubah sekarang HANYA tersimpan di device ini, TIDAK ikut ke akun cloud, dan TIDAK akan muncul di device lain sampai rules diperbaiki.");
+                    alert("Sinkronisasi cloud DITOLAK oleh Firestore Security Rules.\n\nData yang Anda ubah HANYA tersimpan secara lokal pada perangkat ini.");
                 }
             }
         }
 
-        // AUTH & REALTIME LISTENERS PER NIK / PER UID
         if (auth) {
             onAuthStateChanged(auth, (user) => {
                 if (cloudSaveTimer) { clearTimeout(cloudSaveTimer); cloudSaveTimer = null; }
@@ -933,8 +920,6 @@
                     document.getElementById('displayUserNpwp').textContent = `NPWP: ${npwp}`;
                     document.getElementById('nomorNPWP').value = npwp;
 
-                    // Mengaktifkan Listener Realtime Firestore (sumber kebenaran = cloud,
-                    // bukan localStorage device ini)
                     listenToCloudData(user.uid, npwp);
                 } else {
                     if (unsubscribeRealtime) unsubscribeRealtime();
@@ -965,18 +950,12 @@
                 setSyncIndicatorStatus(false);
                 syncErrorShown = false;
                 if (docSnap.exists()) {
-                    // Cloud SELALU jadi sumber kebenaran begitu ada dokumen -> device manapun
-                    // yang login akan menampilkan data yang sama persis.
                     isRemoteUpdate = true;
                     window.appState = docSnap.data();
                     saveLocalState();
                     initUI();
                     isRemoteUpdate = false;
                 } else {
-                    // NIK/akun baru di cloud -> WAJIB mulai dari data bersih (buildDefaultState),
-                    // JANGAN pernah pakai window.appState apa adanya di titik ini. Sebelumnya bug
-                    // di sini menyebabkan data akun/percobaan sebelumnya di device yang sama
-                    // ikut ter-upload jadi milik akun yang baru login.
                     const freshState = buildDefaultState(npwp);
                     isRemoteUpdate = true;
                     window.appState = freshState;
@@ -991,8 +970,6 @@
                 if (error && error.code === 'permission-denied') {
                     setSyncErrorStatus('permission-denied');
                 }
-                // Firestore tidak terjangkau (mis. offline / permission-denied) -> baru di titik
-                // ini boleh fallback ke cache lokal milik AKUN INI SAJA (key sudah per-uid).
                 if (currentLocalKey) {
                     try {
                         const cached = localStorage.getItem(currentLocalKey);
@@ -1006,14 +983,9 @@
         }
 
         window.saveDataToCloud = function() {
-            saveLocalState(); // backup lokal instan, sudah aman karena per-akun
+            saveLocalState();
             if (isRemoteUpdate || !currentUser || !db) return;
 
-            // Debounce penulisan ke cloud: input diketik huruf demi huruf sebelumnya
-            // memicu 1 write Firestore PER KETUKAN TOMBOL untuk SELURUH appState (termasuk
-            // seluruh array stores). Ini memperbesar peluang tulisan dari 2 device yang
-            // saling menimpa satu sama lain ("last write wins" atas seluruh dokumen).
-            // Dengan debounce, perubahan yang beruntun digabung jadi 1 kali kirim.
             setSyncIndicatorStatus(true);
             if (cloudSaveTimer) clearTimeout(cloudSaveTimer);
             cloudSaveTimer = setTimeout(() => {
