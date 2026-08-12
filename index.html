@@ -140,6 +140,7 @@
         .sync-indicator { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; padding: 4px 8px; border-radius: 12px; background: rgba(255,255,255,0.15); }
         .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; }
         .sync-dot.syncing { background: #f59e0b; animation: pulse 1s infinite; }
+        .sync-dot.sync-error { background: #ef4444; animation: pulse 1s infinite; }
 
         @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
 
@@ -899,6 +900,26 @@
             }
         }
 
+        // Ditampilkan kalau sync gagal karena sebab yang butuh perhatian (mis. Firestore
+        // Security Rules menolak akses) — beda dari status "offline biasa", supaya tidak
+        // silent-fail seperti sebelumnya (dulu cuma console.error, user tidak pernah tahu
+        // datanya nggak pernah kekirim ke cloud).
+        let syncErrorShown = false;
+        function setSyncErrorStatus(reason) {
+            const dot = document.getElementById('syncStatusDot');
+            const txt = document.getElementById('syncStatusText');
+            if (dot && txt) {
+                dot.className = 'sync-dot sync-error';
+                txt.textContent = reason === 'permission-denied' ? 'Sync ditolak (cek Firestore Rules)' : 'Sync gagal';
+            }
+            if (!syncErrorShown) {
+                syncErrorShown = true;
+                if (reason === 'permission-denied') {
+                    alert("Sinkronisasi cloud DITOLAK oleh Firestore Security Rules.\n\nData yang kamu lihat/ubah sekarang HANYA tersimpan di device ini, TIDAK ikut ke akun cloud, dan TIDAK akan muncul di device lain sampai rules diperbaiki.");
+                }
+            }
+        }
+
         // AUTH & REALTIME LISTENERS PER NIK / PER UID
         if (auth) {
             onAuthStateChanged(auth, (user) => {
@@ -942,6 +963,7 @@
             const docRef = doc(db, "users", uid);
             unsubscribeRealtime = onSnapshot(docRef, (docSnap) => {
                 setSyncIndicatorStatus(false);
+                syncErrorShown = false;
                 if (docSnap.exists()) {
                     // Cloud SELALU jadi sumber kebenaran begitu ada dokumen -> device manapun
                     // yang login akan menampilkan data yang sama persis.
@@ -966,8 +988,11 @@
             }, (error) => {
                 console.error("Realtime sync error:", error);
                 setSyncIndicatorStatus(false);
-                // Firestore tidak terjangkau (mis. offline) -> baru di titik ini boleh
-                // fallback ke cache lokal milik AKUN INI SAJA (key sudah per-uid).
+                if (error && error.code === 'permission-denied') {
+                    setSyncErrorStatus('permission-denied');
+                }
+                // Firestore tidak terjangkau (mis. offline / permission-denied) -> baru di titik
+                // ini boleh fallback ke cache lokal milik AKUN INI SAJA (key sudah per-uid).
                 if (currentLocalKey) {
                     try {
                         const cached = localStorage.getItem(currentLocalKey);
@@ -997,10 +1022,13 @@
                 const docRef = doc(db, "users", currentUser.uid);
                 const payload = { ...window.appState, updatedAt: Date.now() };
                 setDoc(docRef, payload, { merge: true })
-                    .then(() => setSyncIndicatorStatus(false))
+                    .then(() => { setSyncIndicatorStatus(false); syncErrorShown = false; })
                     .catch(err => {
                         console.error("Cloud Save Error:", err);
                         setSyncIndicatorStatus(false);
+                        if (err && err.code === 'permission-denied') {
+                            setSyncErrorStatus('permission-denied');
+                        }
                     });
             }, 700);
         };
