@@ -289,7 +289,6 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        /* Entity Mode Switcher Bar (UMKM vs Perorangan) */
         .entity-toggle-container {
             display: flex;
             background: #e2e8f0;
@@ -1260,7 +1259,10 @@
                 jabatan: "Karyawan Swasta",
                 gajiPokok: 10000000,
                 tunjangan: 2000000,
-                iuran: 200000
+                iuran: 200000,
+                jenisKendaraan: "mobil",
+                njkb: 150000000,
+                kepemilikan: "0.02"
             },
             stores: [
                 {
@@ -1387,7 +1389,7 @@
                 const initialData = {
                     entityMode: "umkm",
                     activeStoreId: "store_1",
-                    personalProfile: { nama: namaUsaha, statusPTKP: "54000000", jabatan: "Karyawan Swasta", gajiPokok: 10000000, tunjangan: 0, iuran: 0 },
+                    personalProfile: { nama: namaUsaha, statusPTKP: "54000000", jabatan: "Karyawan Swasta", gajiPokok: 10000000, tunjangan: 0, iuran: 0, jenisKendaraan: "mobil", njkb: 150000000, kepemilikan: "0.02" },
                     stores: [{
                         id: "store_1",
                         profile: { namaUsaha: namaUsaha, npwp: npwp, phone: phone, jenisWP: "OP", kategoriUsaha: "Retail & Kelontong", targetOmzet: 500000000 },
@@ -1461,12 +1463,37 @@
             document.getElementById('sectionPersonalMode').style.display = mode === 'personal' ? 'block' : 'none';
 
             if (mode === 'personal') {
+                if (window.appState.personalProfile) {
+                    document.getElementById('personalNama').value = window.appState.personalProfile.nama || '';
+                    document.getElementById('personalStatusPTKP').value = window.appState.personalProfile.statusPTKP || '54000000';
+                    document.getElementById('personalJabatan').value = window.appState.personalProfile.jabatan || '';
+                    document.getElementById('personalGajiPokok').value = window.appState.personalProfile.gajiPokok || 0;
+                    document.getElementById('personalTunjangan').value = window.appState.personalProfile.tunjangan || 0;
+                    document.getElementById('personalIuranSip').value = window.appState.personalProfile.iuran || 0;
+                    document.getElementById('personalJenisKendaraan').value = window.appState.personalProfile.jenisKendaraan || 'mobil';
+                    document.getElementById('personalNJKB').value = window.appState.personalProfile.njkb || 0;
+                    document.getElementById('personalKepemilikan').value = window.appState.personalProfile.kepemilikan || '0.02';
+                }
                 window.calculatePersonalPph21();
                 window.calculatePajakKendaraan();
             } else {
                 window.calculateAll();
             }
             saveLocalState();
+        };
+
+        window.savePersonalData = function() {
+            if (!window.appState.personalProfile) window.appState.personalProfile = {};
+            window.appState.personalProfile.nama = document.getElementById('personalNama').value;
+            window.appState.personalProfile.statusPTKP = document.getElementById('personalStatusPTKP').value;
+            window.appState.personalProfile.jabatan = document.getElementById('personalJabatan').value;
+            window.appState.personalProfile.gajiPokok = parseFloat(document.getElementById('personalGajiPokok').value) || 0;
+            window.appState.personalProfile.tunjangan = parseFloat(document.getElementById('personalTunjangan').value) || 0;
+            window.appState.personalProfile.iuran = parseFloat(document.getElementById('personalIuranSip').value) || 0;
+            window.appState.personalProfile.jenisKendaraan = document.getElementById('personalJenisKendaraan').value;
+            window.appState.personalProfile.njkb = parseFloat(document.getElementById('personalNJKB').value) || 0;
+            window.appState.personalProfile.kepemilikan = document.getElementById('personalKepemilikan').value;
+            window.saveDataToCloud();
         };
 
         function initUI() {
@@ -1497,6 +1524,7 @@
 
         // PERORANGAN: Kalkulator PPh 21
         window.calculatePersonalPph21 = function() {
+            window.savePersonalData();
             const gaji = parseFloat(document.getElementById('personalGajiPokok').value) || 0;
             const tunjangan = parseFloat(document.getElementById('personalTunjangan').value) || 0;
             const iuran = parseFloat(document.getElementById('personalIuranSip').value) || 0;
@@ -1537,6 +1565,7 @@
 
         // PERORANGAN: Kalkulator Pajak Kendaraan
         window.calculatePajakKendaraan = function() {
+            window.savePersonalData();
             const jenis = document.getElementById('personalJenisKendaraan').value;
             const njkb = parseFloat(document.getElementById('personalNJKB').value) || 0;
             const tarif = parseFloat(document.getElementById('personalKepemilikan').value) || 0.02;
@@ -1975,53 +2004,103 @@
             });
         }
 
+        // ================= IMPORT & EXPORT DINAMIS (UMKM VS PERORANGAN) =================
         window.exportSpreadsheet = function() {
-            const store = getActiveStore();
+            const mode = window.appState.entityMode || 'umkm';
             let csvContent = "\uFEFF";
-            csvContent += "Tahun,Bulan,Omzet Bruto (Rp),Beban Operasional (Rp),Laba Bersih (Rp),DPP Pajak (Rp),PPh Final 0.5% (Rp),Kode Billing / NTPN\n";
 
-            store.monthsData.forEach(item => {
-                const row = [
-                    item.year || 2026,
-                    `"${item.name}"`,
-                    item.omzet || 0,
-                    item.beban || 0,
-                    item.computedLaba || 0,
-                    item.computedDPP || 0,
-                    item.computedPajak || 0,
-                    `"${item.billing || ''}"`
-                ];
-                csvContent += row.join(",") + "\n";
-            });
+            if (mode === 'personal') {
+                const p = window.appState.personalProfile || {};
+                csvContent += "Kategori,Parameter,Nilai\n";
+                csvContent += `Profile,Nama Lengkap,"${p.nama || ''}"\n`;
+                csvContent += `Profile,PTKP Nilai,${p.statusPTKP || 54000000}\n`;
+                csvContent += `Profile,Jabatan,"${p.jabatan || ''}"\n`;
+                csvContent += `Gaji,Gaji Pokok / Bulan,${p.gajiPokok || 0}\n`;
+                csvContent += `Gaji,Tunjangan / Bulan,${p.tunjangan || 0}\n`;
+                csvContent += `Gaji,Iuran / Bulan,${p.iuran || 0}\n`;
+                csvContent += `Kendaraan,Jenis Kendaraan,"${p.jenisKendaraan || 'mobil'}"\n`;
+                csvContent += `Kendaraan,NJKB,${p.njkb || 0}\n`;
+                csvContent += `Kendaraan,Tarif Kepemilikan,${p.kepemilikan || 0.02}\n`;
 
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            const namaFile = `AppPUN_Cadangan_${(store.profile.namaUsaha || 'Toko').replace(/\s+/g, '_')}_${store.selectedYear}.csv`;
-            
-            link.setAttribute("href", url);
-            link.setAttribute("download", namaFile);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", `AppPUN_Perorangan_${(p.nama || 'User').replace(/\s+/g, '_')}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                const store = getActiveStore();
+                csvContent += "Tahun,Bulan,Omzet Bruto (Rp),Beban Operasional (Rp),Laba Bersih (Rp),DPP Pajak (Rp),PPh Final 0.5% (Rp),Kode Billing / NTPN\n";
+
+                store.monthsData.forEach(item => {
+                    const row = [
+                        item.year || 2026,
+                        `"${item.name}"`,
+                        item.omzet || 0,
+                        item.beban || 0,
+                        item.computedLaba || 0,
+                        item.computedDPP || 0,
+                        item.computedPajak || 0,
+                        `"${item.billing || ''}"`
+                    ];
+                    csvContent += row.join(",") + "\n";
+                });
+
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                const namaFile = `AppPUN_Cadangan_${(store.profile.namaUsaha || 'Toko').replace(/\s+/g, '_')}_${store.selectedYear}.csv`;
+                
+                link.setAttribute("href", url);
+                link.setAttribute("download", namaFile);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
         };
 
         window.downloadTemplate = function() {
+            const mode = window.appState.entityMode || 'umkm';
             let templateContent = "\uFEFF";
-            templateContent += "Tahun,Bulan,Omzet Bruto,Beban Operasional,NTPN_Billing\n";
-            templateContent += "2026,Januari,85.000.000,42.000.000,NTPN-8821931\n";
-            templateContent += "2026,Februari,92000000,45000000,NTPN-8821932\n";
-            templateContent += "2026,Maret,0,0,\n";
 
-            const blob = new Blob([templateContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            
-            link.setAttribute("href", url);
-            link.setAttribute("download", "Template_Impor_AppPUN.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            if (mode === 'personal') {
+                templateContent += "Kategori,Parameter,Nilai\n";
+                templateContent += "Profile,Nama Lengkap,Eugene Siby\n";
+                templateContent += "Profile,PTKP Nilai,54000000\n";
+                templateContent += "Profile,Jabatan,Karyawan Swasta\n";
+                templateContent += "Gaji,Gaji Pokok / Bulan,10000000\n";
+                templateContent += "Gaji,Tunjangan / Bulan,2000000\n";
+                templateContent += "Gaji,Iuran / Bulan,200000\n";
+                templateContent += "Kendaraan,Jenis Kendaraan,mobil\n";
+                templateContent += "Kendaraan,NJKB,150000000\n";
+                templateContent += "Kendaraan,Tarif Kepemilikan,0.02\n";
+
+                const blob = new Blob([templateContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", "Template_Impor_Perorangan_AppPUN.csv");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                templateContent += "Tahun,Bulan,Omzet Bruto,Beban Operasional,NTPN_Billing\n";
+                templateContent += "2026,Januari,85.000.000,42.000.000,NTPN-8821931\n";
+                templateContent += "2026,Februari,92000000,45000000,NTPN-8821932\n";
+                templateContent += "2026,Maret,0,0,\n";
+
+                const blob = new Blob([templateContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                
+                link.setAttribute("href", url);
+                link.setAttribute("download", "Template_Impor_UMKM_AppPUN.csv");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
         };
 
         window.triggerImport = function() { document.getElementById('csvFileInput').click(); };
@@ -2071,6 +2150,8 @@
             const file = event.target.files[0];
             if (!file) return;
 
+            const mode = window.appState.entityMode || 'umkm';
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 const text = e.target.result;
@@ -2080,41 +2161,68 @@
                 const firstLine = lines[0];
                 const delimiter = firstLine.includes(';') ? ';' : ',';
 
-                const newMonthsData = [];
+                if (mode === 'personal') {
+                    if (!window.appState.personalProfile) window.appState.personalProfile = {};
 
-                for (let i = 1; i < lines.length; i++) {
-                    const line = lines[i].trim();
-                    if (!line) continue;
-                    
-                    const cols = parseCSVLine(line, delimiter);
-                    if (cols.length >= 3) {
-                        const store = getActiveStore();
-                        const yearVal = parseInt(cols[0]) || store.selectedYear || 2026;
-                        const monthName = cols[1] || `Bulan ${i}`;
-                        const omzetVal = cleanNumberInput(cols[2]);
-                        const bebanVal = cleanNumberInput(cols[3]);
-                        const billingVal = cols[7] || cols[4] || '';
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (!line) continue;
+                        const cols = parseCSVLine(line, delimiter);
+                        if (cols.length >= 3) {
+                            const param = cols[1].toLowerCase();
+                            const val = cols[2];
 
-                        newMonthsData.push({
-                            year: yearVal,
-                            name: monthName,
-                            omzet: omzetVal,
-                            beban: bebanVal,
-                            billing: billingVal
-                        });
+                            if (param.includes('nama')) window.appState.personalProfile.nama = val;
+                            if (param.includes('ptkp')) window.appState.personalProfile.statusPTKP = val;
+                            if (param.includes('jabatan')) window.appState.personalProfile.jabatan = val;
+                            if (param.includes('gaji pokok')) window.appState.personalProfile.gajiPokok = cleanNumberInput(val);
+                            if (param.includes('tunjangan')) window.appState.personalProfile.tunjangan = cleanNumberInput(val);
+                            if (param.includes('iuran')) window.appState.personalProfile.iuran = cleanNumberInput(val);
+                            if (param.includes('jenis kendaraan')) window.appState.personalProfile.jenisKendaraan = val.toLowerCase();
+                            if (param.includes('njkb')) window.appState.personalProfile.njkb = cleanNumberInput(val);
+                            if (param.includes('tarif kepemilikan')) window.appState.personalProfile.kepemilikan = val;
+                        }
                     }
-                }
 
-                if (newMonthsData.length > 0) {
-                    const store = getActiveStore();
-                    store.monthsData = newMonthsData;
-                    window.populateYearDropdown();
-                    window.renderTabs();
-                    window.calculateAll();
+                    window.switchEntityMode('personal');
                     window.saveDataToCloud();
-                    alert(`Data riwayat (${newMonthsData.length} bulan) berhasil diimpor untuk ${store.profile.namaUsaha}!`);
+                    alert("Data Perorangan berhasil diimpor!");
                 } else {
-                    alert("Format CSV tidak cocok.");
+                    const newMonthsData = [];
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (!line) continue;
+                        
+                        const cols = parseCSVLine(line, delimiter);
+                        if (cols.length >= 3) {
+                            const store = getActiveStore();
+                            const yearVal = parseInt(cols[0]) || store.selectedYear || 2026;
+                            const monthName = cols[1] || `Bulan ${i}`;
+                            const omzetVal = cleanNumberInput(cols[2]);
+                            const bebanVal = cleanNumberInput(cols[3]);
+                            const billingVal = cols[7] || cols[4] || '';
+
+                            newMonthsData.push({
+                                year: yearVal,
+                                name: monthName,
+                                omzet: omzetVal,
+                                beban: bebanVal,
+                                billing: billingVal
+                            });
+                        }
+                    }
+
+                    if (newMonthsData.length > 0) {
+                        const store = getActiveStore();
+                        store.monthsData = newMonthsData;
+                        window.populateYearDropdown();
+                        window.renderTabs();
+                        window.calculateAll();
+                        window.saveDataToCloud();
+                        alert(`Data Toko UMKM (${newMonthsData.length} bulan) berhasil diimpor untuk ${store.profile.namaUsaha}!`);
+                    } else {
+                        alert("Format CSV tidak cocok.");
+                    }
                 }
             };
             reader.readAsText(file);
