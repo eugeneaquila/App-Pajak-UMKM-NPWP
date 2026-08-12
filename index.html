@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AppPUN - Pajak UMKM & NPWP Manager</title>
+    <title>AppPUN - Manager Pajak UMKM & Perorangan</title>
     
     <!-- Favicon SVG untuk Tab Browser -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230f172a'/%3E%3Cstop offset='100%25' stop-color='%231e293b'/%3E%3C/linearGradient%3E%3ClinearGradient id='ic' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%233b82f6'/%3E%3Cstop offset='100%25' stop-color='%231d4ed8'/%3E%3C/linearGradient%3E%3ClinearGradient id='ac' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2310b981'/%3E%3Cstop offset='100%25' stop-color='%2360a5fa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='500' height='500' rx='100' fill='url(%23bg)'/%3E%3Cpath d='M 170 120 L 330 120 C 352 120, 370 138, 370 160 L 370 340 C 370 362, 352 380, 330 380 L 170 380 C 148 380, 130 362, 130 340 L 130 160 C 130 138, 148 120, 170 120 Z' fill='url(%23ic)'/%3E%3Crect x='165' y='155' width='170' height='55' rx='10' fill='%23ffffff'/%3E%3Crect x='180' y='175' width='60' height='15' rx='4' fill='%232563eb'/%3E%3Crect x='290' y='175' width='30' height='15' rx='4' fill='%2310b981'/%3E%3Crect x='165' y='235' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='230' y='235' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='295' y='235' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='165' y='280' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='230' y='280' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='295' y='280' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Cpath d='M 130 320 Q 200 310, 240 250 T 370 160' fill='none' stroke='url(%23ac)' stroke-width='14' stroke-linecap='round'/%3E%3Ccircle cx='370' cy='160' r='10' fill='%2310b981'/%3E%3C/svg%3E">
@@ -287,6 +287,34 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Entity Mode Switcher Bar (UMKM vs Perorangan) */
+        .entity-toggle-container {
+            display: flex;
+            background: #e2e8f0;
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            gap: 4px;
+        }
+
+        .entity-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-muted);
+        }
+
+        .entity-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         }
 
         .store-switcher-bar {
@@ -610,7 +638,7 @@
                     <circle cx="370" cy="160" r="10" fill="#10b981"/>
                 </svg>
                 <h2>Masuk ke AppPUN</h2>
-                <p>Kelola perhitungan PPh Final 0,5% UMKM Anda</p>
+                <p>Kelola perhitungan Pajak UMKM & Perorangan Anda</p>
             </div>
             <form id="loginForm" class="auth-form" onsubmit="window.handleLogin(event)">
                 <div class="form-group">
@@ -640,8 +668,8 @@
                     <input type="text" id="signupNpwp" class="form-control" placeholder="3273xxxxxxxxxxxx" required>
                 </div>
                 <div class="form-group">
-                    <label for="signupNamaUsaha">Nama Usaha / Toko Pertama</label>
-                    <input type="text" id="signupNamaUsaha" class="form-control" placeholder="Contoh: Toko Utama Berkah" required>
+                    <label for="signupNamaUsaha">Nama Lengkap / Nama Toko</label>
+                    <input type="text" id="signupNamaUsaha" class="form-control" placeholder="Contoh: Eugene / Toko Berkah" required>
                 </div>
                 <div class="form-group">
                     <label for="signupPhone">Nomor Whatsapp</label>
@@ -651,7 +679,7 @@
                     <label for="signupPassword">Password Baru</label>
                     <input type="password" id="signupPassword" class="form-control" placeholder="Minimal 6 karakter" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-user-check"></i> Buat Akun UMKM</button>
+                <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-user-check"></i> Buat Akun</button>
             </form>
             <div class="auth-links">
                 <p>Sudah mendaftar? <a href="#" onclick="window.showAuthPage('login')">Masuk di sini</a></p>
@@ -708,7 +736,7 @@
                 </svg>
                 <div>
                     <h1>App<span style="color:#60a5fa;">PUN</span></h1>
-                    <p>Pajak UMKM 0.5% Manager</p>
+                    <p>Pajak UMKM & Perorangan Manager</p>
                 </div>
             </div>
             <div class="header-actions">
@@ -726,163 +754,303 @@
 
     <div class="main-container">
 
-        <!-- Profil & Personalisasi Toko -->
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title"><i class="fa-solid fa-store"></i> Personalisasi & Profil Toko</span>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <label for="filterTahun" style="font-weight: 700; font-size: 0.75rem; color: var(--text-muted);">TAHUN:</label>
-                    <select id="filterTahun" class="form-control" style="width: 100px; min-height: 36px; padding: 4px 8px; font-weight: 700; color: var(--primary);" onchange="window.changeSelectedYear()">
-                        <!-- Dynamic Options -->
-                    </select>
-                </div>
+        <!-- FITUR PERGANTIAN ENTITAS: Toko UMKM vs Perorangan -->
+        <div class="entity-toggle-container">
+            <div class="entity-btn active" id="btnModeUmkm" onclick="window.switchEntityMode('umkm')">
+                <i class="fa-solid fa-store"></i> Toko UMKM (PPh 0.5%)
             </div>
-
-            <!-- Multi-Toko / Cabang Switcher -->
-            <div class="store-switcher-bar">
-                <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
-                    <i class="fa-solid fa-shop" style="color: var(--primary);"></i>
-                    <select id="storeSelectDropdown" class="form-control store-switcher-select" onchange="window.switchStore(this.value)">
-                        <!-- Dynamic Store Options -->
-                    </select>
-                </div>
-                <button class="btn btn-primary" style="min-height: 36px; padding: 6px 12px; white-space: nowrap;" onclick="window.openAddStoreModal()"><i class="fa-solid fa-plus"></i> <span class="hide-mobile">Tambah Toko</span></button>
+            <div class="entity-btn" id="btnModePersonal" onclick="window.switchEntityMode('personal')">
+                <i class="fa-solid fa-user-gear"></i> Perorangan (Karyawan & Kendaraan)
             </div>
+        </div>
 
-            <div class="grid-3">
-                <div class="form-group">
-                    <label for="namaUsaha">Nama Usaha / Toko</label>
-                    <input type="text" id="namaUsaha" class="form-control" value="" onchange="window.saveProfileToCloud()">
-                </div>
-                <div class="form-group">
-                    <label for="kategoriUsaha">Kategori Sektor Business (KLU)</label>
-                    <select id="kategoriUsaha" class="form-control" onchange="window.saveProfileToCloud()">
-                        <option value="Kuliner / Makanan & Minuman">Kuliner / Makanan & Minuman</option>
-                        <option value="Fashion & Pakaian">Fashion & Pakaian</option>
-                        <option value="Retail & Kelontong">Retail & Kelontong</option>
-                        <option value="Jasa & Konsultan">Jasa & Konsultan</option>
-                        <option value="Produk Digital / Kreatif">Produk Digital / Kreatif</option>
-                        <option value="Lainnya">Lainnya</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="jumlahTabProfile">Jumlah Bulan/Periode Aktif</label>
-                    <div style="display: flex; gap: 6px;">
-                        <select id="jumlahTabProfile" class="form-control" onchange="window.setTabCountFromProfile(this.value)">
-                            <option value="1">1 Bulan</option>
-                            <option value="2">2 Bulan</option>
-                            <option value="3">3 Bulan (Triwulan 1)</option>
-                            <option value="6">6 Bulan (Semester 1)</option>
-                            <option value="12">12 Bulan (1 Tahun Penuh)</option>
+        <!-- ================= SECTION 1: TOKO UMKM MODE ================= -->
+        <div id="sectionUmkmMode">
+            <!-- Profil & Personalisasi Toko -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><i class="fa-solid fa-store"></i> Personalisasi & Profil Toko</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label for="filterTahun" style="font-weight: 700; font-size: 0.75rem; color: var(--text-muted);">TAHUN:</label>
+                        <select id="filterTahun" class="form-control" style="width: 100px; min-height: 36px; padding: 4px 8px; font-weight: 700; color: var(--primary);" onchange="window.changeSelectedYear()">
+                            <!-- Dynamic Options -->
                         </select>
-                        <button class="btn btn-primary" style="padding: 0 12px; min-height: 42px;" onclick="window.openAddTabModal()" title="Tambah Tab Khusus"><i class="fa-solid fa-plus"></i></button>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="nomorNPWP">Nomor NPWP / NIK (16 Digit)</label>
-                    <input type="text" id="nomorNPWP" class="form-control" value="" readonly style="background-color: #f1f5f9; cursor: not-allowed;">
-                </div>
-                <div class="form-group">
-                    <label for="jenisWP">Jenis Wajib Pajak</label>
-                    <!-- OPSI DIBERSIHKAN: NPWP ORANG PRIBADI -->
-                    <select id="jenisWP" class="form-control" onchange="window.saveProfileToCloud(); window.calculateAll();">
-                        <option value="OP">NPWP Orang Pribadi (Bebas Pajak s/d 500Jt)</option>
-                        <option value="Badan">NPWP Badan Usaha (PT/CV) - Pajak 0.5% Direct</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="targetOmzet">Target Omzet Tahunan (Rp)</label>
-                    <input type="number" id="targetOmzet" class="form-control" placeholder="1000000000" value="500000000" oninput="window.saveProfileToCloud(); window.updateProgressTarget();">
-                </div>
-            </div>
 
-            <!-- Progress Bar Target Omzet -->
-            <div class="progress-box">
-                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700;">
-                    <span>Pencapaian Target Omzet Tahunan (<span class="selected-year-label">2026</span>)</span>
-                    <span id="targetPercentText">0%</span>
-                </div>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" id="targetProgressBar"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Metric Cards -->
-        <div class="metrics-grid">
-            <div class="metric-card blue">
-                <div class="metric-label">Total Omzet (<span class="selected-year-label">2026</span>)</div>
-                <div class="metric-value" id="summaryTotalOmzet">Rp 0</div>
-                <div class="metric-desc">Penerimaan Bruto Toko</div>
-            </div>
-            <div class="metric-card green">
-                <div class="metric-label">Laba Bersih (<span class="selected-year-label">2026</span>)</div>
-                <div class="metric-value" id="summaryTotalLaba">Rp 0</div>
-                <div class="metric-desc">Omzet dikurangi Beban</div>
-            </div>
-            <div class="metric-card amber">
-                <div class="metric-label">Omzet Kena Pajak</div>
-                <div class="metric-value" id="summaryOmzetKenaPajak">Rp 0</div>
-                <div class="metric-desc">Potong Batas 500Jt</div>
-            </div>
-            <div class="metric-card purple">
-                <div class="metric-label">PPh Terutang (<span class="selected-year-label">2026</span>)</div>
-                <div class="metric-value" id="summaryTotalPajak">Rp 0</div>
-                <div class="metric-desc">0,5% dari DPP</div>
-            </div>
-        </div>
-
-        <div class="tax-info-box">
-            <i class="fa-solid fa-circle-info"></i> <strong>Sesuai PP No. 55/2022:</strong> WP Orang Pribadi UMKM bebas PPh Final untuk Omzet kumulatif s/d <strong>Rp 500 Juta</strong> / tahun pajak.
-        </div>
-
-        <!-- Kalkulator Simulasi Cepat -->
-        <div class="calc-widget">
-            <div class="card-title" style="color: white; margin-bottom: 12px; font-size: 0.95rem;">
-                <i class="fa-solid fa-wand-magic-sparkles" style="color: #60a5fa;"></i> Simulasi Cepat PPh UMKM
-            </div>
-            <div class="grid-3" style="align-items: center;">
-                <div class="form-group">
-                    <label for="simulasiOmzet">Input Omzet Simulasi (Rp)</label>
-                    <input type="number" id="simulasiOmzet" class="form-control" placeholder="100000000" value="100000000" oninput="window.runSimulasiKalkulator()">
-                </div>
-                <div class="form-group">
-                    <label for="simulasiAkumulasi">Akumulasi Lalu (Rp)</label>
-                    <input type="number" id="simulasiAkumulasi" class="form-control" placeholder="400000000" value="400000000" oninput="window.runSimulasiKalkulator()">
-                </div>
-                <div class="calc-result-box">
-                    <div class="calc-result-item">
-                        <span>DPP Pajak:</span>
-                        <strong id="simulasiDPPText">Rp 0</strong>
+                <!-- Multi-Toko / Cabang Switcher -->
+                <div class="store-switcher-bar">
+                    <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                        <i class="fa-solid fa-shop" style="color: var(--primary);"></i>
+                        <select id="storeSelectDropdown" class="form-control store-switcher-select" onchange="window.switchStore(this.value)">
+                            <!-- Dynamic Store Options -->
+                        </select>
                     </div>
-                    <div class="calc-result-item highlight">
-                        <span>Pajak Terutang (0,5%):</span>
-                        <strong id="simulasiPajakText">Rp 0</strong>
+                    <button class="btn btn-primary" style="min-height: 36px; padding: 6px 12px; white-space: nowrap;" onclick="window.openAddStoreModal()"><i class="fa-solid fa-plus"></i> <span class="hide-mobile">Tambah Toko</span></button>
+                </div>
+
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label for="namaUsaha">Nama Usaha / Toko</label>
+                        <input type="text" id="namaUsaha" class="form-control" value="" onchange="window.saveProfileToCloud()">
+                    </div>
+                    <div class="form-group">
+                        <label for="kategoriUsaha">Kategori Sektor Business (KLU)</label>
+                        <select id="kategoriUsaha" class="form-control" onchange="window.saveProfileToCloud()">
+                            <option value="Kuliner / Makanan & Minuman">Kuliner / Makanan & Minuman</option>
+                            <option value="Fashion & Pakaian">Fashion & Pakaian</option>
+                            <option value="Retail & Kelontong">Retail & Kelontong</option>
+                            <option value="Jasa & Konsultan">Jasa & Konsultan</option>
+                            <option value="Produk Digital / Kreatif">Produk Digital / Kreatif</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="jumlahTabProfile">Jumlah Bulan/Periode Aktif</label>
+                        <div style="display: flex; gap: 6px;">
+                            <select id="jumlahTabProfile" class="form-control" onchange="window.setTabCountFromProfile(this.value)">
+                                <option value="1">1 Bulan</option>
+                                <option value="2">2 Bulan</option>
+                                <option value="3">3 Bulan (Triwulan 1)</option>
+                                <option value="6">6 Bulan (Semester 1)</option>
+                                <option value="12">12 Bulan (1 Tahun Penuh)</option>
+                            </select>
+                            <button class="btn btn-primary" style="padding: 0 12px; min-height: 42px;" onclick="window.openAddTabModal()" title="Tambah Tab Khusus"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nomorNPWP">Nomor NPWP / NIK (16 Digit)</label>
+                        <input type="text" id="nomorNPWP" class="form-control" value="" readonly style="background-color: #f1f5f9; cursor: not-allowed;">
+                    </div>
+                    <div class="form-group">
+                        <label for="jenisWP">Jenis Wajib Pajak</label>
+                        <select id="jenisWP" class="form-control" onchange="window.saveProfileToCloud(); window.calculateAll();">
+                            <option value="OP">NPWP Orang Pribadi (Bebas Pajak s/d 500Jt)</option>
+                            <option value="Badan">NPWP Badan Usaha (PT/CV) - Pajak 0.5% Direct</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="targetOmzet">Target Omzet Tahunan (Rp)</label>
+                        <input type="number" id="targetOmzet" class="form-control" placeholder="1000000000" value="500000000" oninput="window.saveProfileToCloud(); window.updateProgressTarget();">
+                    </div>
+                </div>
+
+                <!-- Progress Bar Target Omzet -->
+                <div class="progress-box">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700;">
+                        <span>Pencapaian Target Omzet Tahunan (<span class="selected-year-label">2026</span>)</span>
+                        <span id="targetPercentText">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="targetProgressBar"></div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Monthly Tabs & Input -->
-        <div class="card">
-            <div class="tabs-header-wrapper">
-                <ul class="nav-tabs" id="tabList"></ul>
-                <button class="btn btn-primary" style="padding: 6px 12px; min-height:36px; flex-shrink: 0;" onclick="window.openAddTabModal()"><i class="fa-solid fa-plus"></i></button>
+            <!-- Metric Cards UMKM -->
+            <div class="metrics-grid">
+                <div class="metric-card blue">
+                    <div class="metric-label">Total Omzet (<span class="selected-year-label">2026</span>)</div>
+                    <div class="metric-value" id="summaryTotalOmzet">Rp 0</div>
+                    <div class="metric-desc">Penerimaan Bruto Toko</div>
+                </div>
+                <div class="metric-card green">
+                    <div class="metric-label">Laba Bersih (<span class="selected-year-label">2026</span>)</div>
+                    <div class="metric-value" id="summaryTotalLaba">Rp 0</div>
+                    <div class="metric-desc">Omzet dikurangi Beban</div>
+                </div>
+                <div class="metric-card amber">
+                    <div class="metric-label">Omzet Kena Pajak</div>
+                    <div class="metric-value" id="summaryOmzetKenaPajak">Rp 0</div>
+                    <div class="metric-desc">Potong Batas 500Jt</div>
+                </div>
+                <div class="metric-card purple">
+                    <div class="metric-label">PPh Terutang (<span class="selected-year-label">2026</span>)</div>
+                    <div class="metric-value" id="summaryTotalPajak">Rp 0</div>
+                    <div class="metric-desc">0,5% dari DPP</div>
+                </div>
             </div>
 
-            <div id="tabContentArea">
+            <div class="tax-info-box">
+                <i class="fa-solid fa-circle-info"></i> <strong>Sesuai PP No. 55/2022:</strong> WP Orang Pribadi UMKM bebas PPh Final untuk Omzet kumulatif s/d <strong>Rp 500 Juta</strong> / tahun pajak.
+            </div>
+
+            <!-- Kalkulator Simulasi Cepat -->
+            <div class="calc-widget">
+                <div class="card-title" style="color: white; margin-bottom: 12px; font-size: 0.95rem;">
+                    <i class="fa-solid fa-wand-magic-sparkles" style="color: #60a5fa;"></i> Simulasi Cepat PPh UMKM
+                </div>
+                <div class="grid-3" style="align-items: center;">
+                    <div class="form-group">
+                        <label for="simulasiOmzet">Input Omzet Simulasi (Rp)</label>
+                        <input type="number" id="simulasiOmzet" class="form-control" placeholder="100000000" value="100000000" oninput="window.runSimulasiKalkulator()">
+                    </div>
+                    <div class="form-group">
+                        <label for="simulasiAkumulasi">Akumulasi Lalu (Rp)</label>
+                        <input type="number" id="simulasiAkumulasi" class="form-control" placeholder="400000000" value="400000000" oninput="window.runSimulasiKalkulator()">
+                    </div>
+                    <div class="calc-result-box">
+                        <div class="calc-result-item">
+                            <span>DPP Pajak:</span>
+                            <strong id="simulasiDPPText">Rp 0</strong>
+                        </div>
+                        <div class="calc-result-item highlight">
+                            <span>Pajak Terutang (0,5%):</span>
+                            <strong id="simulasiPajakText">Rp 0</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Tabs & Input -->
+            <div class="card">
+                <div class="tabs-header-wrapper">
+                    <ul class="nav-tabs" id="tabList"></ul>
+                    <button class="btn btn-primary" style="padding: 6px 12px; min-height:36px; flex-shrink: 0;" onclick="window.openAddTabModal()"><i class="fa-solid fa-plus"></i></button>
+                </div>
+
+                <div id="tabContentArea">
+                    <div class="grid-3" style="margin-bottom: 16px;">
+                        <div class="form-group">
+                            <label for="inputOmzet">Omzet Bruto Bulan Ini (Rp)</label>
+                            <input type="number" id="inputOmzet" class="form-control" placeholder="0" oninput="window.updateCurrentTabData()">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputBeban">Beban Operasional (Rp)</label>
+                            <input type="number" id="inputBeban" class="form-control" placeholder="0" oninput="window.updateCurrentTabData()">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputKodeBilling">Kode Billing / NTPN</label>
+                            <input type="text" id="inputKodeBilling" class="form-control" placeholder="Contoh: 1234567890" oninput="window.updateCurrentTabData()">
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Nilai Kalkulasi</th>
+                                    <th>Status Pajak</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Laba Bersih</strong></td>
+                                    <td id="calcLabaBersih" style="font-weight: 700; color: #059669;">Rp 0</td>
+                                    <td>Omzet - Beban</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Akumulasi Omzet (<span class="selected-year-label">2026</span>)</strong></td>
+                                    <td id="calcKumulatifOmzet" style="font-weight: 700;">Rp 0</td>
+                                    <td>Total berjalan thn ini</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Batas Bebas Pajak</strong></td>
+                                    <td id="calcBebasPajak">Rp 500.000.000</td>
+                                    <td id="calcStatusBebas">Dipertimbangkan untuk WP OP</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Omzet Kena PPh (DPP)</strong></td>
+                                    <td id="calcDPP" style="font-weight: 700; color: #d97706;">Rp 0</td>
+                                    <td>Dasar Pengenaan Pajak</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>PPh Terutang (0,5%)</strong></td>
+                                    <td id="calcPajakBulan" style="font-weight: 800; color: #2563eb; font-size: 1rem;">Rp 0</td>
+                                    <td><span class="badge badge-success">0.5%</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabel Riwayat UMKM -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Pajak (<span class="selected-year-label">2026</span>)</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Thn</th>
+                                <th>Bulan</th>
+                                <th>Omzet</th>
+                                <th>Beban</th>
+                                <th>Laba</th>
+                                <th>DPP</th>
+                                <th>PPh 0,5%</th>
+                                <th>NTPN / Billing</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Grafik Analisis -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><i class="fa-solid fa-chart-column"></i> Grafik Performa Toko (<span class="selected-year-label">2026</span>)</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="taxChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SECTION 2: PERORANGAN MODE (KARYAWAN & PAJAK LAIN) ================= -->
+        <div id="sectionPersonalMode" style="display: none;">
+            <!-- Profil Pribadi Karyawan -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><i class="fa-solid fa-id-card-clip"></i> Profil & Kategori Pajak Pribadi</span>
+                </div>
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label for="personalNama">Nama Lengkap</label>
+                        <input type="text" id="personalNama" class="form-control" value="Eugene Siby" onchange="window.savePersonalData()">
+                    </div>
+                    <div class="form-group">
+                        <label for="personalStatusPTKP">Status Perkawinan & Tanggungan (PTKP)</label>
+                        <select id="personalStatusPTKP" class="form-control" onchange="window.calculatePersonalPph21()">
+                            <option value="54000000">TK/0 - Tidak Kawin (Rp 54 Jt/Thn)</option>
+                            <option value="58500000">TK/1 - Tanggungan 1 (Rp 58.5 Jt/Thn)</option>
+                            <option value="63000000">TK/2 - Tanggungan 2 (Rp 63 Jt/Thn)</option>
+                            <option value="67500000">TK/3 - Tanggungan 3 (Rp 67.5 Jt/Thn)</option>
+                            <option value="58500000">K/0 - Kawin Tanggungan 0 (Rp 58.5 Jt/Thn)</option>
+                            <option value="63000000">K/1 - Kawin Tanggungan 1 (Rp 63 Jt/Thn)</option>
+                            <option value="67500000">K/2 - Kawin Tanggungan 2 (Rp 67.5 Jt/Thn)</option>
+                            <option value="72000000">K/3 - Kawin Tanggungan 3 (Rp 72 Jt/Thn)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="personalJabatan">Pekerjaan / Jabatan</label>
+                        <input type="text" id="personalJabatan" class="form-control" value="Karyawan Swasta" onchange="window.savePersonalData()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kalkulator PPh 21 Karyawan -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><i class="fa-solid fa-calculator"></i> Kalkulator PPh 21 Karyawan (Gaji & Tunjangan)</span>
+                </div>
                 <div class="grid-3" style="margin-bottom: 16px;">
                     <div class="form-group">
-                        <label for="inputOmzet">Omzet Bruto Bulan Ini (Rp)</label>
-                        <input type="number" id="inputOmzet" class="form-control" placeholder="0" oninput="window.updateCurrentTabData()">
+                        <label for="personalGajiPokok">Gaji Pokok / Bulan (Rp)</label>
+                        <input type="number" id="personalGajiPokok" class="form-control" placeholder="10000000" value="10000000" oninput="window.calculatePersonalPph21()">
                     </div>
                     <div class="form-group">
-                        <label for="inputBeban">Beban Operasional (Rp)</label>
-                        <input type="number" id="inputBeban" class="form-control" placeholder="0" oninput="window.updateCurrentTabData()">
+                        <label for="personalTunjangan">Tunjangan & Bonus / Bulan (Rp)</label>
+                        <input type="number" id="personalTunjangan" class="form-control" placeholder="2000000" value="2000000" oninput="window.calculatePersonalPph21()">
                     </div>
                     <div class="form-group">
-                        <label for="inputKodeBilling">Kode Billing / NTPN</label>
-                        <input type="text" id="inputKodeBilling" class="form-control" placeholder="Contoh: 1234567890" oninput="window.updateCurrentTabData()">
+                        <label for="personalIuranSip">Iuran Pensiun / BPJS (Rp)</label>
+                        <input type="number" id="personalIuranSip" class="form-control" placeholder="200000" value="200000" oninput="window.calculatePersonalPph21()">
                     </div>
                 </div>
 
@@ -891,35 +1059,84 @@
                         <thead>
                             <tr>
                                 <th>Parameter</th>
-                                <th>Nilai Kalkulasi</th>
-                                <th>Status Pajak</th>
+                                <th>Kalkulasi Per Bulan</th>
+                                <th>Kalkulasi Per Tahun</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>Laba Bersih</strong></td>
-                                <td id="calcLabaBersih" style="font-weight: 700; color: #059669;">Rp 0</td>
-                                <td>Omzet - Beban</td>
+                                <td><strong>Penghasilan Bruto</strong></td>
+                                <td id="resPersonalBrutoBulan">Rp 0</td>
+                                <td id="resPersonalBrutoTahun">Rp 0</td>
                             </tr>
                             <tr>
-                                <td><strong>Akumulasi Omzet (<span class="selected-year-label">2026</span>)</strong></td>
-                                <td id="calcKumulatifOmzet" style="font-weight: 700;">Rp 0</td>
-                                <td>Total berjalan thn ini</td>
+                                <td><strong>Penghasilan Netto (Potong Jabatan & Iuran)</strong></td>
+                                <td id="resPersonalNettoBulan">Rp 0</td>
+                                <td id="resPersonalNettoTahun">Rp 0</td>
                             </tr>
                             <tr>
-                                <td><strong>Batas Bebas Pajak</strong></td>
-                                <td id="calcBebasPajak">Rp 500.000.000</td>
-                                <td id="calcStatusBebas">Dipertimbangkan untuk WP OP</td>
+                                <td><strong>Penghasilan Kena Pajak (PKP)</strong></td>
+                                <td>-</td>
+                                <td id="resPersonalPKP" style="font-weight: 700; color: #d97706;">Rp 0</td>
                             </tr>
                             <tr>
-                                <td><strong>Omzet Kena PPh (DPP)</strong></td>
-                                <td id="calcDPP" style="font-weight: 700; color: #d97706;">Rp 0</td>
-                                <td>Dasar Pengenaan Pajak</td>
+                                <td><strong>Estimasi PPh 21 Terutang</strong></td>
+                                <td id="resPersonalPphBulan" style="font-weight: 800; color: #2563eb; font-size: 1.05rem;">Rp 0</td>
+                                <td id="resPersonalPphTahun" style="font-weight: 800; color: #2563eb;">Rp 0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Kalkulator Pajak Kendaraan Bermotor (PKB) -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><i class="fa-solid fa-car"></i> Kalkulator Pajak Kendaraan Bermotor (STNK / PKB)</span>
+                </div>
+                <div class="grid-3" style="margin-bottom: 16px;">
+                    <div class="form-group">
+                        <label for="personalJenisKendaraan">Jenis Kendaraan</label>
+                        <select id="personalJenisKendaraan" class="form-control" onchange="window.calculatePajakKendaraan()">
+                            <option value="mobil">Mobil (SWDKLLJ Rp 143.000)</option>
+                            <option value="motor">Motor (SWDKLLJ Rp 35.000)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="personalNJKB">NJKB / Nilai Jual Kendaraan (Rp)</label>
+                        <input type="number" id="personalNJKB" class="form-control" placeholder="150000000" value="150000000" oninput="window.calculatePajakKendaraan()">
+                    </div>
+                    <div class="form-group">
+                        <label for="personalKepemilikan">Urutan Kepemilikan (Progresif)</label>
+                        <select id="personalKepemilikan" class="form-control" onchange="window.calculatePajakKendaraan()">
+                            <option value="0.02">Kendaraan Ke-1 (2.0%)</option>
+                            <option value="0.025">Kendaraan Ke-2 (2.5%)</option>
+                            <option value="0.03">Kendaraan Ke-3 (3.0%)</option>
+                            <option value="0.035">Kendaraan Ke-4+ (3.5%)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Komponen Pajak</th>
+                                <th>Perkiraan Biaya</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>PKB (Pajak Kendaraan Bermotor)</strong></td>
+                                <td id="resPKB">Rp 0</td>
                             </tr>
                             <tr>
-                                <td><strong>PPh Terutang (0,5%)</strong></td>
-                                <td id="calcPajakBulan" style="font-weight: 800; color: #2563eb; font-size: 1rem;">Rp 0</td>
-                                <td><span class="badge badge-success">0.5%</span></td>
+                                <td><strong>SWDKLLJ (Asuransi Jasa Raharja)</strong></td>
+                                <td id="resSWDKLLJ">Rp 143.000</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Biaya Pajak Tahunan (STNK)</strong></td>
+                                <td id="resTotalKendaraan" style="font-weight: 800; color: #10b981; font-size: 1.1rem;">Rp 0</td>
                             </tr>
                         </tbody>
                     </table>
@@ -927,44 +1144,9 @@
             </div>
         </div>
 
-        <!-- Tabel Riwayat -->
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Pajak (<span class="selected-year-label">2026</span>)</span>
-            </div>
-            <div class="table-responsive">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Thn</th>
-                            <th>Bulan</th>
-                            <th>Omzet</th>
-                            <th>Beban</th>
-                            <th>Laba</th>
-                            <th>DPP</th>
-                            <th>PPh 0,5%</th>
-                            <th>NTPN / Billing</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="historyTableBody"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Grafik Analisis -->
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title"><i class="fa-solid fa-chart-column"></i> Grafik Performa Toko (<span class="selected-year-label">2026</span>)</span>
-            </div>
-            <div class="chart-container">
-                <canvas id="taxChart"></canvas>
-            </div>
-        </div>
-
     </div>
 
-    <!-- Modal Tambah Bulan / Tahun -->
+    <!-- Modal Modals -->
     <div class="modal" id="addTabModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1001,7 +1183,6 @@
         </div>
     </div>
 
-    <!-- Modal Tambah Toko Baru -->
     <div class="modal" id="addStoreModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1071,7 +1252,16 @@
         };
 
         const defaultState = {
+            entityMode: "umkm", // 'umkm' or 'personal'
             activeStoreId: "store_default",
+            personalProfile: {
+                nama: "Eugene Siby",
+                statusPTKP: "54000000",
+                jabatan: "Karyawan Swasta",
+                gajiPokok: 10000000,
+                tunjangan: 2000000,
+                iuran: 200000
+            },
             stores: [
                 {
                     id: "store_default",
@@ -1100,7 +1290,9 @@
                 const parsed = JSON.parse(local);
                 if (!parsed.stores) {
                     return {
+                        entityMode: "umkm",
                         activeStoreId: "store_default",
+                        personalProfile: defaultState.personalProfile,
                         stores: [{
                             id: "store_default",
                             profile: parsed.profile || defaultState.stores[0].profile,
@@ -1193,7 +1385,9 @@
                 const user = userCredential.user;
 
                 const initialData = {
+                    entityMode: "umkm",
                     activeStoreId: "store_1",
+                    personalProfile: { nama: namaUsaha, statusPTKP: "54000000", jabatan: "Karyawan Swasta", gajiPokok: 10000000, tunjangan: 0, iuran: 0 },
                     stores: [{
                         id: "store_1",
                         profile: { namaUsaha: namaUsaha, npwp: npwp, phone: phone, jenisWP: "OP", kategoriUsaha: "Retail & Kelontong", targetOmzet: 500000000 },
@@ -1257,7 +1451,28 @@
             }
         }
 
+        // FITUR PERGANTIAN ENTITAS (UMKM vs Perorangan)
+        window.switchEntityMode = function(mode) {
+            window.appState.entityMode = mode;
+            document.getElementById('btnModeUmkm').classList.toggle('active', mode === 'umkm');
+            document.getElementById('btnModePersonal').classList.toggle('active', mode === 'personal');
+
+            document.getElementById('sectionUmkmMode').style.display = mode === 'umkm' ? 'block' : 'none';
+            document.getElementById('sectionPersonalMode').style.display = mode === 'personal' ? 'block' : 'none';
+
+            if (mode === 'personal') {
+                window.calculatePersonalPph21();
+                window.calculatePajakKendaraan();
+            } else {
+                window.calculateAll();
+            }
+            saveLocalState();
+        };
+
         function initUI() {
+            const mode = window.appState.entityMode || 'umkm';
+            window.switchEntityMode(mode);
+
             const store = getActiveStore();
             if (!store.selectedYear) store.selectedYear = 2026;
 
@@ -1279,6 +1494,61 @@
             window.calculateAll();
             window.runSimulasiKalkulator();
         }
+
+        // PERORANGAN: Kalkulator PPh 21
+        window.calculatePersonalPph21 = function() {
+            const gaji = parseFloat(document.getElementById('personalGajiPokok').value) || 0;
+            const tunjangan = parseFloat(document.getElementById('personalTunjangan').value) || 0;
+            const iuran = parseFloat(document.getElementById('personalIuranSip').value) || 0;
+            const ptkp = parseFloat(document.getElementById('personalStatusPTKP').value) || 54000000;
+
+            const brutoBulan = gaji + tunjangan;
+            const brutoTahun = brutoBulan * 12;
+
+            const biayaJabatan = Math.min(brutoBulan * 0.05, 500000);
+            const nettoBulan = brutoBulan - biayaJabatan - iuran;
+            const nettoTahun = nettoBulan * 12;
+
+            const pkp = Math.max(0, nettoTahun - ptkp);
+
+            let pphTahun = 0;
+            if (pkp > 0) {
+                if (pkp <= 60000000) {
+                    pphTahun = pkp * 0.05;
+                } else if (pkp <= 250000000) {
+                    pphTahun = (60000000 * 0.05) + ((pkp - 60000000) * 0.15);
+                } else if (pkp <= 500000000) {
+                    pphTahun = (60000000 * 0.05) + (190000000 * 0.15) + ((pkp - 250000000) * 0.25);
+                } else {
+                    pphTahun = (60000000 * 0.05) + (190000000 * 0.15) + (250000000 * 0.25) + ((pkp - 500000000) * 0.30);
+                }
+            }
+
+            const pphBulan = pphTahun / 12;
+
+            document.getElementById('resPersonalBrutoBulan').textContent = formatRupiah(brutoBulan);
+            document.getElementById('resPersonalBrutoTahun').textContent = formatRupiah(brutoTahun);
+            document.getElementById('resPersonalNettoBulan').textContent = formatRupiah(nettoBulan);
+            document.getElementById('resPersonalNettoTahun').textContent = formatRupiah(nettoTahun);
+            document.getElementById('resPersonalPKP').textContent = formatRupiah(pkp);
+            document.getElementById('resPersonalPphBulan').textContent = formatRupiah(pphBulan);
+            document.getElementById('resPersonalPphTahun').textContent = formatRupiah(pphTahun);
+        };
+
+        // PERORANGAN: Kalkulator Pajak Kendaraan
+        window.calculatePajakKendaraan = function() {
+            const jenis = document.getElementById('personalJenisKendaraan').value;
+            const njkb = parseFloat(document.getElementById('personalNJKB').value) || 0;
+            const tarif = parseFloat(document.getElementById('personalKepemilikan').value) || 0.02;
+
+            const swdkllj = jenis === 'mobil' ? 143000 : 35000;
+            const pkb = njkb * tarif;
+            const total = pkb + swdkllj;
+
+            document.getElementById('resPKB').textContent = formatRupiah(pkb);
+            document.getElementById('resSWDKLLJ').textContent = formatRupiah(swdkllj);
+            document.getElementById('resTotalKendaraan').textContent = formatRupiah(total);
+        };
 
         function renderStoreDropdown() {
             const select = document.getElementById('storeSelectDropdown');
