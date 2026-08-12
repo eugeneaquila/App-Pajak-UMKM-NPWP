@@ -765,7 +765,6 @@
                         <option value="Lainnya">Lainnya</option>
                     </select>
                 </div>
-                <!-- FITUR BARU: Pengatur Jumlah Tab / Periode di Personalisasi Profil -->
                 <div class="form-group">
                     <label for="jumlahTabProfile">Jumlah Bulan/Periode Aktif</label>
                     <div style="display: flex; gap: 6px;">
@@ -785,9 +784,10 @@
                 </div>
                 <div class="form-group">
                     <label for="jenisWP">Jenis Wajib Pajak</label>
+                    <!-- OPSI DIBERSIHKAN: NPWP ORANG PRIBADI -->
                     <select id="jenisWP" class="form-control" onchange="window.saveProfileToCloud(); window.calculateAll();">
-                        <option value="OP">Orang Pribadi (Bebas Pajak s/d 500Jt)</option>
-                        <option value="Badan">Badan Usaha (PT/CV) - Pajak 0.5% Direct</option>
+                        <option value="OP">NPWP Orang Pribadi (Bebas Pajak s/d 500Jt)</option>
+                        <option value="Badan">NPWP Badan Usaha (PT/CV) - Pajak 0.5% Direct</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1268,7 +1268,6 @@
             document.getElementById('kategoriUsaha').value = store.profile.kategoriUsaha || 'Retail & Kelontong';
             document.getElementById('targetOmzet').value = store.profile.targetOmzet || 500000000;
 
-            // Sync jumlah tab dropdown di profil
             const filteredMonths = getFilteredYearData();
             const countSel = document.getElementById('jumlahTabProfile');
             if (countSel) {
@@ -1336,16 +1335,13 @@
             initUI();
         };
 
-        // FITUR BARU: Mengatur Jumlah Tab Otomatis dari Profil Toko
         window.setTabCountFromProfile = function(countStr) {
             const count = parseInt(countStr) || 1;
             const store = getActiveStore();
             const currentYear = store.selectedYear || 2026;
 
-            // Filter data selain tahun aktif
             const otherYearData = store.monthsData.filter(m => (parseInt(m.year) || 2026) !== currentYear);
 
-            // Buat array tab baru untuk tahun aktif
             const newYearMonths = [];
             for (let i = 0; i < count; i++) {
                 const mName = allMonthsList[i];
