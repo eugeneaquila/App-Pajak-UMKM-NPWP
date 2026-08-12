@@ -2,17 +2,16 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AppPUN - Pajak UMKM & NPWP Manager</title>
     
-    <!-- Meta Tag untuk PWA (Android & iOS) -->
-    <meta name="theme-color" content="#2563eb">
+    <!-- Meta Tag PWA (Android & iOS) -->
+    <meta name="theme-color" content="#0f172a">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="AppPUN">
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192.png">
 
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -35,7 +34,7 @@
             --border: #e2e8f0;
             --text-main: #1e293b;
             --text-muted: #64748b;
-            --radius: 12px;
+            --radius: 14px;
             --shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
             --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
         }
@@ -45,13 +44,28 @@
             margin: 0;
             padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg-body);
             color: var(--text-main);
             line-height: 1.5;
-            padding-bottom: 50px;
+            padding-bottom: 60px;
+        }
+
+        /* SVG Logo Styling */
+        .app-logo-svg {
+            height: 42px;
+            width: auto;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .app-logo-svg-large {
+            height: 72px;
+            width: auto;
+            margin-bottom: 12px;
         }
 
         /* Auth Screen Styles */
@@ -66,31 +80,26 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 16px;
+            overflow-y: auto;
         }
 
         .auth-card {
             background: white;
-            padding: 32px;
+            padding: 28px 24px;
             border-radius: var(--radius);
             box-shadow: var(--shadow-lg);
             width: 100%;
-            max-width: 440px;
+            max-width: 420px;
         }
 
         .auth-header {
             text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .auth-header i {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         .auth-header h2 {
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-weight: 800;
             color: var(--secondary);
         }
@@ -98,10 +107,11 @@
         .auth-header p {
             font-size: 0.85rem;
             color: var(--text-muted);
+            margin-top: 4px;
         }
 
         .auth-form .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .auth-form .btn-block {
@@ -109,10 +119,11 @@
             justify-content: center;
             padding: 12px;
             margin-top: 8px;
+            font-size: 0.95rem;
         }
 
         .auth-links {
-            margin-top: 18px;
+            margin-top: 16px;
             text-align: center;
             font-size: 0.85rem;
         }
@@ -123,16 +134,15 @@
             font-weight: 600;
         }
 
-        .auth-links a:hover {
-            text-decoration: underline;
-        }
-
         /* Header Bar */
         header {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             color: white;
-            padding: 24px 32px;
+            padding: 16px 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .header-container {
@@ -142,27 +152,33 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: 12px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .brand h1 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #ffffff;
             display: flex;
             align-items: center;
-            gap: 10px;
-            letter-spacing: -0.02em;
+            gap: 8px;
         }
 
         .brand p {
-            font-size: 0.875rem;
+            font-size: 0.775rem;
             color: #94a3b8;
-            margin-top: 4px;
         }
 
         .header-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
             flex-wrap: wrap;
         }
@@ -170,103 +186,104 @@
         .user-badge {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px 14px;
+            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #f1f5f9;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
-        /* Buttons */
+        /* Buttons Touch-Optimized */
         .btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 0.875rem;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             border: none;
             outline: none;
+            min-height: 42px;
         }
 
         .btn-primary { background-color: var(--primary); color: white; }
-        .btn-primary:hover { background-color: var(--primary-dark); }
+        .btn-primary:active { background-color: var(--primary-dark); }
         .btn-outline { background-color: transparent; border: 1px solid #475569; color: #f1f5f9; }
-        .btn-outline:hover { background-color: #334155; color: white; }
+        .btn-outline:active { background-color: #334155; }
         .btn-secondary { background-color: #e2e8f0; color: #334155; }
-        .btn-secondary:hover { background-color: #cbd5e1; }
         .btn-danger { background-color: #fee2e2; color: #dc2626; }
-        .btn-danger:hover { background-color: #fecaca; }
 
         /* Container & Layout */
         .main-container {
             max-width: 1280px;
-            margin: 24px auto 0;
-            padding: 0 20px;
+            margin: 16px auto 0;
+            padding: 0 16px;
         }
 
-        /* Card */
+        /* Cards */
         .card {
             background-color: var(--bg-card);
             border-radius: var(--radius);
             border: 1px solid var(--border);
-            padding: 24px;
+            padding: 18px;
             box-shadow: var(--shadow);
-            margin-bottom: 24px;
+            margin-bottom: 16px;
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 18px;
-            padding-bottom: 12px;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
             border-bottom: 1px solid var(--border);
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 8px;
         }
 
         .card-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             color: var(--secondary);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .grid-3 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .form-group label {
-            font-size: 0.825rem;
-            font-weight: 600;
+            font-size: 0.775rem;
+            font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.03em;
         }
 
         .form-control {
-            padding: 10px 14px;
+            padding: 10px 12px;
             border-radius: 8px;
             border: 1px solid var(--border);
             font-size: 0.95rem;
-            transition: border 0.2s;
             width: 100%;
+            background-color: #fff;
+            min-height: 42px;
         }
 
         .form-control:focus {
@@ -278,15 +295,15 @@
         /* Metric Cards */
         .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
         }
 
         .metric-card {
             background: white;
             border-radius: var(--radius);
-            padding: 20px;
+            padding: 14px;
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
             position: relative;
@@ -308,33 +325,33 @@
         .metric-card.purple::before { background-color: #8b5cf6; }
 
         .metric-label {
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-size: 0.7rem;
+            font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
         }
 
         .metric-value {
-            font-size: 1.4rem;
+            font-size: 1.15rem;
             font-weight: 800;
             color: var(--secondary);
-            margin: 6px 0 2px;
+            margin: 4px 0 2px;
+            word-break: break-all;
         }
 
         .metric-desc {
-            font-size: 0.775rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
         }
 
-        /* Tabs Section */
+        /* Mobile Scrollable Tabs Section */
         .tabs-header-wrapper {
             display: flex;
             align-items: center;
             justify-content: space-between;
             border-bottom: 2px solid var(--border);
-            margin-bottom: 20px;
-            overflow-x: auto;
-            gap: 12px;
+            margin-bottom: 16px;
+            gap: 8px;
             padding-bottom: 2px;
         }
 
@@ -344,63 +361,55 @@
             list-style: none;
             overflow-x: auto;
             scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 4px;
+            width: 100%;
         }
 
         .nav-tab-item {
-            padding: 10px 18px;
-            font-size: 0.875rem;
+            padding: 8px 14px;
+            font-size: 0.825rem;
             font-weight: 600;
             color: var(--text-muted);
-            border-radius: 8px 8px 0 0;
+            border-radius: 8px;
             cursor: pointer;
             white-space: nowrap;
             transition: all 0.2s;
-            border: 1px solid transparent;
-            border-bottom: none;
+            background-color: #f1f5f9;
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        .nav-tab-item:hover {
-            background-color: #f1f5f9;
-            color: var(--secondary);
+            gap: 6px;
+            flex-shrink: 0;
         }
 
         .nav-tab-item.active {
-            background-color: white;
-            color: var(--primary);
-            border-color: var(--border);
-            border-bottom: 2px solid var(--primary);
-            margin-bottom: -2px;
+            background-color: var(--primary);
+            color: white;
         }
 
         .nav-tab-item .close-tab {
             font-size: 0.75rem;
-            color: var(--text-muted);
             border-radius: 50%;
-            padding: 2px 5px;
+            padding: 2px 4px;
         }
 
-        .nav-tab-item .close-tab:hover {
-            background-color: #fee2e2;
-            color: var(--danger);
-        }
-
-        /* Tables */
+        /* Tables Mobile Responsive */
         .table-responsive {
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 8px;
         }
 
         table.data-table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            white-space: nowrap;
         }
 
         table.data-table th, table.data-table td {
-            padding: 14px 16px;
+            padding: 10px 12px;
             border-bottom: 1px solid var(--border);
         }
 
@@ -408,19 +417,15 @@
             background-color: #f8fafc;
             color: var(--text-muted);
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
-        }
-
-        table.data-table tr:hover {
-            background-color: #f8fafc;
         }
 
         .badge {
             display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
             font-weight: 700;
         }
 
@@ -431,18 +436,18 @@
         /* Chart */
         .chart-container {
             position: relative;
-            height: 350px;
+            height: 280px;
             width: 100%;
         }
 
         .tax-info-box {
             background-color: #eff6ff;
             border-left: 4px solid var(--primary);
-            padding: 14px 18px;
+            padding: 12px;
             border-radius: 0 var(--radius) var(--radius) 0;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #1e40af;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         /* Quick Calculator Box */
@@ -450,45 +455,38 @@
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             color: white;
             border-radius: var(--radius);
-            padding: 24px;
-            margin-bottom: 24px;
+            padding: 18px;
+            margin-bottom: 16px;
             box-shadow: var(--shadow-lg);
-        }
-
-        .calc-widget label {
-            color: #94a3b8;
         }
 
         .calc-result-box {
             background: rgba(255, 255, 255, 0.07);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 10px;
-            padding: 16px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
+            margin-top: 10px;
         }
 
         .calc-result-item {
             display: flex;
             justify-content: space-between;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-            padding-bottom: 8px;
-        }
-
-        .calc-result-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
+            padding-bottom: 6px;
         }
 
         .calc-result-item.highlight {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             font-weight: 800;
             color: #60a5fa;
+            border-bottom: none;
         }
 
-        /* Modals */
+        /* Modals Mobile Friendly */
         .modal {
             display: none;
             position: fixed;
@@ -500,38 +498,48 @@
             backdrop-filter: blur(4px);
             z-index: 1000;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
+            padding: 0;
         }
 
         .modal.active { display: flex; }
 
         .modal-content {
             background: white;
-            padding: 28px;
-            border-radius: var(--radius);
+            padding: 24px;
+            border-radius: 20px 20px 0 0;
             width: 100%;
-            max-width: 480px;
+            max-width: 500px;
             box-shadow: var(--shadow-lg);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .modal-footer {
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
-            margin-top: 24px;
+            gap: 8px;
+            margin-top: 20px;
         }
 
-        @media (max-width: 768px) {
-            header { padding: 18px 16px; }
-            .main-container { padding: 0 12px; }
-            .metrics-grid { grid-template-columns: 1fr; }
+        /* Media Queries for Desktop Polish */
+        @media (min-width: 768px) {
+            .metrics-grid { grid-template-columns: repeat(4, 1fr); }
+            .modal { align-items: center; padding: 20px; }
+            .modal-content { border-radius: var(--radius); animation: none; }
+            .chart-container { height: 350px; }
+            .metric-value { font-size: 1.35rem; }
         }
     </style>
 </head>
@@ -543,14 +551,43 @@
         <!-- LOGIN FORM -->
         <div id="loginCard" class="auth-card">
             <div class="auth-header">
-                <i class="fa-solid fa-calculator"></i>
+                <!-- EMBEDDED LOGO SVG -->
+                <svg class="app-logo-svg-large" viewBox="0 0 500 500">
+                    <defs>
+                        <linearGradient id="bgGradL" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0f172a"/>
+                            <stop offset="100%" stop-color="#1e293b"/>
+                        </linearGradient>
+                        <linearGradient id="iconGradL" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#3b82f6"/>
+                            <stop offset="100%" stop-color="#1d4ed8"/>
+                        </linearGradient>
+                        <linearGradient id="accentGradL" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#10b981"/>
+                            <stop offset="100%" stop-color="#60a5fa"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="500" height="500" rx="100" fill="url(#bgGradL)"/>
+                    <path d="M 170 120 L 330 120 C 352 120, 370 138, 370 160 L 370 340 C 370 362, 352 380, 330 380 L 170 380 C 148 380, 130 362, 130 340 L 130 160 C 130 138, 148 120, 170 120 Z" fill="url(#iconGradL)"/>
+                    <rect x="165" y="155" width="170" height="55" rx="10" fill="#ffffff"/>
+                    <rect x="180" y="175" width="60" height="15" rx="4" fill="#2563eb"/>
+                    <rect x="290" y="175" width="30" height="15" rx="4" fill="#10b981"/>
+                    <rect x="165" y="235" width="40" height="30" rx="8" fill="#ffffff" opacity="0.25"/>
+                    <rect x="230" y="235" width="40" height="30" rx="8" fill="#ffffff" opacity="0.25"/>
+                    <rect x="295" y="235" width="40" height="30" rx="8" fill="#ffffff" opacity="0.25"/>
+                    <rect x="165" y="280" width="40" height="30" rx="8" fill="#ffffff" opacity="0.25"/>
+                    <rect x="230" y="280" width="40" height="30" rx="8" fill="#ffffff" opacity="0.25"/>
+                    <rect x="295" y="280" width="40" height="30" rx="8" fill="#ffffff" opacity="0.25"/>
+                    <path d="M 130 320 Q 200 310, 240 250 T 370 160" fill="none" stroke="url(#accentGradL)" stroke-width="14" stroke-linecap="round"/>
+                    <circle cx="370" cy="160" r="10" fill="#10b981"/>
+                </svg>
                 <h2>Masuk ke AppPUN</h2>
                 <p>Kelola perhitungan PPh Final 0,5% UMKM Anda</p>
             </div>
             <form id="loginForm" class="auth-form" onsubmit="window.handleLogin(event)">
                 <div class="form-group">
                     <label for="loginNpwp">NIK / Nomor NPWP (16 Digit)</label>
-                    <input type="text" id="loginNpwp" class="form-control" placeholder="Masukkan 16 digit NIK/NPWP" required>
+                    <input type="text" id="loginNpwp" class="form-control" placeholder="16 digit NIK/NPWP" required>
                 </div>
                 <div class="form-group">
                     <label for="loginPassword">Kata Sandi</label>
@@ -567,9 +604,8 @@
         <!-- SIGN UP FORM -->
         <div id="signupCard" class="auth-card" style="display: none;">
             <div class="auth-header">
-                <i class="fa-solid fa-user-plus"></i>
-                <h2>Pendaftaran Akun AppPUN</h2>
-                <p>Daftarkan NPWP/NIK untuk menyimpan data di Cloud</p>
+                <h2>Pendaftaran AppPUN</h2>
+                <p>Daftarkan NPWP/NIK untuk menyimpan data</p>
             </div>
             <form id="signupForm" class="auth-form" onsubmit="window.handleSignup(event)">
                 <div class="form-group">
@@ -581,7 +617,7 @@
                     <input type="text" id="signupNamaUsaha" class="form-control" placeholder="Contoh: Toko Berkah" required>
                 </div>
                 <div class="form-group">
-                    <label for="signupPhone">Nomor Telepon / Whatsapp</label>
+                    <label for="signupPhone">Nomor Whatsapp</label>
                     <input type="tel" id="signupPhone" class="form-control" placeholder="081234567890" required>
                 </div>
                 <div class="form-group">
@@ -598,7 +634,6 @@
         <!-- FORGOT PASSWORD FORM -->
         <div id="forgotCard" class="auth-card" style="display: none;">
             <div class="auth-header">
-                <i class="fa-solid fa-key"></i>
                 <h2>Reset Kata Sandi</h2>
                 <p>Masukkan NIK/NPWP terdaftar</p>
             </div>
@@ -620,18 +655,47 @@
     <header>
         <div class="header-container">
             <div class="brand">
-                <h1><i class="fa-solid fa-calculator"></i> AppPUN</h1>
-                <p>Aplikasi Pengelolaan & Kalkulator Pajak UMKM (NPWP)</p>
+                <!-- HEADER EMBEDDED LOGO SVG -->
+                <svg class="app-logo-svg" viewBox="0 0 500 500">
+                    <defs>
+                        <linearGradient id="bgGradH" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0f172a"/>
+                            <stop offset="100%" stop-color="#1e293b"/>
+                        </linearGradient>
+                        <linearGradient id="iconGradH" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#3b82f6"/>
+                            <stop offset="100%" stop-color="#1d4ed8"/>
+                        </linearGradient>
+                        <linearGradient id="accentGradH" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#10b981"/>
+                            <stop offset="100%" stop-color="#60a5fa"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="500" height="500" rx="100" fill="url(#bgGradH)"/>
+                    <path d="M 170 120 L 330 120 C 352 120, 370 138, 370 160 L 370 340 C 370 362, 352 380, 330 380 L 170 380 C 148 380, 130 362, 130 340 L 130 160 C 130 138, 148 120, 170 120 Z" fill="url(#iconGradH)"/>
+                    <rect x="165" y="155" width="170" height="55" rx="10" fill="#ffffff"/>
+                    <rect x="180" y="175" width="60" height="15" rx="4" fill="#2563eb"/>
+                    <rect x="290" y="175" width="30" height="15" rx="4" fill="#10b981"/>
+                    <rect x="165" y="235" width="40" height="30" rx="8" fill="#ffffff" opacity="0.25"/>
+                    <rect x="230" y="235" width="40" height="30" rx="8" fill="#ffffff" opacity="0.25"/>
+                    <rect x="295" y="235" width="40" height="30" rx="8" fill="#ffffff" opacity="0.25"/>
+                    <path d="M 130 320 Q 200 310, 240 250 T 370 160" fill="none" stroke="url(#accentGradH)" stroke-width="14" stroke-linecap="round"/>
+                    <circle cx="370" cy="160" r="10" fill="#10b981"/>
+                </svg>
+                <div>
+                    <h1>App<span style="color:#60a5fa;">PUN</span></h1>
+                    <p>Pajak UMKM 0.5% Manager</p>
+                </div>
             </div>
             <div class="header-actions">
                 <div class="user-badge" id="userBadgeArea">
                     <i class="fa-solid fa-circle-user"></i> <span id="displayUserNpwp">Loading...</span>
                 </div>
-                <button class="btn btn-outline" onclick="window.exportSpreadsheet()"><i class="fa-solid fa-file-excel"></i> Ekspor Spreadsheet</button>
-                <button class="btn btn-outline" onclick="window.downloadTemplate()"><i class="fa-solid fa-file-arrow-down"></i> Unduh Template</button>
-                <button class="btn btn-outline" onclick="window.triggerImport()"><i class="fa-solid fa-file-import"></i> Impor CSV</button>
+                <button class="btn btn-outline" onclick="window.exportSpreadsheet()" title="Ekspor Spreadsheet"><i class="fa-solid fa-file-excel"></i> <span class="hide-mobile">Spreadsheet</span></button>
+                <button class="btn btn-outline" onclick="window.downloadTemplate()" title="Unduh Template"><i class="fa-solid fa-file-arrow-down"></i> <span class="hide-mobile">Template</span></button>
+                <button class="btn btn-outline" onclick="window.triggerImport()" title="Impor CSV"><i class="fa-solid fa-file-import"></i> <span class="hide-mobile">Impor</span></button>
                 <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="window.importCSV(event)">
-                <button class="btn btn-danger" onclick="window.handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+                <button class="btn btn-danger" onclick="window.handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
         </div>
     </header>
@@ -641,50 +705,78 @@
         <!-- Profil Wajib Pajak -->
         <div class="card">
             <div class="card-header">
-                <span class="card-title"><i class="fa-solid fa-id-card"></i> Profil Usaha & Filter Tahun Pajak</span>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <label for="filterTahun" style="font-weight: 700; font-size: 0.85rem; color: var(--text-muted);"><i class="fa-solid fa-filter"></i> TAHUN PAJAK:</label>
-                    <select id="filterTahun" class="form-control" style="width: 130px; font-weight: 700; color: var(--primary);" onchange="window.changeSelectedYear()">
+                <span class="card-title"><i class="fa-solid fa-id-card"></i> Profil Usaha & Filter</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <label for="filterTahun" style="font-weight: 700; font-size: 0.75rem; color: var(--text-muted);">TAHUN:</label>
+                    <select id="filterTahun" class="form-control" style="width: 100px; min-height: 36px; padding: 4px 8px; font-weight: 700; color: var(--primary);" onchange="window.changeSelectedYear()">
                         <!-- Dynamic Options -->
                     </select>
                 </div>
             </div>
             <div class="grid-3">
                 <div class="form-group">
-                    <label for="namaUsaha">Nama Usaha / Toko (UMKM)</label>
+                    <label for="namaUsaha">Nama Usaha / Toko</label>
                     <input type="text" id="namaUsaha" class="form-control" value="Kopi Berkah Nusantara" onchange="window.saveProfileToCloud()">
                 </div>
                 <div class="form-group">
-                    <label for="nomorNPWP">Nomor NPWP / NIK (16 Digit)</label>
+                    <label for="nomorNPWP">Nomor NPWP / NIK</label>
                     <input type="text" id="nomorNPWP" class="form-control" value="" readonly style="background-color: #f1f5f9; cursor: not-allowed;">
                 </div>
                 <div class="form-group">
                     <label for="jenisWP">Jenis Wajib Pajak</label>
                     <select id="jenisWP" class="form-control" onchange="window.saveProfileToCloud(); window.calculateAll();">
-                        <option value="OP">Orang Pribadi (Bebas Pajak s/d Omzet 500 Juta/Thn)</option>
-                        <option value="Badan">Badan Usaha (PT/CV) - Pajak 0.5% Tanpa Ambang Limit</option>
+                        <option value="OP">Orang Pribadi (Bebas Pajak s/d 500Jt)</option>
+                        <option value="Badan">Badan Usaha (PT/CV) - Pajak 0.5% Direct</option>
                     </select>
                 </div>
             </div>
         </div>
 
-        <!-- Kalkulator Simulasi Cepat Pajak UMKM -->
+        <!-- Metric Cards Grid (Mobile 2x2 Layout) -->
+        <div class="metrics-grid">
+            <div class="metric-card blue">
+                <div class="metric-label">Total Omzet (<span class="selected-year-label">2026</span>)</div>
+                <div class="metric-value" id="summaryTotalOmzet">Rp 0</div>
+                <div class="metric-desc">Penerimaan Bruto</div>
+            </div>
+            <div class="metric-card green">
+                <div class="metric-label">Laba Bersih (<span class="selected-year-label">2026</span>)</div>
+                <div class="metric-value" id="summaryTotalLaba">Rp 0</div>
+                <div class="metric-desc">Omzet dikurangi Beban</div>
+            </div>
+            <div class="metric-card amber">
+                <div class="metric-label">Omzet Kena Pajak</div>
+                <div class="metric-value" id="summaryOmzetKenaPajak">Rp 0</div>
+                <div class="metric-desc">Potong Batas 500Jt</div>
+            </div>
+            <div class="metric-card purple">
+                <div class="metric-label">PPh Terutang (<span class="selected-year-label">2026</span>)</div>
+                <div class="metric-value" id="summaryTotalPajak">Rp 0</div>
+                <div class="metric-desc">0,5% dari DPP</div>
+            </div>
+        </div>
+
+        <div class="tax-info-box">
+            <i class="fa-solid fa-circle-info"></i> <strong>Sesuai PP No. 55/2022:</strong> WP Orang Pribadi UMKM bebas PPh Final untuk Omzet kumulatif s/d <strong>Rp 500 Juta</strong> / tahun.
+        </div>
+
+        <!-- Kalkulator Simulasi Cepat -->
         <div class="calc-widget">
-            <div class="card-title" style="color: white; margin-bottom: 16px;">
-                <i class="fa-solid fa-wand-magic-sparkles" style="color: #60a5fa;"></i> Kalkulator Simulasi Cepat PPh Final UMKM
+            <div class="card-title" style="color: white; margin-bottom: 12px; font-size: 0.95rem;">
+                <i class="fa-solid fa-wand-magic-sparkles" style="color: #60a5fa;"></i> Simulasi Cepat PPh UMKM
             </div>
             <div class="grid-3" style="align-items: center;">
                 <div class="form-group">
-                    <label for="simulasiOmzet">Input Omzet Bruto Simulasi (Rp)</label>
-                    <input type="number" id="simulasiOmzet" class="form-control" placeholder="Contoh: 150000000" value="100000000" oninput="window.runSimulasiKalkulator()">
+                    <label for="simulasiOmzet">Input Omzet Simulasi (Rp)</label>
+                    <input type="number" id="simulasiOmzet" class="form-control" placeholder="100000000" value="100000000" oninput="window.runSimulasiKalkulator()">
                 </div>
                 <div class="form-group">
-                    <label for="simulasiAkumulasi">Akumulasi Omzet Sebelumnya (Rp)</label>
-                    <input type="number" id="simulasiAkumulasi" class="form-control" placeholder="Contoh: 450000000" value="400000000" oninput="window.runSimulasiKalkulator()">
+                    <label for="simulasiAkumulasi">Akumulasi Lalu (Rp)</label>
+                    <input type="number" id="simulasiAkumulasi" class="form-control" placeholder="400000000" value="400000000" oninput="window.runSimulasiKalkulator()">
                 </div>
                 <div class="calc-result-box">
                     <div class="calc-result-item">
-                        <span>Omzet Kena PPh (DPP):</span>
+                        <span>DPP Pajak:</span>
                         <strong id="simulasiDPPText">Rp 0</strong>
                     </div>
                     <div class="calc-result-item highlight">
@@ -695,56 +787,26 @@
             </div>
         </div>
 
-        <!-- Metric Cards -->
-        <div class="metrics-grid">
-            <div class="metric-card blue">
-                <div class="metric-label">Total Omzet (<span class="selected-year-label">2026</span>)</div>
-                <div class="metric-value" id="summaryTotalOmzet">Rp 0</div>
-                <div class="metric-desc">Keseluruhan Penerimaan Bruto</div>
-            </div>
-            <div class="metric-card green">
-                <div class="metric-label">Total Laba Bersih (<span class="selected-year-label">2026</span>)</div>
-                <div class="metric-value" id="summaryTotalLaba">Rp 0</div>
-                <div class="metric-desc">Omzet dikurangi Beban Ops.</div>
-            </div>
-            <div class="metric-card amber">
-                <div class="metric-label">Omzet Kena Pajak</div>
-                <div class="metric-value" id="summaryOmzetKenaPajak">Rp 0</div>
-                <div class="metric-desc" id="summaryLimitDesc">Dipotong Batas Rp500 Juta</div>
-            </div>
-            <div class="metric-card purple">
-                <div class="metric-card-content">
-                    <div class="metric-label">Total PPh Terutang (<span class="selected-year-label">2026</span>)</div>
-                    <div class="metric-value" id="summaryTotalPajak">Rp 0</div>
-                    <div class="metric-desc">0,5% dari Omzet Kena Pajak</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="tax-info-box">
-            <i class="fa-solid fa-circle-info"></i> <strong>Sesuai PP No. 55 Tahun 2022:</strong> Wajib Pajak Orang Pribadi UMKM mendapat fasilitas bebas PPh Final untuk Omzet kumulatif sampai dengan <strong>Rp 500.000.000,-</strong> per tahun pajak.
-        </div>
-
         <!-- Monthly Tabs & Input -->
         <div class="card">
             <div class="tabs-header-wrapper">
                 <ul class="nav-tabs" id="tabList"></ul>
-                <button class="btn btn-primary btn-sm" onclick="window.openAddTabModal()"><i class="fa-solid fa-plus"></i> Tambah Bulan/Tahun</button>
+                <button class="btn btn-primary" style="padding: 6px 12px; min-height:36px; flex-shrink: 0;" onclick="window.openAddTabModal()"><i class="fa-solid fa-plus"></i></button>
             </div>
 
             <div id="tabContentArea">
-                <div class="grid-3" style="margin-bottom: 20px;">
+                <div class="grid-3" style="margin-bottom: 16px;">
                     <div class="form-group">
                         <label for="inputOmzet">Omzet Bruto Bulan Ini (Rp)</label>
                         <input type="number" id="inputOmzet" class="form-control" placeholder="0" oninput="window.updateCurrentTabData()">
                     </div>
                     <div class="form-group">
-                        <label for="inputBeban">Beban / Pengeluaran Operasional (Rp)</label>
+                        <label for="inputBeban">Beban Operasional (Rp)</label>
                         <input type="number" id="inputBeban" class="form-control" placeholder="0" oninput="window.updateCurrentTabData()">
                     </div>
                     <div class="form-group">
-                        <label for="inputKodeBilling">Kode Billing ID / No. NTPN</label>
-                        <input type="text" id="inputKodeBilling" class="form-control" placeholder="Contoh: 123456789012345" oninput="window.updateCurrentTabData()">
+                        <label for="inputKodeBilling">Kode Billing / NTPN</label>
+                        <input type="text" id="inputKodeBilling" class="form-control" placeholder="Contoh: 1234567890" oninput="window.updateCurrentTabData()">
                     </div>
                 </div>
 
@@ -752,36 +814,36 @@
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>Item Parameter</th>
-                                <th>Nilai / Hasil Kalkulasi</th>
-                                <th>Keterangan Sistem Pajak</th>
+                                <th>Parameter</th>
+                                <th>Nilai Kalkulasi</th>
+                                <th>Status Pajak</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>Laba Bersih Bulan Ini</strong></td>
+                                <td><strong>Laba Bersih</strong></td>
                                 <td id="calcLabaBersih" style="font-weight: 700; color: #059669;">Rp 0</td>
-                                <td>(Omzet Bruto - Beban Operasional)</td>
+                                <td>Omzet - Beban</td>
                             </tr>
                             <tr>
-                                <td><strong>Akumulasi Omzet Tahun <span class="selected-year-label">2026</span> S/D Bulan Ini</strong></td>
+                                <td><strong>Akumulasi Omzet (<span class="selected-year-label">2026</span>)</strong></td>
                                 <td id="calcKumulatifOmzet" style="font-weight: 700;">Rp 0</td>
-                                <td>Total berjalan dari bulan Januari tahun bersangkutan</td>
+                                <td>Total berjalan thn ini</td>
                             </tr>
                             <tr>
-                                <td><strong>Batas Bebas Pajak Tahunan (PTKP UMKM)</strong></td>
+                                <td><strong>Batas Bebas Pajak</strong></td>
                                 <td id="calcBebasPajak">Rp 500.000.000</td>
-                                <td id="calcStatusBebas">Dipertimbangkan untuk WP Orang Pribadi</td>
+                                <td id="calcStatusBebas">Dipertimbangkan untuk WP OP</td>
                             </tr>
                             <tr>
-                                <td><strong>Omzet Kena PPh (Dasar Pengenaan Pajak)</strong></td>
+                                <td><strong>Omzet Kena PPh (DPP)</strong></td>
                                 <td id="calcDPP" style="font-weight: 700; color: #d97706;">Rp 0</td>
-                                <td>Porsi omzet bulan ini yang terkena tarif 0,5%</td>
+                                <td>Dasar Pengenaan Pajak</td>
                             </tr>
                             <tr>
-                                <td><strong>Wajib Pajak UMKM Terutang (0,5%)</strong></td>
-                                <td id="calcPajakBulan" style="font-weight: 800; color: #2563eb; font-size: 1.1rem;">Rp 0</td>
-                                <td><span class="badge badge-success">Auto-Calculated 0.5%</span></td>
+                                <td><strong>PPh Terutang (0,5%)</strong></td>
+                                <td id="calcPajakBulan" style="font-weight: 800; color: #2563eb; font-size: 1rem;">Rp 0</td>
+                                <td><span class="badge badge-success">0.5%</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -792,21 +854,21 @@
         <!-- Tabel Riwayat -->
         <div class="card">
             <div class="card-header">
-                <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Rekapitulasi Pajak (<span class="selected-year-label">2026</span>)</span>
+                <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Pajak (<span class="selected-year-label">2026</span>)</span>
             </div>
             <div class="table-responsive">
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>Tahun</th>
+                            <th>Thn</th>
                             <th>Bulan</th>
-                            <th>Omzet Bruto</th>
-                            <th>Beban Operasional</th>
-                            <th>Laba Bersih</th>
-                            <th>Omzet Kena Pajak (DPP)</th>
-                            <th>PPh Final (0,5%)</th>
+                            <th>Omzet</th>
+                            <th>Beban</th>
+                            <th>Laba</th>
+                            <th>DPP</th>
+                            <th>PPh 0,5%</th>
                             <th>NTPN / Billing</th>
-                            <th>Status ID</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody id="historyTableBody"></tbody>
@@ -817,7 +879,7 @@
         <!-- Grafik Analisis -->
         <div class="card">
             <div class="card-header">
-                <span class="card-title"><i class="fa-solid fa-chart-column"></i> Grafik Analisis Performa & Pajak (<span class="selected-year-label">2026</span>)</span>
+                <span class="card-title"><i class="fa-solid fa-chart-column"></i> Grafik Performa (<span class="selected-year-label">2026</span>)</span>
             </div>
             <div class="chart-container">
                 <canvas id="taxChart"></canvas>
@@ -830,12 +892,12 @@
     <div class="modal" id="addTabModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 style="font-size: 1.1rem; font-weight: 700;"><i class="fa-solid fa-calendar-plus"></i> Tambah Bulan / Periode Baru</h3>
-                <button style="border:none; background:none; cursor:pointer;" onclick="window.closeAddTabModal()"><i class="fa-solid fa-xmark"></i></button>
+                <h3 style="font-size: 1rem; font-weight: 700;"><i class="fa-solid fa-calendar-plus"></i> Tambah Periode Baru</h3>
+                <button style="border:none; background:none; cursor:pointer;" onclick="window.closeAddTabModal()"><i class="fa-solid fa-xmark fa-lg"></i></button>
             </div>
-            <div class="grid-3" style="grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="grid-3" style="grid-template-columns: 1fr 1fr; gap: 10px;">
                 <div class="form-group">
-                    <label for="newTabMonth">Pilih Bulan</label>
+                    <label for="newTabMonth">Bulan</label>
                     <select id="newTabMonth" class="form-control">
                         <option value="Januari">Januari</option>
                         <option value="Februari">Februari</option>
@@ -852,18 +914,18 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="newTabYear">Tahun Pajak</label>
+                    <label for="newTabYear">Tahun</label>
                     <input type="number" id="newTabYear" class="form-control" value="2026">
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="window.closeAddTabModal()">Batal</button>
-                <button class="btn btn-primary" onclick="window.addNewTab()"><i class="fa-solid fa-check"></i> Tambahkan</button>
+                <button class="btn btn-primary" onclick="window.addNewTab()"><i class="fa-solid fa-check"></i> Tambah</button>
             </div>
         </div>
     </div>
 
-    <!-- Unified Single Script Module -->
+    <!-- Script Module -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -964,7 +1026,7 @@
             const npwp = document.getElementById('loginNpwp').value.trim();
             const password = document.getElementById('loginPassword').value;
 
-            if (npwp.length !== 16) return alert("NIK/NPWP harus berjumlah 16 digit angka!");
+            if (npwp.length !== 16) return alert("NIK/NPWP harus 16 digit!");
 
             try {
                 const email = npwpToEmail(npwp);
@@ -981,7 +1043,7 @@
             const phone = document.getElementById('signupPhone').value.trim();
             const password = document.getElementById('signupPassword').value;
 
-            if (npwp.length !== 16) return alert("NIK/NPWP harus berjumlah 16 digit!");
+            if (npwp.length !== 16) return alert("NIK/NPWP harus 16 digit!");
 
             try {
                 const email = npwpToEmail(npwp);
@@ -999,7 +1061,7 @@
                 saveLocalState();
 
                 if (db) await setDoc(doc(db, "users", user.uid), initialData);
-                alert("Pendaftaran berhasil! Selamat datang di AppPUN.");
+                alert("Pendaftaran berhasil!");
             } catch (err) {
                 alert("Gagal mendaftar: " + err.message);
             }
@@ -1013,7 +1075,7 @@
             try {
                 const email = npwpToEmail(npwp);
                 await sendPasswordResetEmail(auth, email);
-                alert(`Instruksi reset password telah dikirimkan ke email terdaftar (${email}).`);
+                alert(`Instruksi reset password dikirim ke ${email}.`);
                 window.showAuthPage('login');
             } catch (err) {
                 alert("Reset gagal: " + err.message);
@@ -1021,7 +1083,7 @@
         };
 
         window.handleLogout = async function() {
-            if (confirm("Apakah Anda yakin ingin keluar dari akun ini?")) {
+            if (confirm("Keluar dari akun?")) {
                 if (auth) await signOut(auth);
                 location.reload();
             }
@@ -1041,7 +1103,7 @@
                     }
                 }
             } catch (e) {
-                console.warn("Could not reach cloud database, using local saved data:", e);
+                console.warn("Offline, using local saved data:", e);
             } finally {
                 saveLocalState();
                 initUI();
@@ -1127,7 +1189,7 @@
             const currentYearData = getFilteredYearData();
 
             if (currentYearData.length === 0) {
-                tabList.innerHTML = '<li class="nav-tab-item"><i>Belum ada data untuk tahun ini</i></li>';
+                tabList.innerHTML = '<li class="nav-tab-item"><i>Belum ada data</i></li>';
                 document.getElementById('inputOmzet').value = '';
                 document.getElementById('inputBeban').value = '';
                 document.getElementById('inputKodeBilling').value = '';
@@ -1146,7 +1208,7 @@
                 const globalIndex = window.appState.monthsData.indexOf(item);
 
                 li.innerHTML = `
-                    <span><i class="fa-regular fa-calendar"></i> ${item.name} ${item.year || window.appState.selectedYear}</span>
+                    <span>${item.name}</span>
                     <span class="close-tab" onclick="window.deleteTab(event, ${globalIndex})"><i class="fa-solid fa-xmark"></i></span>
                 `;
                 tabList.appendChild(li);
@@ -1277,8 +1339,8 @@
                     <td style="color: #059669; font-weight: 600;">${formatRupiah(laba)}</td>
                     <td>${formatRupiah(dpp)}</td>
                     <td style="color: #2563eb; font-weight: 700;">${formatRupiah(pajak)}</td>
-                    <td>${item.billing ? `<span class="badge badge-info">${item.billing}</span>` : '<span style="color: #94a3b8;">-</span>'}</td>
-                    <td><span class="badge ${pajak > 0 ? 'badge-warning' : 'badge-success'}">${pajak > 0 ? 'Wajib Bayar' : 'Bebas Pajak'}</span></td>
+                    <td>${item.billing ? `<span class="badge badge-info">${item.billing}</span>` : '-'}</td>
+                    <td><span class="badge ${pajak > 0 ? 'badge-warning' : 'badge-success'}">${pajak > 0 ? 'Wajib' : 'Bebas'}</span></td>
                 `;
                 historyBody.appendChild(tr);
             });
@@ -1291,13 +1353,13 @@
                 document.getElementById('calcPajakBulan').textContent = formatRupiah(activeItem.computedPajak);
 
                 if (isOP) {
-                    document.getElementById('calcBebasPajak').textContent = "Rp 500.000.000";
+                    document.getElementById('calcBebasPajak').textContent = "Rp 500 Jt";
                     document.getElementById('calcStatusBebas').textContent = activeItem.computedCumulative <= 500000000 
-                        ? `Bebas Pajak (Kumulatif ${window.appState.selectedYear} belum melebihi limit Rp500 Juta)`
-                        : `Melebihi limit Rp500 Juta di ${window.appState.selectedYear} (Kelebihan kena PPh 0,5%)`;
+                        ? `Bebas Pajak (Kumulatif <= 500Jt)`
+                        : `Melebihi limit 500Jt (Kena 0,5%)`;
                 } else {
-                    document.getElementById('calcBebasPajak').textContent = "Tidak Berlaku (Badan Usaha)";
-                    document.getElementById('calcStatusBebas').textContent = "Badan Usaha dikenakan PPh 0,5% langsung dari omzet bruto";
+                    document.getElementById('calcBebasPajak').textContent = "Tidak Berlaku";
+                    document.getElementById('calcStatusBebas').textContent = "Badan Usaha PPh 0,5% Direct";
                 }
             } else {
                 document.getElementById('calcLabaBersih').textContent = 'Rp 0';
@@ -1357,20 +1419,20 @@
                 data: {
                     labels: labels,
                     datasets: [
-                        { label: 'Omzet Bruto (Rp)', data: omzet, backgroundColor: 'rgba(37, 99, 235, 0.7)', borderColor: '#2563eb', borderWidth: 1, borderRadius: 6 },
-                        { label: 'Laba Bersih (Rp)', data: laba, backgroundColor: 'rgba(16, 185, 129, 0.7)', borderColor: '#10b981', borderWidth: 1, borderRadius: 6 },
-                        { label: 'Pajak UMKM 0.5% (Rp)', data: pajak, type: 'line', borderColor: '#ef4444', backgroundColor: '#ef4444', borderWidth: 3, fill: false, tension: 0.3 }
+                        { label: 'Omzet', data: omzet, backgroundColor: 'rgba(37, 99, 235, 0.7)', borderColor: '#2563eb', borderWidth: 1, borderRadius: 4 },
+                        { label: 'Laba', data: laba, backgroundColor: 'rgba(16, 185, 129, 0.7)', borderColor: '#10b981', borderWidth: 1, borderRadius: 4 },
+                        { label: 'Pajak (0.5%)', data: pajak, type: 'line', borderColor: '#ef4444', backgroundColor: '#ef4444', borderWidth: 2, fill: false, tension: 0.3 }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { position: 'top' },
+                        legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } },
                         tooltip: { callbacks: { label: function(context) { return context.dataset.label + ': ' + formatRupiah(context.raw); } } }
                     },
                     scales: {
-                        y: { beginAtZero: true, ticks: { callback: function(value) { return 'Rp ' + (value / 1000000).toLocaleString('id-ID') + ' Jt'; } } }
+                        y: { beginAtZero: true, ticks: { callback: function(value) { return 'Rp ' + (value / 1000000).toLocaleString('id-ID') + 'M'; } } }
                     }
                 }
             });
@@ -1512,7 +1574,7 @@
                     window.saveDataToCloud();
                     alert(`Data riwayat (${newMonthsData.length} bulan) berhasil diimpor!`);
                 } else {
-                    alert("Format CSV tidak cocok atau data tidak dapat dibaca.");
+                    alert("Format CSV tidak cocok.");
                 }
             };
             reader.readAsText(file);
