@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AppPUN - Manager Pajak UMKM & Perorangan</title>
+    <title>AppPUN - Manager Pajak UMKM & Perorangan (Integrasi DJP Coretax)</title>
     
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230f172a'/%3E%3Cstop offset='100%25' stop-color='%231e293b'/%3E%3C/linearGradient%3E%3ClinearGradient id='ic' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%233b82f6'/%3E%3Cstop offset='100%25' stop-color='%231d4ed8'/%3E%3C/linearGradient%3E%3ClinearGradient id='ac' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2310b981'/%3E%3Cstop offset='100%25' stop-color='%2360a5fa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='500' height='500' rx='100' fill='url(%23bg)'/%3E%3Cpath d='M 170 120 L 330 120 C 352 120, 370 138, 370 160 L 370 340 C 370 362, 352 380, 330 380 L 170 380 C 148 380, 130 362, 130 340 L 130 160 C 130 138, 148 120, 170 120 Z' fill='url(%23ic)'/%3E%3Crect x='165' y='155' width='170' height='55' rx='10' fill='%23ffffff'/%3E%3Crect x='180' y='175' width='60' height='15' rx='4' fill='%232563eb'/%3E%3Crect x='290' y='175' width='30' height='15' rx='4' fill='%2310b981'/%3E%3Crect x='165' y='235' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='230' y='235' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='295' y='235' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='165' y='280' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='230' y='280' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='295' y='280' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Cpath d='M 130 320 Q 200 310, 240 250 T 370 160' fill='none' stroke='url(%23ac)' stroke-width='14' stroke-linecap='round'/%3E%3Ccircle cx='370' cy='160' r='10' fill='%2310b981'/%3E%3C/svg%3E">
 
@@ -57,7 +57,6 @@
         .app-logo-svg { height: 42px; width: auto; display: inline-block; vertical-align: middle; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2)); }
         .app-logo-svg-large { height: 80px; width: auto; margin-bottom: 14px; filter: drop-shadow(0 4px 16px rgba(37,99,235,0.3)); }
 
-        /* AUTHENTICATION OVERLAY & FROSTED GLASS LOGIN */
         .auth-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.35) 0%, transparent 50%),
@@ -95,7 +94,6 @@
         .auth-links a { color: var(--primary); text-decoration: none; font-weight: 700; transition: color 0.2s; }
         .auth-links a:hover { color: var(--primary-dark); text-decoration: underline; }
 
-        /* HEADER FROSTED BAR */
         header {
             background: rgba(15, 23, 42, 0.78);
             backdrop-filter: blur(16px);
@@ -118,7 +116,6 @@
             padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; color: #f8fafc; font-weight: 600; display: flex; align-items: center; gap: 6px; 
         }
 
-        /* BUTTON STYLES */
         .btn { 
             display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; 
             border-radius: 12px; font-size: 0.875rem; font-weight: 700; cursor: pointer; 
@@ -145,7 +142,6 @@
 
         .main-container { max-width: 1280px; margin: 20px auto 0; padding: 0 16px; }
         
-        /* CARDS WITH GLASSMORPHISM */
         .card { 
             background: var(--bg-glass-card); 
             backdrop-filter: blur(16px); 
@@ -180,7 +176,6 @@
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15); 
         }
 
-        /* TOGGLES & SWITCHERS */
         .entity-toggle-container { 
             display: flex; background: rgba(226, 232, 240, 0.7); 
             backdrop-filter: blur(8px);
@@ -210,7 +205,6 @@
             height: 100%; width: 0%; transition: width 0.5s ease; 
         }
 
-        /* METRICS CARDS */
         .metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
         .metric-card { 
             background: rgba(255, 255, 255, 0.72); 
@@ -230,7 +224,6 @@
         .metric-value { font-size: 1.25rem; font-weight: 800; color: var(--secondary); margin: 6px 0 2px; word-break: break-all; }
         .metric-desc { font-size: 0.725rem; color: var(--text-muted); font-weight: 500; }
 
-        /* TABS */
         .tabs-header-wrapper { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--border-subtle); margin-bottom: 18px; gap: 8px; padding-bottom: 4px; }
         .nav-tabs { display: flex; gap: 8px; list-style: none; overflow-x: auto; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; padding-bottom: 4px; width: 100%; }
         .nav-tab-item { 
@@ -243,7 +236,6 @@
         .nav-tab-item .close-tab { font-size: 0.75rem; border-radius: 50%; padding: 2px 5px; opacity: 0.8; }
         .nav-tab-item .close-tab:hover { opacity: 1; background: rgba(0,0,0,0.15); }
 
-        /* TABLES */
         .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; background: rgba(255,255,255,0.4); }
         table.data-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; white-space: nowrap; }
         table.data-table th, table.data-table td { padding: 12px 14px; border-bottom: 1px solid rgba(226, 232, 240, 0.8); }
@@ -257,7 +249,6 @@
         .chart-container { position: relative; height: 300px; width: 100%; }
         .tax-info-box { background-color: rgba(239, 246, 255, 0.85); border-left: 4px solid var(--primary); padding: 14px; border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.825rem; color: #1e40af; margin-bottom: 18px; backdrop-filter: blur(4px); }
 
-        /* CALC WIDGET FROSTED DARK */
         .calc-widget { 
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.92) 0%, rgba(15, 23, 42, 0.95) 100%); 
             backdrop-filter: blur(16px);
@@ -278,7 +269,6 @@
         .sync-dot.syncing { background: #f59e0b; animation: pulse 1s infinite; }
         .sync-dot.sync-error { background: #ef4444; animation: pulse 1s infinite; }
 
-        /* HELPDESK & CHAT ADMIN FLOATING WIDGET STYLES */
         .support-float-btn {
             position: fixed; bottom: 24px; right: 24px; z-index: 990;
             width: 58px; height: 58px; border-radius: 50%;
@@ -325,7 +315,6 @@
         }
         .support-icon.green { background: rgba(16, 185, 129, 0.15); color: #059669; }
         .support-icon.blue { background: rgba(37, 99, 235, 0.15); color: #2563eb; }
-        .support-icon.amber { background: rgba(245, 158, 11, 0.15); color: #d97706; }
         
         .support-info { display: flex; flex-direction: column; }
         .support-info h5 { font-size: 0.875rem; font-weight: 800; color: var(--secondary); }
@@ -340,7 +329,6 @@
 
         @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
 
-        /* MODALS GLASS */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: flex-end; padding: 0; }
         .modal.active { display: flex; }
         .modal-content { 
@@ -366,7 +354,7 @@
 </head>
 <body>
 
-    <!-- AUTHENTICATION OVERLAY & FROSTED GLASS LOGIN -->
+    <!-- AUTHENTICATION OVERLAY -->
     <div id="authOverlay" class="auth-overlay">
         <div id="loginCard" class="auth-card">
             <div class="auth-header">
@@ -391,7 +379,7 @@
                     <circle cx="370" cy="160" r="10" fill="#10b981"/>
                 </svg>
                 <h2>Masuk ke AppPUN</h2>
-                <p>Kelola Pajak UMKM & Perorangan secara pintar</p>
+                <p>Kelola Pajak UMKM & Perorangan (Integrasi Coretax DJP)</p>
             </div>
             <form id="loginForm" class="auth-form" onsubmit="window.handleLogin(event)">
                 <div class="form-group">
@@ -515,10 +503,11 @@
                 <div class="user-badge" id="userBadgeArea">
                     <i class="fa-solid fa-circle-user"></i> <span id="displayUserNpwp">Loading...</span>
                 </div>
-                <button class="btn btn-outline" onclick="window.exportSpreadsheet()" title="Cadangkan Data"><i class="fa-solid fa-file-excel"></i> Cadangkan</button>
+                <button class="btn btn-outline" onclick="window.exportSpreadsheet()" title="Cadangkan Data CSV"><i class="fa-solid fa-file-excel"></i> Cadangkan</button>
+                <button class="btn btn-outline" onclick="window.exportCoreTaxXML()" title="Ekspor XML DJP Coretax"><i class="fa-solid fa-file-code"></i> XML DJP</button>
                 <button class="btn btn-outline" onclick="window.downloadTemplate()" title="Unduh Template"><i class="fa-solid fa-file-arrow-down"></i> Template</button>
-                <button class="btn btn-outline" onclick="window.triggerImport()" title="Impor CSV"><i class="fa-solid fa-file-import"></i> Impor</button>
-                <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="window.importCSV(event)">
+                <button class="btn btn-outline" onclick="window.triggerImport()" title="Impor File (CSV / XML)"><i class="fa-solid fa-file-import"></i> Impor</button>
+                <input type="file" id="importFileInput" accept=".csv,.xml" style="display: none;" onchange="window.handleUnifiedImport(event)">
                 <button class="btn btn-danger" onclick="window.handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
         </div>
@@ -548,7 +537,7 @@
                     </div>
                 </div>
 
-                <!-- Multi-Toko / Cabang Switcher -->
+                <!-- Multi-Toko Switcher -->
                 <div class="store-switcher-bar">
                     <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
                         <i class="fa-solid fa-shop" style="color: var(--primary);"></i>
@@ -640,7 +629,7 @@
             </div>
 
             <div class="tax-info-box">
-                <i class="fa-solid fa-circle-info"></i> <strong>Sesuai PP No. 55/2022:</strong> WP Orang Pribadi UMKM bebas PPh Final untuk Omzet kumulatif s/d <strong>Rp 500 Juta</strong> / tahun pajak.
+                <i class="fa-solid fa-circle-info"></i> <strong>Integrasi DJP Coretax:</strong> Data transaksi dapat diekspor ke format XML <code>SimpleBookKeepingBulk</code> resmi untuk pengunggahan bulk ke portal DJP[cite: 3].
             </div>
 
             <!-- Kalkulator Simulasi Cepat -->
@@ -688,8 +677,8 @@
                             <input type="number" id="inputBeban" class="form-control" placeholder="0" oninput="window.updateCurrentTabData()">
                         </div>
                         <div class="form-group">
-                            <label for="inputKodeBilling">Kode Billing / NTPN</label>
-                            <input type="text" id="inputKodeBilling" class="form-control" placeholder="Contoh: 1234567890" oninput="window.updateCurrentTabData()">
+                            <label for="inputKodeBilling">Kode Billing / NTPN / Struk</label>
+                            <input type="text" id="inputKodeBilling" class="form-control" placeholder="Contoh: STRUK-ABC / NTPN-8821931" oninput="window.updateCurrentTabData()">
                         </div>
                     </div>
 
@@ -750,7 +739,7 @@
                                 <th>Laba</th>
                                 <th>DPP</th>
                                 <th>PPh 0,5%</th>
-                                <th>NTPN / Billing</th>
+                                <th>NTPN / Struk</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -809,19 +798,18 @@
                 </div>
             </div>
 
-            <!-- Kalkulator Pajak Perorangan Dinamis (Tab Bulan UI) -->
+            <!-- Kalkulator Pajak Perorangan Dinamis -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title" id="personalCalcTitle"><i class="fa-solid fa-calculator"></i> Kalkulator PPh Perorangan</span>
                 </div>
 
-                <!-- Tab Header UI seperti Toko UMKM -->
                 <div class="tabs-header-wrapper">
                     <ul class="nav-tabs" id="personalTabList"></ul>
                     <button class="btn btn-primary" style="padding: 6px 12px; min-height:36px; flex-shrink: 0;" onclick="window.openAddPersonalTabModal()"><i class="fa-solid fa-plus"></i></button>
                 </div>
 
-                <!-- Input Karyawan Dinamis per Bulan -->
+                <!-- Input Karyawan -->
                 <div id="formKaryawanInputs" class="grid-3" style="margin-bottom: 16px;">
                     <div class="form-group">
                         <label for="personalGajiPokok">Gaji Pokok / Bulan (Rp)</label>
@@ -837,7 +825,7 @@
                     </div>
                 </div>
 
-                <!-- Input Freelancer Dinamis per Bulan -->
+                <!-- Input Freelancer -->
                 <div id="formFreelanceInputs" class="grid-3" style="margin-bottom: 16px; display: none;">
                     <div class="form-group">
                         <label for="freelancePenghasilanBruto">Penghasilan Bruto Bulan Ini (Rp)</label>
@@ -888,7 +876,7 @@
                 </div>
             </div>
 
-            <!-- TABEL RIWAYAT PAJAK BULANAN PERSEORANGAN -->
+            <!-- TABEL RIWAYAT PAJAK PERSEORANGAN -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Pajak Bulanan Perorangan (<span class="personal-selected-year-label">2026</span>)</span>
@@ -980,8 +968,6 @@
             <button style="background:none; border:none; color:white; cursor:pointer;" onclick="window.toggleSupportWindow()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="support-body">
-            
-            <!-- Chat Admin WhatsApp Button -->
             <a href="#" class="support-card" onclick="window.openWhatsAppSupport(event)">
                 <div class="support-icon green">
                     <i class="fa-brands fa-whatsapp"></i>
@@ -991,8 +977,6 @@
                     <p>Hubungi CS: +62 895-1862-5612</p>
                 </div>
             </a>
-
-            <!-- Direct Chat Admin Link -->
             <a href="https://wa.me/6289518625612" target="_blank" class="support-card">
                 <div class="support-icon blue">
                     <i class="fa-solid fa-user-gear"></i>
@@ -1002,27 +986,21 @@
                     <p>Konsultasi & Bantuan Sistem (24/7)</p>
                 </div>
             </a>
-
-            <!-- FAQ Section -->
             <div style="margin-top: 6px;">
                 <h5 style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">Bantuan Cepat (FAQ)</h5>
-                
+                <details class="faq-item" style="margin-bottom: 6px;">
+                    <summary>Apa itu Skema XML Coretax DJP?</summary>
+                    <p>File XML <code>SimpleBookKeepingBulk</code> adalah skema standar DJP untuk mengunggah pembukuan UMKM secara sekaligus ke portal pajak Coretax[cite: 3].</p>
+                </details>
                 <details class="faq-item" style="margin-bottom: 6px;">
                     <summary>Siapa yang Bebas PPh UMKM 0.5%?</summary>
                     <p>Wajib Pajak Orang Pribadi (WP OP) dengan omzet kumulatif di bawah Rp 500 Juta/tahun tidak dikenakan PPh Final 0.5% (Sesuai PP No. 55/2022).</p>
                 </details>
-
-                <details class="faq-item" style="margin-bottom: 6px;">
-                    <summary>Apa itu Norma NPPN Freelancer?</summary>
-                    <p>Norma Penghitungan Penghasilan Netto (NPPN) adalah persentase standar (contoh: 50% untuk desainer) untuk menghitung penghasilan bersih pekerja bebas yang tidak menyelenggarakan pembukuan.</p>
-                </details>
-
                 <details class="faq-item">
                     <summary>Bagaimana cara dapat Kode Billing?</summary>
                     <p>Kode Billing pembayaran pajak dapat dibuat melalui laman DJP Online (djponline.pajak.go.id) atau M-Pajak sebelum melakukan pembayaran via Bank/M-Banking.</p>
                 </details>
             </div>
-
         </div>
     </div>
 
@@ -1131,7 +1109,7 @@
         </div>
     </div>
 
-    <!-- Script Module Firestore Sync -->
+    <!-- Script Module Firebase & DJP XML Core -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -1186,7 +1164,7 @@
             },
             stores: [{
                 id: "store_default",
-                profile: { namaUsaha: "Kopi Berkah Nusantara", npwp: "7326011206010003", jenisWP: "OP", kategoriUsaha: "Kuliner / Makanan & Minuman", targetOmzet: 500000000 },
+                profile: { namaUsaha: "Kopi Berkah Nusantara", npwp: "1000000000000018", jenisWP: "OP", kategoriUsaha: "Kuliner / Makanan & Minuman", targetOmzet: 500000000 },
                 selectedYear: 2026, activeTabIndex: 0,
                 monthsData: [
                     { name: 'Januari', year: 2026, omzet: 85000000, beban: 42000000, billing: 'NTPN-8821931' },
@@ -1208,7 +1186,7 @@
                 },
                 stores: [{
                     id: "store_1",
-                    profile: { namaUsaha: namaUsaha || "", npwp: npwp || "", jenisWP: "OP", kategoriUsaha: "Retail & Kelontong", targetOmzet: 500000000 },
+                    profile: { namaUsaha: namaUsaha || "", npwp: npwp || "1000000000000018", jenisWP: "OP", kategoriUsaha: "Retail & Kelontong", targetOmzet: 500000000 },
                     selectedYear: year, activeTabIndex: 0,
                     monthsData: [{ name: 'Januari', year: year, omzet: 0, beban: 0, billing: '' }]
                 }]
@@ -1255,12 +1233,12 @@
             const txt = document.getElementById('syncStatusText');
             if (dot && txt) {
                 dot.className = 'sync-dot sync-error';
-                txt.textContent = reason === 'permission-denied' ? 'Sync ditolak (cek Firestore Rules)' : 'Sync gagal';
+                txt.textContent = reason === 'permission-denied' ? 'Sync ditolak' : 'Sync gagal';
             }
             if (!syncErrorShown) {
                 syncErrorShown = true;
                 if (reason === 'permission-denied') {
-                    alert("Sinkronisasi cloud DITOLAK oleh Firestore Security Rules.\n\nData yang Anda ubah HANYA tersimpan secara lokal pada perangkat ini.");
+                    alert("Sinkronisasi cloud DITOLAK oleh Firestore Security Rules.\n\nData tersimpan secara lokal.");
                 }
             }
         }
@@ -1372,15 +1350,10 @@
             e.preventDefault();
             const npwp = document.getElementById('loginNpwp').value.trim();
             const password = document.getElementById('loginPassword').value;
-
             if (npwp.length !== 16) return alert("NIK/NPWP harus 16 digit!");
-
             try {
-                const email = npwpToEmail(npwp);
-                await signInWithEmailAndPassword(auth, email, password);
-            } catch (err) {
-                alert("Gagal masuk: " + err.message);
-            }
+                await signInWithEmailAndPassword(auth, npwpToEmail(npwp), password);
+            } catch (err) { alert("Gagal masuk: " + err.message); }
         };
 
         window.handleSignup = async function(e) {
@@ -1389,44 +1362,33 @@
             const namaUsaha = document.getElementById('signupNamaUsaha').value.trim();
             const phone = document.getElementById('signupPhone').value.trim();
             const password = document.getElementById('signupPassword').value;
-
             if (npwp.length !== 16) return alert("NIK/NPWP harus 16 digit!");
-
             try {
-                const email = npwpToEmail(npwp);
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-
+                const userCred = await createUserWithEmailAndPassword(auth, npwpToEmail(npwp), password);
                 const initialData = buildDefaultState(npwp, namaUsaha);
                 initialData.stores[0].profile.phone = phone;
-
-                currentLocalKey = getLocalStorageKey(user.uid);
+                currentLocalKey = getLocalStorageKey(userCred.user.uid);
                 window.appState = initialData;
                 saveLocalState();
-                if (db) await setDoc(doc(db, "users", user.uid), { ...initialData, updatedAt: Date.now() });
+                if (db) await setDoc(doc(db, "users", userCred.user.uid), { ...initialData, updatedAt: Date.now() });
                 alert("Pendaftaran berhasil!");
-            } catch (err) {
-                alert("Gagal mendaftar: " + err.message);
-            }
+            } catch (err) { alert("Gagal mendaftar: " + err.message); }
         };
 
         window.handleForgot = async function(e) {
             e.preventDefault();
             const npwp = document.getElementById('forgotNpwp').value.trim();
             if (npwp.length !== 16) return alert("NIK/NPWP harus 16 digit!");
-
             try {
                 await sendPasswordResetEmail(auth, npwpToEmail(npwp));
-                alert(`Instruksi reset password dikirim.`);
+                alert("Instruksi reset password dikirim.");
                 window.showAuthPage('login');
-            } catch (err) {
-                alert("Reset gagal: " + err.message);
-            }
+            } catch (err) { alert("Reset gagal: " + err.message); }
         };
 
         window.handleLogout = async function() {
             if (confirm("Keluar dari akun?")) {
-                if (cloudSaveTimer) { clearTimeout(cloudSaveTimer); cloudSaveTimer = null; }
+                if (cloudSaveTimer) clearTimeout(cloudSaveTimer);
                 if (auth) await signOut(auth);
                 if (currentLocalKey) localStorage.removeItem(currentLocalKey);
                 location.reload();
@@ -1437,7 +1399,6 @@
             window.appState.entityMode = mode;
             document.getElementById('btnModeUmkm').classList.toggle('active', mode === 'umkm');
             document.getElementById('btnModePersonal').classList.toggle('active', mode === 'personal');
-
             document.getElementById('sectionUmkmMode').style.display = mode === 'umkm' ? 'block' : 'none';
             document.getElementById('sectionPersonalMode').style.display = mode === 'personal' ? 'block' : 'none';
 
@@ -1469,18 +1430,14 @@
         window.togglePersonalJobType = function() {
             const type = document.getElementById('personalTipePekerjaan').value;
             const isFreelance = type === 'freelance';
-
             document.getElementById('formKaryawanInputs').style.display = isFreelance ? 'none' : 'grid';
             document.getElementById('formFreelanceInputs').style.display = isFreelance ? 'grid' : 'none';
-
             document.getElementById('personalCalcTitle').innerHTML = isFreelance 
                 ? '<i class="fa-solid fa-laptop-code"></i> Kalkulator PPh Pekerja Lepas (NPPN 50%)' 
                 : '<i class="fa-solid fa-calculator"></i> Kalkulator PPh 21 Karyawan';
-
             document.getElementById('labelNettoParam').textContent = isFreelance 
                 ? 'Penghasilan Netto (Bruto x Norma NPPN)' 
                 : 'Penghasilan Netto (Potong Biaya Jabatan)';
-
             window.calculatePersonalPph21();
         };
 
@@ -1500,7 +1457,6 @@
         function initUI() {
             const mode = window.appState.entityMode || 'umkm';
             window.switchEntityMode(mode);
-
             const store = getActiveStore();
             if (!store.selectedYear) store.selectedYear = 2026;
 
@@ -1521,17 +1477,14 @@
             window.runSimulasiKalkulator();
         }
 
-        /* --- SCRIPT CHAT ADMIN WHATSAPP HELPDESK --- */
         window.toggleSupportWindow = function() {
-            const win = document.getElementById('supportWindow');
-            win.classList.toggle('active');
+            document.getElementById('supportWindow').classList.toggle('active');
         };
 
         window.openWhatsAppSupport = function(e) {
             e.preventDefault();
             const mode = window.appState.entityMode || 'umkm';
             let msg = "Halo Admin AppPUN, saya butuh bantuan terkait aplikasi.\n\n";
-
             if (mode === 'umkm') {
                 const store = getActiveStore();
                 msg += `Entity: Toko UMKM\nNama Toko: ${store.profile.namaUsaha}\nNPWP: ${store.profile.npwp || '-'}`;
@@ -1539,13 +1492,209 @@
                 const p = window.appState.personalProfile || {};
                 msg += `Entity: Perseorangan\nNama: ${p.nama || '-'}\nTipe Pekerjaan: ${p.tipePekerjaan || '-'}`;
             }
-
-            const phoneNumber = "6289518625612"; // Nomor WhatsApp CS / Admin
-            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(msg)}`;
-            window.open(url, '_blank');
+            window.open(`https://wa.me/6289518625612?text=${encodeURIComponent(msg)}`, '_blank');
         };
 
-        /* --- SCRIPT MANAJEMEN TAB DINAMIS PERSEORANGAN & FREELANCER --- */
+        /* ========================================================================= */
+        /* --- INTEGRASI KHUSUS XML CORETAX DJP (SimpleBookKeepingBulk) --- */
+        /* ========================================================================= */
+
+        // 1. Ekspor XML DJP Format SimpleBookKeepingBulk
+        window.exportCoreTaxXML = function() {
+            const store = getActiveStore();
+            const rawNpwp = store.profile.npwp || "1000000000000018";
+            const tin = rawNpwp.replace(/\D/g, '').padEnd(16, '0').substring(0, 16);
+            const year = store.selectedYear || 2026;
+            const filteredData = getFilteredYearData();
+
+            let xml = `<?xml version="1.0" encoding="utf-8" ?>\n`;
+            xml += `<SimpleBookKeepingBulk xsi:noNamespaceSchemaLocation="schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n`;
+            xml += `\t<TIN>${tin}</TIN>\n`;
+            xml += `\t<ListOfTransaction>\n`;
+
+            filteredData.forEach((item, index) => {
+                const seq = String(index + 1).padStart(6, '0');
+                const idTku = `${tin}${seq}`;
+                const transNum = item.billing && item.billing.trim() !== '' ? item.billing.trim() : `STRUK-${year}-${item.name.substring(0,3).toUpperCase()}`;
+                const monthNum = String(monthOrder[item.name] || 1).padStart(2, '0');
+                const transDate = `${year}-${monthNum}-15`;
+
+                xml += `\t\t<Transaction>\n`;
+                xml += `\t\t\t<IdTku>${idTku}</IdTku>\n`;
+                xml += `\t\t\t<TransactionNumber>${transNum}</TransactionNumber>\n`;
+                xml += `\t\t\t<TransactionDate>${transDate}</TransactionDate>\n`;
+                xml += `\t\t\t<Customer>Penjualan Bruto ${item.name}</Customer>\n`;
+                xml += `\t\t\t<DetailsTransaction>\n`;
+                xml += `\t\t\t\t<Detail>\n`;
+                xml += `\t\t\t\t\t<DetailsOfGoodService>Omzet Pembukuan UMKM (${item.name})</DetailsOfGoodService>\n`;
+                xml += `\t\t\t\t\t<PricePerUnit>${item.omzet || 0}</PricePerUnit>\n`;
+                xml += `\t\t\t\t\t<Qty>1</Qty>\n`;
+                xml += `\t\t\t\t</Detail>\n`;
+                xml += `\t\t\t</DetailsTransaction>\n`;
+                xml += `\t\t\t<Discount>0</Discount>\n`;
+                xml += `\t\t</Transaction>\n`;
+            });
+
+            xml += `\t</ListOfTransaction>\n`;
+            xml += `</SimpleBookKeepingBulk>`;
+
+            const blob = new Blob([xml], { type: 'text/xml;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `SimpleBookKeeping_${tin}_${year}.xml`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+
+        // 2. Impor File Bersama (Otomatis mendeteksi XML DJP Coretax atau CSV)
+        window.triggerImport = function() {
+            document.getElementById('importFileInput').click();
+        };
+
+        window.handleUnifiedImport = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const fileName = file.name.toLowerCase();
+            const reader = new FileReader();
+
+            if (fileName.endsWith('.xml')) {
+                reader.onload = function(e) { parseAndImportXML(e.target.result); };
+                reader.readAsText(file);
+            } else {
+                reader.onload = function(e) { parseAndImportCSV(e.target.result); };
+                reader.readAsText(file);
+            }
+        };
+
+        function parseAndImportXML(xmlContent) {
+            try {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlContent, "text/xml");
+                
+                const tinNode = xmlDoc.getElementsByTagName("TIN")[0];
+                const tin = tinNode ? tinNode.textContent.trim() : "";
+
+                const transactions = xmlDoc.getElementsByTagName("Transaction");
+                if (!transactions || transactions.length === 0) {
+                    return alert("File XML tidak memiliki tag <Transaction> yang valid!");
+                }
+
+                const store = getActiveStore();
+                if (tin) {
+                    store.profile.npwp = tin;
+                    document.getElementById('nomorNPWP').value = tin;
+                }
+
+                // Pengelompokan omzet bulanan berdasarkan tanggal transaksi XML
+                const monthlyAggregator = {};
+
+                for (let i = 0; i < transactions.length; i++) {
+                    const trans = transactions[i];
+                    const transNum = trans.getElementsByTagName("TransactionNumber")[0]?.textContent || "";
+                    const dateStr = trans.getElementsByTagName("TransactionDate")[0]?.textContent || "";
+                    const discount = parseFloat(trans.getElementsByTagName("Discount")[0]?.textContent || 0);
+
+                    let transTotal = 0;
+                    const details = trans.getElementsByTagName("Detail");
+                    for (let j = 0; j < details.length; j++) {
+                        const price = parseFloat(details[j].getElementsByTagName("PricePerUnit")[0]?.textContent || 0);
+                        const qty = parseFloat(details[j].getElementsByTagName("Qty")[0]?.textContent || 1);
+                        transTotal += (price * qty);
+                    }
+                    transTotal = Math.max(0, transTotal - discount);
+
+                    if (dateStr) {
+                        const d = new Date(dateStr);
+                        if (!isNaN(d.getTime())) {
+                            const year = d.getFullYear();
+                            const monthName = allMonthsList[d.getMonth()];
+                            const key = `${year}_${monthName}`;
+
+                            if (!monthlyAggregator[key]) {
+                                monthlyAggregator[key] = { year, name: monthName, omzet: 0, beban: 0, billing: transNum };
+                            }
+                            monthlyAggregator[key].omzet += transTotal;
+                            if (transNum && !monthlyAggregator[key].billing.includes(transNum)) {
+                                monthlyAggregator[key].billing += `, ${transNum}`;
+                            }
+                        }
+                    }
+                }
+
+                const newImportedData = Object.values(monthlyAggregator);
+                if (newImportedData.length > 0) {
+                    store.monthsData = newImportedData;
+                    store.selectedYear = newImportedData[0].year;
+                    window.populateYearDropdown();
+                    window.renderTabs();
+                    window.calculateAll();
+                    window.saveDataToCloud();
+                    alert(`Sukses mengimpor ${transactions.length} transaksi dari file XML Coretax DJP!`);
+                }
+            } catch (err) {
+                alert("Gagal memproses XML Coretax DJP: " + err.message);
+            }
+        }
+
+        function parseAndImportCSV(csvText) {
+            const mode = window.appState.entityMode || 'umkm';
+            const lines = csvText.split(/\r\n|\n/);
+            if (lines.length <= 1) return alert("File CSV kosong!");
+
+            if (mode === 'personal') {
+                const p = window.appState.personalProfile;
+                const newPersonalMonths = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    const cols = line.split(',');
+                    if (cols.length >= 3) {
+                        const y = parseInt(cols[0]) || 2026;
+                        const m = cols[1].replace(/"/g, '');
+                        const bruto = parseFloat(cols[2]) || 0;
+                        const extraVal = parseFloat(cols[3]) || 0;
+                        newPersonalMonths.push({ year: y, name: m, gajiPokok: bruto, tunjangan: 0, iuran: extraVal, freelanceBruto: bruto });
+                    }
+                }
+                if (newPersonalMonths.length > 0) {
+                    p.monthsData = newPersonalMonths;
+                    window.populatePersonalYearDropdown();
+                    window.renderPersonalTabs();
+                    window.calculatePersonalPph21();
+                    window.saveDataToCloud();
+                    alert("Data Perseorangan/Freelance berhasil diimpor!");
+                }
+            } else {
+                const store = getActiveStore();
+                const newMonthsData = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    const cols = line.split(',');
+                    if (cols.length >= 3) {
+                        newMonthsData.push({
+                            year: parseInt(cols[0]) || 2026,
+                            name: cols[1].replace(/"/g, ''),
+                            omzet: parseFloat(cols[2]) || 0,
+                            beban: parseFloat(cols[3]) || 0,
+                            billing: cols[4] ? cols[4].replace(/"/g, '') : ''
+                        });
+                    }
+                }
+                if (newMonthsData.length > 0) {
+                    store.monthsData = newMonthsData;
+                    window.populateYearDropdown();
+                    window.renderTabs();
+                    window.calculateAll();
+                    window.saveDataToCloud();
+                    alert("Data UMKM berhasil diimpor & disinkronkan!");
+                }
+            }
+        }
+
+        /* --- SCRIPT MANAJEMEN TAB PERSEORANGAN --- */
         function getFilteredPersonalYearData() {
             const p = window.appState.personalProfile;
             if (!p || !p.monthsData) return [];
@@ -1559,19 +1708,16 @@
             if (!p || !p.monthsData) return;
             const yearSelect = document.getElementById('personalFilterTahun');
             let years = [...new Set(p.monthsData.map(m => parseInt(m.year) || 2026))].sort((a,b) => b - a);
-
             if (years.length === 0) years = [2026];
             if (!p.selectedYear) p.selectedYear = years[0];
 
             yearSelect.innerHTML = '';
             years.forEach(y => {
                 const opt = document.createElement('option');
-                opt.value = y;
-                opt.textContent = y;
+                opt.value = y; opt.textContent = y;
                 if (y === p.selectedYear) opt.selected = true;
                 yearSelect.appendChild(opt);
             });
-
             document.querySelectorAll('.personal-selected-year-label').forEach(el => el.textContent = p.selectedYear);
         };
 
@@ -1589,7 +1735,6 @@
             const p = window.appState.personalProfile;
             const tabList = document.getElementById('personalTabList');
             tabList.innerHTML = '';
-
             const currentYearData = getFilteredPersonalYearData();
 
             if (currentYearData.length === 0) {
@@ -1607,9 +1752,7 @@
                 const li = document.createElement('li');
                 li.className = `nav-tab-item ${index === p.activeTabIndex ? 'active' : ''}`;
                 li.onclick = () => window.switchPersonalTab(index);
-                
                 const globalIndex = p.monthsData.indexOf(item);
-
                 li.innerHTML = `
                     <span>${item.name}</span>
                     <span class="close-tab" onclick="window.deletePersonalTab(event, ${globalIndex})"><i class="fa-solid fa-xmark"></i></span>
@@ -1646,7 +1789,6 @@
             const p = window.appState.personalProfile;
             const month = document.getElementById('newPersonalTabMonth').value;
             const year = parseInt(document.getElementById('newPersonalTabYear').value) || 2026;
-
             const exists = p.monthsData.some(m => m.name === month && (parseInt(m.year) || 2026) === year);
             if (exists) return alert(`Periode Perseorangan ${month} ${year} sudah ada!`);
 
@@ -1715,7 +1857,6 @@
                 activeNettoBulan = activeBrutoBulan - biayaJabatan - iuran;
             }
 
-            // Hitung Total Tahunan berdasarkan data bulan yang ada
             let totalNettoTahun = 0, totalBrutoTahun = 0;
             currentYearData.forEach(m => {
                 if (jobType === 'freelance') {
@@ -1734,7 +1875,6 @@
                 }
             });
 
-            // Proyeksi sisa bulan jika data bulanan kurang dari 12
             const monthCount = currentYearData.length;
             if (monthCount > 0 && monthCount < 12) {
                 const multi = 12 - monthCount;
@@ -1743,7 +1883,6 @@
             }
 
             const pkp = Math.max(0, totalNettoTahun - ptkp);
-
             let pphTahun = 0;
             if (pkp > 0) {
                 if (pkp <= 60000000) pphTahun = pkp * 0.05;
@@ -1762,7 +1901,6 @@
             document.getElementById('resPersonalPphBulan').textContent = formatRupiah(pphBulanActive);
             document.getElementById('resPersonalPphTahun').textContent = formatRupiah(pphTahun);
 
-            // RENDRERING RIWAYAT PAJAK BULANAN PERSEORANGAN / FREELANCER
             const pHistoryBody = document.getElementById('personalHistoryTableBody');
             if (pHistoryBody) {
                 pHistoryBody.innerHTML = '';
@@ -1848,12 +1986,10 @@
         window.addNewStore = function() {
             const name = document.getElementById('newStoreName').value.trim();
             let category = document.getElementById('newStoreCategory').value;
-            
             if (category === 'Lainnya') {
                 const customVal = document.getElementById('newStoreCategoryCustom').value.trim();
                 category = customVal || 'Lainnya';
             }
-
             if (!name) return alert("Masukkan nama toko!");
 
             const newId = "store_" + Date.now();
@@ -1907,7 +2043,6 @@
             store.profile.jenisWP = document.getElementById('jenisWP').value;
             store.profile.kategoriUsaha = document.getElementById('kategoriUsaha').value;
             store.profile.targetOmzet = parseFloat(document.getElementById('targetOmzet').value) || 0;
-            
             renderStoreDropdown();
             window.saveDataToCloud();
         };
@@ -1916,19 +2051,16 @@
             const store = getActiveStore();
             const yearSelect = document.getElementById('filterTahun');
             let years = [...new Set(store.monthsData.map(m => parseInt(m.year) || 2026))].sort((a,b) => b - a);
-
             if (years.length === 0) years = [2026];
             if (!store.selectedYear) store.selectedYear = years[0];
 
             yearSelect.innerHTML = '';
             years.forEach(y => {
                 const opt = document.createElement('option');
-                opt.value = y;
-                opt.textContent = y;
+                opt.value = y; opt.textContent = y;
                 if (y === store.selectedYear) opt.selected = true;
                 yearSelect.appendChild(opt);
             });
-
             document.querySelectorAll('.selected-year-label').forEach(el => el.textContent = store.selectedYear);
         };
 
@@ -1953,7 +2085,6 @@
             const store = getActiveStore();
             const tabList = document.getElementById('tabList');
             tabList.innerHTML = '';
-
             const currentYearData = getFilteredYearData();
 
             if (currentYearData.length === 0) {
@@ -1970,9 +2101,7 @@
                 const li = document.createElement('li');
                 li.className = `nav-tab-item ${index === store.activeTabIndex ? 'active' : ''}`;
                 li.onclick = () => window.switchTab(index);
-                
                 const globalIndex = store.monthsData.indexOf(item);
-
                 li.innerHTML = `
                     <span>${item.name}</span>
                     <span class="close-tab" onclick="window.deleteTab(event, ${globalIndex})"><i class="fa-solid fa-xmark"></i></span>
@@ -2184,7 +2313,6 @@
             const canvas = document.getElementById('taxChart');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
-
             if (chartInstance) chartInstance.destroy();
 
             chartInstance = new Chart(ctx, {
@@ -2211,11 +2339,9 @@
             });
         }
 
-        /* --- FUNGSI EKSPORT & UNDUH TEMPLATE SPESIFIK ENTITAS --- */
         window.exportSpreadsheet = function() {
             const mode = window.appState.entityMode || 'umkm';
             let csvContent = "\uFEFF";
-
             if (mode === 'personal') {
                 const p = window.appState.personalProfile || {};
                 csvContent += "Tahun,Bulan,Tipe Pekerjaan,Penghasilan Bruto (Rp),Iuran BPJS / Norma (NPPN)\n";
@@ -2224,16 +2350,14 @@
                         const isFreelance = p.tipePekerjaan === 'freelance';
                         const bruto = isFreelance ? (item.freelanceBruto || 0) : ((item.gajiPokok || 0) + (item.tunjangan || 0));
                         const extraVal = isFreelance ? (p.freelanceNorma || 0.5) : (item.iuran || 0);
-                        const row = [ item.year || 2026, `"${item.name}"`, `"${p.tipePekerjaan || 'karyawan'}"`, bruto, extraVal ];
-                        csvContent += row.join(",") + "\n";
+                        csvContent += [ item.year || 2026, `"${item.name}"`, `"${p.tipePekerjaan || 'karyawan'}"`, bruto, extraVal ].join(",") + "\n";
                     });
                 }
             } else {
                 const store = getActiveStore();
                 csvContent += "Tahun,Bulan,Omzet Bruto (Rp),Beban Operasional (Rp),Laba Bersih (Rp),DPP Pajak (Rp),PPh Final 0.5% (Rp),Kode Billing / NTPN\n";
                 store.monthsData.forEach(item => {
-                    const row = [ item.year || 2026, `"${item.name}"`, item.omzet || 0, item.beban || 0, item.computedLaba || 0, item.computedDPP || 0, item.computedPajak || 0, `"${item.billing || ''}"` ];
-                    csvContent += row.join(",") + "\n";
+                    csvContent += [ item.year || 2026, `"${item.name}"`, item.omzet || 0, item.beban || 0, item.computedLaba || 0, item.computedDPP || 0, item.computedPajak || 0, `"${item.billing || ''}"` ].join(",") + "\n";
                 });
             }
 
@@ -2249,7 +2373,6 @@
         window.downloadTemplate = function() {
             const mode = window.appState.entityMode || 'umkm';
             let templateContent = "\uFEFF";
-
             if (mode === 'personal') {
                 const jobType = (window.appState.personalProfile && window.appState.personalProfile.tipePekerjaan) || 'karyawan';
                 if (jobType === 'freelance') {
@@ -2268,80 +2391,6 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-        };
-
-        window.triggerImport = function() { document.getElementById('csvFileInput').click(); };
-
-        window.importCSV = function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const mode = window.appState.entityMode || 'umkm';
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                const lines = e.target.result.split(/\r\n|\n/);
-                if (lines.length <= 1) return alert("File CSV kosong!");
-
-                if (mode === 'personal') {
-                    const p = window.appState.personalProfile;
-                    const newPersonalMonths = [];
-
-                    for (let i = 1; i < lines.length; i++) {
-                        const line = lines[i].trim();
-                        if (!line) continue;
-                        const cols = line.split(',');
-                        if (cols.length >= 3) {
-                            const y = parseInt(cols[0]) || 2026;
-                            const m = cols[1].replace(/"/g, '');
-                            const bruto = parseFloat(cols[2]) || 0;
-                            const extraVal = parseFloat(cols[3]) || 0;
-
-                            newPersonalMonths.push({
-                                year: y, name: m,
-                                gajiPokok: bruto, tunjangan: 0, iuran: extraVal, freelanceBruto: bruto
-                            });
-                        }
-                    }
-
-                    if (newPersonalMonths.length > 0) {
-                        p.monthsData = newPersonalMonths;
-                        window.populatePersonalYearDropdown();
-                        window.renderPersonalTabs();
-                        window.calculatePersonalPph21();
-                        window.saveDataToCloud();
-                        alert("Data Perseorangan/Freelance berhasil diimpor!");
-                    }
-                } else {
-                    const store = getActiveStore();
-                    const newMonthsData = [];
-
-                    for (let i = 1; i < lines.length; i++) {
-                        const line = lines[i].trim();
-                        if (!line) continue;
-                        const cols = line.split(',');
-                        if (cols.length >= 3) {
-                            newMonthsData.push({
-                                year: parseInt(cols[0]) || 2026,
-                                name: cols[1].replace(/"/g, ''),
-                                omzet: parseFloat(cols[2]) || 0,
-                                beban: parseFloat(cols[3]) || 0,
-                                billing: cols[4] ? cols[4].replace(/"/g, '') : ''
-                            });
-                        }
-                    }
-
-                    if (newMonthsData.length > 0) {
-                        store.monthsData = newMonthsData;
-                        window.populateYearDropdown();
-                        window.renderTabs();
-                        window.calculateAll();
-                        window.saveDataToCloud();
-                        alert("Data UMKM berhasil diimpor & disinkronkan!");
-                    }
-                }
-            };
-            reader.readAsText(file);
         };
     </script>
 </body>
