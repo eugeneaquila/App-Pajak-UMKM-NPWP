@@ -515,9 +515,9 @@
                 <div class="user-badge" id="userBadgeArea">
                     <i class="fa-solid fa-circle-user"></i> <span id="displayUserNpwp">Loading...</span>
                 </div>
-                <button class="btn btn-outline" onclick="window.exportSpreadsheet()" title="Cadangkan Data"><i class="fa-solid fa-file-excel"></i></button>
-                <button class="btn btn-outline" onclick="window.downloadTemplate()" title="Unduh Template"><i class="fa-solid fa-file-arrow-down"></i></button>
-                <button class="btn btn-outline" onclick="window.triggerImport()" title="Impor CSV"><i class="fa-solid fa-file-import"></i></button>
+                <button class="btn btn-outline" onclick="window.exportSpreadsheet()" title="Cadangkan Data"><i class="fa-solid fa-file-excel"></i> Cadangkan</button>
+                <button class="btn btn-outline" onclick="window.downloadTemplate()" title="Unduh Template"><i class="fa-solid fa-file-arrow-down"></i> Template</button>
+                <button class="btn btn-outline" onclick="window.triggerImport()" title="Impor CSV"><i class="fa-solid fa-file-import"></i> Impor</button>
                 <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="window.importCSV(event)">
                 <button class="btn btn-danger" onclick="window.handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
