@@ -335,7 +335,6 @@
         .faq-item summary { font-weight: 700; color: var(--secondary); outline: none; }
         .faq-item p { margin-top: 6px; color: var(--text-muted); line-height: 1.4; font-size: 0.775rem; }
 
-        /* REAL USER COUNTER BANNER INSIDE DASHBOARD */
         .dashboard-user-banner {
             background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
             border: 1px solid rgba(37, 99, 235, 0.2);
@@ -361,7 +360,6 @@
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
         .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
 
-        /* CUSTOMER TRANSACTION CARD STYLING */
         .customer-tx-card {
             background: rgba(255, 255, 255, 0.85);
             border: 1px solid rgba(203, 213, 225, 0.8);
@@ -377,14 +375,11 @@
             margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #cbd5e1;
         }
 
-        /* DEFAULT DESKTOP ITEM ROW */
         .item-row { display: grid; grid-template-columns: 2fr 1fr 1fr 42px; gap: 8px; align-items: center; margin-bottom: 8px; }
         .item-header { font-size: 0.725rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
 
         /* ================= MOBILE OPTIMIZATION STYLES (< 640px) ================= */
         @media (max-width: 640px) {
-            .hide-mobile { display: none !important; }
-
             header { padding: 10px 14px; }
             .brand h1 { font-size: 1.15rem; }
             .brand p { display: none; }
@@ -400,7 +395,7 @@
             }
             .header-actions::-webkit-scrollbar { display: none; }
             .header-actions .btn {
-                padding: 6px 10px;
+                padding: 6px 12px;
                 font-size: 0.775rem;
                 min-height: 36px;
                 white-space: nowrap;
@@ -416,7 +411,6 @@
             .card { padding: 14px; border-radius: 14px; margin-bottom: 14px; }
             .card-title { font-size: 0.95rem; }
             
-            /* Responsive Grid on Mobile Item Row */
             .item-row {
                 grid-template-columns: 1fr 1fr 38px;
                 gap: 6px;
@@ -427,7 +421,7 @@
                 margin-bottom: 10px;
             }
             .item-row > div:nth-child(1) {
-                grid-column: span 3; /* Item Name takes full width */
+                grid-column: span 3;
             }
             .item-row .item-header {
                 font-size: 0.675rem;
@@ -504,7 +498,6 @@
                 </svg>
                 <h2>Masuk ke AppPUN</h2>
                 <p>Kelola Pajak UMKM & Perorangan (Integrasi DJP Coretax Validated)</p>
-                <!-- DYNAMIC REAL USER COUNTER ON LOGIN CARD -->
                 <div>
                     <span class="flexing-user-badge"><i class="fa-solid fa-users" style="color:#10b981;"></i> <span class="real-user-count-label">Memuat total pengguna...</span></span>
                 </div>
@@ -624,7 +617,6 @@
                 </div>
             </div>
             <div class="header-actions">
-                <!-- DYNAMIC REAL USER COUNTER IN HEADER -->
                 <div class="user-badge" style="background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.4); color: #6ee7b7;">
                     <i class="fa-solid fa-users"></i> <span class="real-user-count-label">Memuat...</span>
                 </div>
@@ -635,10 +627,12 @@
                 <div class="user-badge" id="userBadgeArea">
                     <i class="fa-solid fa-circle-user"></i> <span id="displayUserNpwp">Loading...</span>
                 </div>
-                <button class="btn btn-outline" onclick="window.exportSpreadsheet()" title="Ekspor CSV Coretax Standard"><i class="fa-solid fa-file-excel"></i> <span class="hide-mobile">CSV Coretax</span></button>
-                <button class="btn btn-outline" onclick="window.exportCoreTaxXML()" title="Ekspor XML DJP Coretax Multi-Pelanggan"><i class="fa-solid fa-file-code"></i> <span class="hide-mobile">XML DJP</span></button>
-                <button class="btn btn-outline" onclick="window.downloadTemplate()" title="Unduh Template CSV"><i class="fa-solid fa-file-arrow-down"></i> <span class="hide-mobile">Template</span></button>
-                <button class="btn btn-outline" onclick="window.triggerImport()" title="Impor File (CSV / XML)"><i class="fa-solid fa-file-import"></i> <span class="hide-mobile">Impor</span></button>
+                
+                <!-- TOMBOL AKSI HEADER (TEKS TETAP MUNCUL DI MOBILE JUGA) -->
+                <button class="btn btn-outline" onclick="window.exportSpreadsheet()" title="Ekspor CSV Coretax Standard"><i class="fa-solid fa-file-excel"></i> <span>CSV Coretax</span></button>
+                <button class="btn btn-outline" id="btnExportXml" onclick="window.exportCoreTaxXML()" title="Ekspor XML DJP Coretax Multi-Pelanggan"><i class="fa-solid fa-file-code"></i> <span>XML DJP</span></button>
+                <button class="btn btn-outline" onclick="window.downloadTemplate()" title="Unduh Template CSV"><i class="fa-solid fa-file-arrow-down"></i> <span>Template</span></button>
+                <button class="btn btn-outline" onclick="window.triggerImport()" title="Impor File (CSV / XML)"><i class="fa-solid fa-file-import"></i> <span>Impor</span></button>
                 <input type="file" id="importFileInput" accept=".csv,.xml" style="display: none;" onchange="window.handleUnifiedImport(event)">
                 <button class="btn btn-danger" onclick="window.handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
@@ -687,7 +681,7 @@
                         <select id="storeSelectDropdown" class="form-control store-switcher-select" onchange="window.switchStore(this.value)">
                         </select>
                     </div>
-                    <button class="btn btn-primary" style="min-height: 36px; padding: 6px 12px; white-space: nowrap;" onclick="window.openAddStoreModal()"><i class="fa-solid fa-plus"></i> <span class="hide-mobile">Tambah Toko</span></button>
+                    <button class="btn btn-primary" style="min-height: 36px; padding: 6px 12px; white-space: nowrap;" onclick="window.openAddStoreModal()"><i class="fa-solid fa-plus"></i> <span>Tambah Toko</span></button>
                 </div>
 
                 <div class="grid-3">
@@ -1376,7 +1370,6 @@
 
         window.appState = defaultState;
 
-        /* FITUR JUMLAH PENGGUNA SUNGGUHNYS (REAL FROM FIRESTORE) */
         async function fetchRealUserCount() {
             if (!db) return;
             try {
@@ -1599,12 +1592,19 @@
             }
         };
 
+        /* FUNGSI TOGGLE MODE (SEMBUNYIKAN TOMBOL XML DJP JIKA MODE PERORANGAN) */
         window.switchEntityMode = function(mode) {
             window.appState.entityMode = mode;
             document.getElementById('btnModeUmkm').classList.toggle('active', mode === 'umkm');
             document.getElementById('btnModePersonal').classList.toggle('active', mode === 'personal');
             document.getElementById('sectionUmkmMode').style.display = mode === 'umkm' ? 'block' : 'none';
             document.getElementById('sectionPersonalMode').style.display = mode === 'personal' ? 'block' : 'none';
+
+            // Sembunyikan Tombol XML DJP bila berada di Tab Perorangan
+            const btnXml = document.getElementById('btnExportXml');
+            if (btnXml) {
+                btnXml.style.display = (mode === 'personal') ? 'none' : 'inline-flex';
+            }
 
             if (mode === 'personal') {
                 if (!window.appState.personalProfile) window.appState.personalProfile = defaultState.personalProfile;
@@ -1699,7 +1699,6 @@
             window.open(`https://wa.me/6289518625612?text=${encodeURIComponent(msg)}`, '_blank');
         };
 
-        /* HAPUS RIWAYAT TRANSAKSI */
         window.clearSelectedYearHistory = function() {
             const store = getActiveStore();
             const year = store.selectedYear || 2026;
@@ -1754,7 +1753,6 @@
             }
         };
 
-        /* EKSPOR XML CORETAX DJP BERDASARKAN SELURUH TRANSAKSI PELANGGAN */
         window.exportCoreTaxXML = function() {
             const store = getActiveStore();
             const rawNpwp = store.profile.npwp || "7326011206010003";
@@ -2011,7 +2009,6 @@
             }
         }
 
-        /* MANAJEMEN TAB PERSEORANGAN */
         function getFilteredPersonalYearData() {
             const p = window.appState.personalProfile;
             if (!p || !p.monthsData) return [];
@@ -2430,7 +2427,6 @@
                 .sort((a,b) => (monthOrder[a.name] || 0) - (monthOrder[b.name] || 0));
         }
 
-        /* MANAJEMEN TRANSAKSI BULANAN */
         window.renderTabs = function() {
             const store = getActiveStore();
             const tabList = document.getElementById('tabList');
@@ -2925,7 +2921,6 @@
             });
         }
 
-        /* EKSPOR EXCEL & CSV DENGAN KEPALA KOLOM RESMI CORETAX */
         window.exportSpreadsheet = function() {
             const mode = window.appState.entityMode || 'umkm';
             let csvContent = "\uFEFF";
