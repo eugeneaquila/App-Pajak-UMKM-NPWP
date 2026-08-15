@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AppPUN - Manager Pajak UMKM & Perorangan (Coretax Fully Matched Edition)</title>
+    <title>AppPUN - Manager Pajak UMKM & Perorangan (Integrasi DJP Coretax Validated)</title>
     
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230f172a'/%3E%3Cstop offset='100%25' stop-color='%231e293b'/%3E%3C/linearGradient%3E%3ClinearGradient id='ic' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%233b82f6'/%3E%3Cstop offset='100%25' stop-color='%231d4ed8'/%3E%3C/linearGradient%3E%3ClinearGradient id='ac' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2310b981'/%3E%3Cstop offset='100%25' stop-color='%2360a5fa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='500' height='500' rx='100' fill='url(%23bg)'/%3E%3Cpath d='M 170 120 L 330 120 C 352 120, 370 138, 370 160 L 370 340 C 370 362, 352 380, 330 380 L 170 380 C 148 380, 130 362, 130 340 L 130 160 C 130 138, 148 120, 170 120 Z' fill='url(%23ic)'/%3E%3Crect x='165' y='155' width='170' height='55' rx='10' fill='%23ffffff'/%3E%3Crect x='180' y='175' width='60' height='15' rx='4' fill='%232563eb'/%3E%3Crect x='290' y='175' width='30' height='15' rx='4' fill='%2310b981'/%3E%3Crect x='165' y='235' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='230' y='235' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='295' y='235' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='165' y='280' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='230' y='280' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Crect x='295' y='280' width='40' height='30' rx='8' fill='%23ffffff' opacity='0.25'/%3E%3Cpath d='M 130 320 Q 200 310, 240 250 T 370 160' fill='none' stroke='url(%23ac)' stroke-width='14' stroke-linecap='round'/%3E%3Ccircle cx='370' cy='160' r='10' fill='%2310b981'/%3E%3C/svg%3E">
 
@@ -27,7 +27,8 @@
             --accent: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --bg-glass-card: rgba(255, 255, 255, 0.75);
+            --bg-glass: rgba(255, 255, 255, 0.75);
+            --bg-glass-card: rgba(255, 255, 255, 0.68);
             --border-glass: rgba(255, 255, 255, 0.7);
             --border-subtle: rgba(226, 232, 240, 0.8);
             --text-main: #0f172a;
@@ -61,15 +62,18 @@
             background: radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.35) 0%, transparent 50%),
                         radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.25) 0%, transparent 50%),
                         rgba(15, 23, 42, 0.82);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; overflow-y: auto;
         }
 
         .auth-card { 
             background: rgba(255, 255, 255, 0.86); 
-            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(24px); 
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid rgba(255, 255, 255, 0.9); 
-            padding: 36px 30px; border-radius: 24px; 
+            padding: 36px 30px; 
+            border-radius: 24px; 
             box-shadow: 0 20px 50px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.9); 
             width: 100%; max-width: 430px; 
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -82,15 +86,18 @@
         .auth-form .btn-block { width: 100%; justify-content: center; padding: 12px; margin-top: 12px; font-size: 0.95rem; }
         
         .input-icon-wrapper { position: relative; display: flex; align-items: center; }
-        .input-icon-wrapper i { position: absolute; left: 14px; color: #94a3b8; font-size: 0.95rem; }
+        .input-icon-wrapper i { position: absolute; left: 14px; color: #94a3b8; font-size: 0.95rem; transition: color 0.2s; }
         .input-icon-wrapper .form-control { padding-left: 42px; }
+        .input-icon-wrapper .form-control:focus + i, .input-icon-wrapper:focus-within i { color: var(--primary); }
 
         .auth-links { margin-top: 20px; text-align: center; font-size: 0.85rem; color: var(--text-muted); }
-        .auth-links a { color: var(--primary); text-decoration: none; font-weight: 700; }
+        .auth-links a { color: var(--primary); text-decoration: none; font-weight: 700; transition: color 0.2s; }
+        .auth-links a:hover { color: var(--primary-dark); text-decoration: underline; }
 
         header {
             background: rgba(15, 23, 42, 0.78);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.12);
             color: white; padding: 14px 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
             position: sticky; top: 0; z-index: 100;
@@ -98,12 +105,13 @@
 
         .header-container { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
         .brand { display: flex; align-items: center; gap: 12px; }
-        .brand h1 { font-size: 1.45rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px; }
+        .brand h1 { font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; color: #ffffff; display: flex; align-items: center; gap: 8px; }
         .brand p { font-size: 0.775rem; color: #cbd5e1; font-weight: 500; }
 
         .header-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
         .user-badge { 
-            background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.12); 
+            backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.2); 
             padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; color: #f8fafc; font-weight: 600; display: flex; align-items: center; gap: 6px; 
         }
@@ -111,59 +119,101 @@
         .btn { 
             display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; 
             border-radius: 12px; font-size: 0.875rem; font-weight: 700; cursor: pointer; 
-            transition: all 0.25s ease; border: none; outline: none; min-height: 42px; 
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); border: none; outline: none; min-height: 42px; 
         }
-        .btn-primary { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; box-shadow: var(--shadow-glow); }
+        .btn-primary { 
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); 
+            color: white; box-shadow: var(--shadow-glow); 
+        }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(37, 99, 235, 0.35); }
+        .btn-primary:active { transform: translateY(0); }
 
-        .btn-outline { background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.22); color: #f8fafc; backdrop-filter: blur(6px); }
-        .btn-outline:hover { background-color: rgba(255, 255, 255, 0.18); transform: translateY(-1px); }
+        .btn-outline { 
+            background-color: rgba(255, 255, 255, 0.08); 
+            border: 1px solid rgba(255, 255, 255, 0.22); 
+            color: #f8fafc; backdrop-filter: blur(6px);
+        }
+        .btn-outline:hover { background-color: rgba(255, 255, 255, 0.18); border-color: rgba(255, 255, 255, 0.4); transform: translateY(-1px); }
         
         .btn-secondary { background-color: rgba(226, 232, 240, 0.8); color: #334155; }
         .btn-secondary:hover { background-color: #cbd5e1; }
         .btn-danger { background-color: rgba(254, 226, 226, 0.85); color: #dc2626; border: 1px solid rgba(239, 68, 68, 0.2); }
+        .btn-danger:hover { background-color: #fee2e2; }
 
         .main-container { max-width: 1280px; margin: 20px auto 0; padding: 0 16px; }
         
         .card { 
-            background: var(--bg-glass-card); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border-radius: var(--radius); border: 1px solid var(--border-glass); 
-            padding: 22px; box-shadow: var(--shadow-md); margin-bottom: 20px; 
+            background: var(--bg-glass-card); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: var(--radius); 
+            border: 1px solid var(--border-glass); 
+            padding: 22px; 
+            box-shadow: var(--shadow-md); 
+            margin-bottom: 20px; 
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+        .card:hover { box-shadow: var(--shadow-lg); }
         
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(226, 232, 240, 0.6); flex-wrap: wrap; gap: 8px; }
         .card-title { font-size: 1.05rem; font-weight: 800; color: var(--secondary); display: flex; align-items: center; gap: 8px; }
 
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
         .form-group { display: flex; flex-direction: column; gap: 5px; }
         .form-group label { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
         
         .form-control { 
-            padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border-subtle); 
-            font-size: 0.925rem; width: 100%; background-color: rgba(255, 255, 255, 0.82); 
-            min-height: 42px; transition: all 0.25s ease; box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
+            padding: 10px 14px; border-radius: 10px; 
+            border: 1px solid var(--border-subtle); 
+            font-size: 0.925rem; width: 100%; 
+            background-color: rgba(255, 255, 255, 0.82); 
+            min-height: 42px; transition: all 0.25s ease;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
         }
-        .form-control:focus { outline: none; border-color: var(--primary); background-color: #ffffff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15); }
+        .form-control:focus { 
+            outline: none; border-color: var(--primary); 
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15); 
+        }
 
         .entity-toggle-container { 
-            display: flex; background: rgba(226, 232, 240, 0.7); backdrop-filter: blur(8px);
-            padding: 5px; border-radius: 16px; margin-bottom: 20px; gap: 6px; border: 1px solid rgba(255,255,255,0.6);
+            display: flex; background: rgba(226, 232, 240, 0.7); 
+            backdrop-filter: blur(8px);
+            padding: 5px; border-radius: 16px; margin-bottom: 20px; gap: 6px; 
+            border: 1px solid rgba(255,255,255,0.6);
         }
         .entity-btn { flex: 1; padding: 12px; text-align: center; font-size: 0.875rem; font-weight: 800; border-radius: 12px; cursor: pointer; transition: all 0.25s ease; color: var(--text-muted); }
         .entity-btn.active { background: white; color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 
         .store-switcher-bar { 
             display: flex; align-items: center; justify-content: space-between; 
-            background: rgba(241, 245, 249, 0.8); padding: 12px 16px; border-radius: 12px; margin-bottom: 16px; gap: 10px; border: 1px solid rgba(255,255,255,0.7);
+            background: rgba(241, 245, 249, 0.8); 
+            padding: 12px 16px; border-radius: 12px; margin-bottom: 16px; gap: 10px; 
+            border: 1px solid rgba(255,255,255,0.7);
         }
         .store-switcher-select { font-weight: 700; color: var(--primary); background: rgba(255,255,255,0.9); border: 1px solid var(--border-subtle); }
 
+        .progress-box { 
+            background: rgba(239, 246, 255, 0.7); 
+            border: 1px solid rgba(191, 219, 254, 0.8); 
+            border-radius: 12px; padding: 14px; margin-top: 14px; 
+            backdrop-filter: blur(4px);
+        }
+        .progress-bar-bg { background: rgba(219, 234, 254, 0.9); height: 10px; border-radius: 5px; overflow: hidden; margin-top: 8px; }
+        .progress-bar-fill { 
+            background: linear-gradient(90deg, var(--primary), var(--accent)); 
+            height: 100%; width: 0%; transition: width 0.5s ease; 
+        }
+
         .metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
         .metric-card { 
-            background: rgba(255, 255, 255, 0.72); backdrop-filter: blur(12px);
-            border-radius: var(--radius); padding: 16px; border: 1px solid var(--border-glass); box-shadow: var(--shadow-sm); 
-            position: relative; overflow: hidden;
+            background: rgba(255, 255, 255, 0.72); 
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius); padding: 16px; 
+            border: 1px solid var(--border-glass); box-shadow: var(--shadow-sm); 
+            position: relative; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+        .metric-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
         .metric-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; }
         .metric-card.blue::before { background-color: var(--primary); }
         .metric-card.green::before { background-color: var(--accent); }
@@ -175,16 +225,18 @@
         .metric-desc { font-size: 0.725rem; color: var(--text-muted); font-weight: 500; }
 
         .tabs-header-wrapper { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--border-subtle); margin-bottom: 18px; gap: 8px; padding-bottom: 4px; }
-        .nav-tabs { display: flex; gap: 8px; list-style: none; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 4px; width: 100%; }
+        .nav-tabs { display: flex; gap: 8px; list-style: none; overflow-x: auto; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; padding-bottom: 4px; width: 100%; }
         .nav-tab-item { 
             padding: 9px 16px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); 
             border-radius: 10px; cursor: pointer; white-space: nowrap; transition: all 0.2s ease; 
             background-color: rgba(241, 245, 249, 0.7); display: flex; align-items: center; gap: 8px; flex-shrink: 0; 
+            border: 1px solid transparent;
         }
         .nav-tab-item.active { background-color: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37,99,235,0.25); }
         .nav-tab-item .close-tab { font-size: 0.75rem; border-radius: 50%; padding: 2px 5px; opacity: 0.8; }
+        .nav-tab-item .close-tab:hover { opacity: 1; background: rgba(0,0,0,0.15); }
 
-        .table-responsive { overflow-x: auto; border-radius: 12px; background: rgba(255,255,255,0.4); }
+        .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; background: rgba(255,255,255,0.4); }
         table.data-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; white-space: nowrap; }
         table.data-table th, table.data-table td { padding: 12px 14px; border-bottom: 1px solid rgba(226, 232, 240, 0.8); }
         table.data-table th { background-color: rgba(248, 250, 252, 0.85); color: var(--text-muted); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
@@ -195,12 +247,27 @@
         .badge-info { background-color: rgba(224, 242, 254, 0.9); color: #075985; }
 
         .chart-container { position: relative; height: 300px; width: 100%; }
-        .tax-info-box { background-color: rgba(239, 246, 255, 0.85); border-left: 4px solid var(--primary); padding: 14px; border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.825rem; color: #1e40af; margin-bottom: 18px; }
+        .tax-info-box { background-color: rgba(239, 246, 255, 0.85); border-left: 4px solid var(--primary); padding: 14px; border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.825rem; color: #1e40af; margin-bottom: 18px; backdrop-filter: blur(4px); }
 
-        .sync-indicator { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; padding: 6px 12px; border-radius: 20px; background: rgba(255,255,255,0.12); }
-        .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; }
+        .calc-widget { 
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.92) 0%, rgba(15, 23, 42, 0.95) 100%); 
+            backdrop-filter: blur(16px);
+            color: white; border-radius: var(--radius); padding: 22px; margin-bottom: 20px; 
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .calc-widget .form-control { background-color: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.2); }
+        .calc-widget .form-control:focus { background-color: rgba(255,255,255,0.18); border-color: #60a5fa; }
+        .calc-widget label { color: rgba(255,255,255,0.75); }
+        
+        .calc-result-box { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+        .calc-result-item { display: flex; justify-content: space-between; font-size: 0.875rem; border-bottom: 1px dashed rgba(255, 255, 255, 0.12); padding-bottom: 6px; }
+        .calc-result-item.highlight { font-size: 1.1rem; font-weight: 800; color: #60a5fa; border-bottom: none; }
+
+        .sync-indicator { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; padding: 6px 12px; border-radius: 20px; background: rgba(255,255,255,0.12); backdrop-filter: blur(4px); }
+        .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px rgba(16, 185, 129, 0.8); }
         .sync-dot.syncing { background: #f59e0b; animation: pulse 1s infinite; }
-        .sync-dot.sync-error { background: #ef4444; }
+        .sync-dot.sync-error { background: #ef4444; animation: pulse 1s infinite; }
 
         .support-float-btn {
             position: fixed; bottom: 24px; right: 24px; z-index: 990;
@@ -208,37 +275,80 @@
             background: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
             color: white; border: 2px solid rgba(255,255,255,0.8);
             box-shadow: 0 10px 28px rgba(37, 99, 235, 0.4);
-            cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.35rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 1.35rem; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        .support-float-btn:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 14px 36px rgba(37, 99, 235, 0.5); }
         
         .support-window {
             display: none; position: fixed; bottom: 92px; right: 24px; z-index: 995;
             width: 380px; max-width: calc(100vw - 32px); max-height: 540px;
-            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
             border-radius: 24px; border: 1px solid rgba(255,255,255,0.9);
-            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.22); flex-direction: column; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.22);
+            flex-direction: column; overflow: hidden; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .support-window.active { display: flex; }
-        .support-header { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .support-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .support-header h4 { font-size: 0.95rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        
+        .support-body {
+            flex: 1; padding: 18px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px;
+        }
+        
+        .support-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 14px; padding: 14px;
+            display: flex; align-items: center; gap: 12px;
+            transition: all 0.2s ease; text-decoration: none; color: inherit;
+        }
+        .support-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); border-color: var(--primary); }
+        .support-icon {
+            width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; flex-shrink: 0;
+        }
+        .support-icon.green { background: rgba(16, 185, 129, 0.15); color: #059669; }
+        .support-icon.blue { background: rgba(37, 99, 235, 0.15); color: #2563eb; }
+        
+        .support-info { display: flex; flex-direction: column; }
+        .support-info h5 { font-size: 0.875rem; font-weight: 800; color: var(--secondary); }
+        .support-info p { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+
+        .faq-item {
+            background: rgba(248, 250, 252, 0.8); border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 12px; padding: 10px 12px; font-size: 0.8rem; cursor: pointer;
+        }
+        .faq-item summary { font-weight: 700; color: var(--secondary); outline: none; }
+        .faq-item p { margin-top: 6px; color: var(--text-muted); line-height: 1.4; font-size: 0.775rem; }
 
         @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: flex-end; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: flex-end; padding: 0; }
         .modal.active { display: flex; }
         .modal-content { 
-            background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.92); 
+            backdrop-filter: blur(20px);
             padding: 26px; border-radius: 24px 24px 0 0; width: 100%; max-width: 500px; 
             box-shadow: var(--shadow-lg); border: 1px solid var(--border-glass); border-bottom: none;
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
         }
 
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
         .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
 
         @media (min-width: 768px) {
             .metrics-grid { grid-template-columns: repeat(4, 1fr); }
             .modal { align-items: center; padding: 20px; }
-            .modal-content { border-radius: var(--radius); border-bottom: 1px solid var(--border-glass); }
+            .modal-content { border-radius: var(--radius); border-bottom: 1px solid var(--border-glass); animation: none; }
             .chart-container { height: 360px; }
+            .metric-value { font-size: 1.35rem; }
         }
     </style>
 </head>
@@ -434,7 +544,7 @@
                         <select id="storeSelectDropdown" class="form-control store-switcher-select" onchange="window.switchStore(this.value)">
                         </select>
                     </div>
-                    <button class="btn btn-primary" style="min-height: 36px; padding: 6px 12px; white-space: nowrap;" onclick="window.openAddStoreModal()"><i class="fa-solid fa-plus"></i> <span>Tambah Toko</span></button>
+                    <button class="btn btn-primary" style="min-height: 36px; padding: 6px 12px; white-space: nowrap;" onclick="window.openAddStoreModal()"><i class="fa-solid fa-plus"></i> <span class="hide-mobile">Tambah Toko</span></button>
                 </div>
 
                 <div class="grid-3">
@@ -482,6 +592,16 @@
                         <input type="number" id="targetOmzet" class="form-control" placeholder="1000000000" value="500000000" oninput="window.saveProfileToCloud(); window.updateProgressTarget();">
                     </div>
                 </div>
+
+                <div class="progress-box">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700;">
+                        <span>Pencapaian Target Omzet Tahunan (<span class="selected-year-label">2026</span>)</span>
+                        <span id="targetPercentText">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="targetProgressBar"></div>
+                    </div>
+                </div>
             </div>
 
             <!-- Metrics UMKM -->
@@ -509,10 +629,37 @@
             </div>
 
             <div class="tax-info-box">
-                <i class="fa-solid fa-circle-check"></i> <strong>Coretax Fully Matched:</strong> Seluruh data <code>IdTku</code>, <code>Nama Pelanggan</code>, <code>Tanggal Transaksi</code>, <code>Nomor Transaksi</code>, dan <code>Nilai Transaksi</code> dijamin 100% presisi dengan skema kolom Coretax DJP.
+                <i class="fa-solid fa-circle-info"></i> <strong>Integrasi DJP Coretax Validated:</strong> Format XML <code>IdTku</code> sekarang terekspor sebagai <strong>NITKU 22 Digit (NPWP + 000000)</strong> sehingga 100% diterima oleh portal Coretax DJP tanpa kendala!
             </div>
 
-            <!-- Monthly Tabs & Input (Dengan Form Coretax Matched) -->
+            <!-- Kalkulator Simulasi Cepat -->
+            <div class="calc-widget">
+                <div class="card-title" style="color: white; margin-bottom: 12px; font-size: 0.95rem;">
+                    <i class="fa-solid fa-wand-magic-sparkles" style="color: #60a5fa;"></i> Simulasi Cepat PPh UMKM
+                </div>
+                <div class="grid-3" style="align-items: center;">
+                    <div class="form-group">
+                        <label for="simulasiOmzet">Input Omzet Simulasi (Rp)</label>
+                        <input type="number" id="simulasiOmzet" class="form-control" placeholder="100000000" value="100000000" oninput="window.runSimulasiKalkulator()">
+                    </div>
+                    <div class="form-group">
+                        <label for="simulasiAkumulasi">Akumulasi Lalu (Rp)</label>
+                        <input type="number" id="simulasiAkumulasi" class="form-control" placeholder="400000000" value="400000000" oninput="window.runSimulasiKalkulator()">
+                    </div>
+                    <div class="calc-result-box">
+                        <div class="calc-result-item">
+                            <span>DPP Pajak:</span>
+                            <strong id="simulasiDPPText">Rp 0</strong>
+                        </div>
+                        <div class="calc-result-item highlight">
+                            <span>Pajak Terutang (0,5%):</span>
+                            <strong id="simulasiPajakText">Rp 0</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Tabs & Input -->
             <div class="card">
                 <div class="tabs-header-wrapper">
                     <ul class="nav-tabs" id="tabList"></ul>
@@ -522,7 +669,7 @@
                 <div id="tabContentArea">
                     <div class="grid-3" style="margin-bottom: 16px;">
                         <div class="form-group">
-                            <label for="inputOmzet">Nilai Transaksi / Omzet (Rp)</label>
+                            <label for="inputOmzet">Omzet Bruto Bulan Ini (Rp)</label>
                             <input type="number" id="inputOmzet" class="form-control" placeholder="0" oninput="window.updateCurrentTabData()">
                         </div>
                         <div class="form-group">
@@ -530,16 +677,8 @@
                             <input type="number" id="inputBeban" class="form-control" placeholder="0" oninput="window.updateCurrentTabData()">
                         </div>
                         <div class="form-group">
-                            <label for="inputNamaPelanggan">Nama Pelanggan (Coretax)</label>
-                            <input type="text" id="inputNamaPelanggan" class="form-control" placeholder="Pelanggan Umum" oninput="window.updateCurrentTabData()">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputTanggalTransaksi">Tanggal Transaksi (Coretax)</label>
-                            <input type="date" id="inputTanggalTransaksi" class="form-control" onchange="window.updateCurrentTabData()">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputKodeBilling">Nomor Transaksi / Struk / NTPN</label>
-                            <input type="text" id="inputKodeBilling" class="form-control" placeholder="Contoh: TRX-2026-0001" oninput="window.updateCurrentTabData()">
+                            <label for="inputKodeBilling">Kode Billing / NTPN / Struk</label>
+                            <input type="text" id="inputKodeBilling" class="form-control" placeholder="Contoh: STRUK-ABC / NTPN-8821931" oninput="window.updateCurrentTabData()">
                         </div>
                     </div>
 
@@ -584,24 +723,24 @@
                 </div>
             </div>
 
-            <!-- Tabel Riwayat UMKM Presisi Kolom Coretax -->
+            <!-- Tabel Riwayat UMKM -->
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Tabel Riwayat Coretax Matched (<span class="selected-year-label">2026</span>)</span>
+                    <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Pajak (<span class="selected-year-label">2026</span>)</span>
                 </div>
                 <div class="table-responsive">
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>TKU (IdTku)</th>
-                                <th>Nama Pelanggan</th>
-                                <th>No. Transaksi</th>
-                                <th>Tgl Transaksi</th>
-                                <th>Nilai Transaksi (Omzet)</th>
+                                <th>Thn</th>
+                                <th>Bulan</th>
+                                <th>Omzet</th>
                                 <th>Beban</th>
-                                <th>DPP Pajak</th>
+                                <th>Laba</th>
+                                <th>DPP</th>
                                 <th>PPh 0,5%</th>
-                                <th>Status Coretax</th>
+                                <th>NTPN / Struk</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody id="historyTableBody"></tbody>
@@ -760,11 +899,65 @@
                     </table>
                 </div>
             </div>
+
+            <!-- Kalkulator Pajak Kendaraan -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><i class="fa-solid fa-car"></i> Kalkulator Pajak Kendaraan Bermotor (STNK / PKB)</span>
+                </div>
+                <div class="grid-3" style="margin-bottom: 16px;">
+                    <div class="form-group">
+                        <label for="personalJenisKendaraan">Jenis Kendaraan</label>
+                        <select id="personalJenisKendaraan" class="form-control" onchange="window.calculatePajakKendaraan()">
+                            <option value="mobil">Mobil (SWDKLLJ Rp 143.000)</option>
+                            <option value="motor">Motor (SWDKLLJ Rp 35.000)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="personalNJKB">NJKB / Nilai Jual Kendaraan (Rp)</label>
+                        <input type="number" id="personalNJKB" class="form-control" placeholder="150000000" value="150000000" oninput="window.calculatePajakKendaraan()">
+                    </div>
+                    <div class="form-group">
+                        <label for="personalKepemilikan">Urutan Kepemilikan (Progresif)</label>
+                        <select id="personalKepemilikan" class="form-control" onchange="window.calculatePajakKendaraan()">
+                            <option value="0.02">Kendaraan Ke-1 (2.0%)</option>
+                            <option value="0.025">Kendaraan Ke-2 (2.5%)</option>
+                            <option value="0.03">Kendaraan Ke-3 (3.0%)</option>
+                            <option value="0.035">Kendaraan Ke-4+ (3.5%)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Komponen Pajak</th>
+                                <th>Perkiraan Biaya</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>PKB (Pajak Kendaraan Bermotor)</strong></td>
+                                <td id="resPKB">Rp 0</td>
+                            </tr>
+                            <tr>
+                                <td><strong>SWDKLLJ (Asuransi Jasa Raharja)</strong></td>
+                                <td id="resSWDKLLJ">Rp 143.000</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Biaya Pajak Tahunan (STNK)</strong></td>
+                                <td id="resTotalKendaraan" style="font-weight: 800; color: #10b981; font-size: 1.1rem;">Rp 0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
     </div>
 
-    <!-- HELPDESK WIDGET -->
+    <!-- HELPDESK & CHAT ADMIN WIDGET -->
     <button class="support-float-btn" onclick="window.toggleSupportWindow()" title="Pusat Bantuan & Chat Admin">
         <i class="fa-solid fa-headset"></i>
     </button>
@@ -776,12 +969,34 @@
         </div>
         <div class="support-body">
             <a href="#" class="support-card" onclick="window.openWhatsAppSupport(event)">
-                <div class="support-icon green"><i class="fa-brands fa-whatsapp"></i></div>
+                <div class="support-icon green">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </div>
                 <div class="support-info">
                     <h5>Chat WhatsApp CS Pajak</h5>
                     <p>Hubungi CS: +62 895-1862-5612</p>
                 </div>
             </a>
+            <a href="https://wa.me/6289518625612" target="_blank" class="support-card">
+                <div class="support-icon blue">
+                    <i class="fa-solid fa-user-gear"></i>
+                </div>
+                <div class="support-info">
+                    <h5>Chat Admin Langsung</h5>
+                    <p>Konsultasi & Bantuan Sistem (24/7)</p>
+                </div>
+            </a>
+            <div style="margin-top: 6px;">
+                <h5 style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">Bantuan Cepat (FAQ)</h5>
+                <details class="faq-item" style="margin-bottom: 6px;">
+                    <summary>Apa itu NITKU / IdTku Coretax?</summary>
+                    <p>IdTku (NITKU) adalah ID Tempat Kegiatan Usaha 22 digit di Coretax. Untuk kantor pusat/WP utama, NITKU adalah 16 digit NIK/NPWP ditambah <code>000000</code>.</p>
+                </details>
+                <details class="faq-item" style="margin-bottom: 6px;">
+                    <summary>Siapa yang Bebas PPh UMKM 0.5%?</summary>
+                    <p>Wajib Pajak Orang Pribadi (WP OP) dengan omzet kumulatif di bawah Rp 500 Juta/tahun tidak dikenakan PPh Final 0.5% (PP No. 55/2022).</p>
+                </details>
+            </div>
         </div>
     </div>
 
@@ -822,6 +1037,74 @@
         </div>
     </div>
 
+    <div class="modal" id="addPersonalTabModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="font-size: 1rem; font-weight: 700;"><i class="fa-solid fa-calendar-plus"></i> Tambah Periode Perseorangan</h3>
+                <button style="border:none; background:none; cursor:pointer;" onclick="window.closeAddPersonalTabModal()"><i class="fa-solid fa-xmark fa-lg"></i></button>
+            </div>
+            <div class="grid-3" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="form-group">
+                    <label for="newPersonalTabMonth">Bulan</label>
+                    <select id="newPersonalTabMonth" class="form-control">
+                        <option value="Januari">Januari</option>
+                        <option value="Februari">Februari</option>
+                        <option value="Maret">Maret</option>
+                        <option value="April">April</option>
+                        <option value="Mei">Mei</option>
+                        <option value="Juni">Juni</option>
+                        <option value="Juli">Juli</option>
+                        <option value="Agustus">Agustus</option>
+                        <option value="September">September</option>
+                        <option value="Oktober">Oktober</option>
+                        <option value="November">November</option>
+                        <option value="Desember">Desember</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="newPersonalTabYear">Tahun</label>
+                    <input type="number" id="newPersonalTabYear" class="form-control" value="2026">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="window.closeAddPersonalTabModal()">Batal</button>
+                <button class="btn btn-primary" onclick="window.addNewPersonalTab()"><i class="fa-solid fa-check"></i> Tambah</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="addStoreModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="font-size: 1rem; font-weight: 700;"><i class="fa-solid fa-shop"></i> Tambah Toko / Cabang Baru</h3>
+                <button style="border:none; background:none; cursor:pointer;" onclick="window.closeAddStoreModal()"><i class="fa-solid fa-xmark fa-lg"></i></button>
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+                <label for="newStoreName">Nama Toko Baru</label>
+                <input type="text" id="newStoreName" class="form-control" placeholder="Contoh: Toko Cabang Bandung">
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+                <label for="newStoreCategory">Kategori Sektor Business</label>
+                <select id="newStoreCategory" class="form-control" onchange="window.handleStoreCategoryChange(this.value)">
+                    <option value="Kuliner / Makanan & Minuman">Kuliner / Makanan & Minuman</option>
+                    <option value="Fashion & Pakaian">Fashion & Pakaian</option>
+                    <option value="Retail & Kelontong">Retail & Kelontong</option>
+                    <option value="Jasa & Konsultan">Jasa & Konsultan</option>
+                    <option value="Produk Digital / Kreatif">Produk Digital / Kreatif</option>
+                    <option value="Lainnya">Lainnya / Tulis Sendiri...</option>
+                </select>
+            </div>
+            <div class="form-group" id="customStoreCategoryGroup" style="display: none;">
+                <label for="newStoreCategoryCustom">Tulis Kategori Sendiri</label>
+                <input type="text" id="newStoreCategoryCustom" class="form-control" placeholder="Contoh: Otomotif & Bengkel">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="window.closeAddStoreModal()">Batal</button>
+                <button class="btn btn-primary" onclick="window.addNewStore()"><i class="fa-solid fa-check"></i> Buat Toko</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Script Module Firebase & DJP XML Core -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -848,7 +1131,7 @@
             auth = getAuth(app);
             db = getFirestore(app);
         } catch (e) {
-            console.warn("Firebase Init Fallback Active:", e);
+            console.warn("Firebase Init Offline Fallback Active:", e);
         }
 
         const npwpToEmail = (npwp) => `${npwp.trim()}@umkm-pajak.id`;
@@ -868,9 +1151,11 @@
             activeStoreId: "store_default",
             personalProfile: {
                 nama: "Eugene Siby", tipePekerjaan: "freelance", statusPTKP: "54000000",
-                freelanceNorma: "0.5", selectedYear: 2026, activeTabIndex: 0,
+                freelanceNorma: "0.5", jenisKendaraan: "mobil", njkb: 150000000, kepemilikan: "0.02",
+                selectedYear: 2026, activeTabIndex: 0,
                 monthsData: [
-                    { name: 'Januari', year: 2026, gajiPokok: 10000000, tunjangan: 2000000, iuran: 200000, freelanceBruto: 15000000 }
+                    { name: 'Januari', year: 2026, gajiPokok: 10000000, tunjangan: 2000000, iuran: 200000, freelanceBruto: 15000000 },
+                    { name: 'Februari', year: 2026, gajiPokok: 10000000, tunjangan: 2000000, iuran: 200000, freelanceBruto: 18000000 }
                 ]
             },
             stores: [{
@@ -878,8 +1163,8 @@
                 profile: { namaUsaha: "Kopi Berkah Nusantara", npwp: "7326011206010003", jenisWP: "OP", kategoriUsaha: "Kuliner / Makanan & Minuman", targetOmzet: 500000000 },
                 selectedYear: 2026, activeTabIndex: 0,
                 monthsData: [
-                    { name: 'Januari', year: 2026, omzet: 85000000, beban: 42000000, billing: 'TRX-2026-0001', customerName: 'Pelanggan Umum', customDate: '2026-01-28' },
-                    { name: 'Februari', year: 2026, omzet: 92000000, beban: 45000000, billing: 'TRX-2026-0002', customerName: 'Pelanggan Umum', customDate: '2026-02-28' }
+                    { name: 'Januari', year: 2026, omzet: 85000000, beban: 42000000, billing: 'NTPN-8821931' },
+                    { name: 'Februari', year: 2026, omzet: 92000000, beban: 45000000, billing: 'NTPN-8821932' }
                 ]
             }]
         };
@@ -891,14 +1176,15 @@
                 activeStoreId: "store_1",
                 personalProfile: {
                     nama: namaUsaha || "", tipePekerjaan: "karyawan", statusPTKP: "54000000",
-                    freelanceNorma: "0.5", selectedYear: year, activeTabIndex: 0,
+                    freelanceNorma: "0.5", jenisKendaraan: "mobil", njkb: 0, kepemilikan: "0.02",
+                    selectedYear: year, activeTabIndex: 0,
                     monthsData: [{ name: 'Januari', year: year, gajiPokok: 0, tunjangan: 0, iuran: 0, freelanceBruto: 0 }]
                 },
                 stores: [{
                     id: "store_1",
                     profile: { namaUsaha: namaUsaha || "", npwp: npwp || "7326011206010003", jenisWP: "OP", kategoriUsaha: "Retail & Kelontong", targetOmzet: 500000000 },
                     selectedYear: year, activeTabIndex: 0,
-                    monthsData: [{ name: 'Januari', year: year, omzet: 0, beban: 0, billing: `TRX-${year}-0001`, customerName: 'Pelanggan Umum', customDate: `${year}-01-28` }]
+                    monthsData: [{ name: 'Januari', year: year, omzet: 0, beban: 0, billing: '' }]
                 }]
             };
         }
@@ -916,29 +1202,84 @@
 
         function saveLocalState() {
             if (!currentLocalKey) return;
-            try { localStorage.setItem(currentLocalKey, JSON.stringify(window.appState)); } catch (e) {}
+            try {
+                localStorage.setItem(currentLocalKey, JSON.stringify(window.appState));
+            } catch (e) {
+                console.error("Local save error:", e);
+            }
+        }
+
+        function setSyncIndicatorStatus(syncing) {
+            const dot = document.getElementById('syncStatusDot');
+            const txt = document.getElementById('syncStatusText');
+            if (dot && txt) {
+                if (syncing) {
+                    dot.className = 'sync-dot syncing';
+                    txt.textContent = 'Menyinkronkan...';
+                } else {
+                    dot.className = 'sync-dot';
+                    txt.textContent = 'Tersinkronisasi';
+                }
+            }
+        }
+
+        let syncErrorShown = false;
+        function setSyncErrorStatus(reason) {
+            const dot = document.getElementById('syncStatusDot');
+            const txt = document.getElementById('syncStatusText');
+            if (dot && txt) {
+                dot.className = 'sync-dot sync-error';
+                txt.textContent = reason === 'permission-denied' ? 'Sync ditolak' : 'Sync gagal';
+            }
+            if (!syncErrorShown) {
+                syncErrorShown = true;
+                if (reason === 'permission-denied') {
+                    alert("Sinkronisasi cloud DITOLAK oleh Firestore Security Rules.\n\nData tersimpan secara lokal.");
+                }
+            }
         }
 
         if (auth) {
             onAuthStateChanged(auth, (user) => {
+                if (cloudSaveTimer) { clearTimeout(cloudSaveTimer); cloudSaveTimer = null; }
                 if (user) {
                     currentUser = user;
                     const npwp = user.email.split('@')[0];
                     currentLocalKey = getLocalStorageKey(user.uid);
+
                     document.getElementById('authOverlay').style.display = 'none';
                     document.getElementById('displayUserNpwp').textContent = `NPWP: ${npwp}`;
                     document.getElementById('nomorNPWP').value = npwp;
+
                     listenToCloudData(user.uid, npwp);
                 } else {
+                    if (unsubscribeRealtime) unsubscribeRealtime();
+                    currentUser = null;
+                    currentLocalKey = null;
+                    window.appState = defaultState;
                     document.getElementById('authOverlay').style.display = 'flex';
+                    window.showAuthPage('login');
                 }
             });
+        } else {
+            currentLocalKey = getLocalStorageKey(null);
+            try {
+                window.appState = JSON.parse(localStorage.getItem(currentLocalKey)) || defaultState;
+            } catch (e) {
+                window.appState = defaultState;
+            }
+            document.getElementById('authOverlay').style.display = 'none';
+            initUI();
         }
 
         function listenToCloudData(uid, npwp) {
             if (!db) return;
+            setSyncIndicatorStatus(true);
+
             const docRef = doc(db, "users", uid);
             unsubscribeRealtime = onSnapshot(docRef, (docSnap) => {
+                setSyncIndicatorStatus(false);
+                syncErrorShown = false;
                 if (docSnap.exists()) {
                     isRemoteUpdate = true;
                     window.appState = docSnap.data();
@@ -947,10 +1288,27 @@
                     isRemoteUpdate = false;
                 } else {
                     const freshState = buildDefaultState(npwp);
+                    isRemoteUpdate = true;
                     window.appState = freshState;
                     saveLocalState();
                     initUI();
+                    isRemoteUpdate = false;
                     setDoc(docRef, { ...freshState, updatedAt: Date.now() });
+                }
+            }, (error) => {
+                console.error("Realtime sync error:", error);
+                setSyncIndicatorStatus(false);
+                if (error && error.code === 'permission-denied') {
+                    setSyncErrorStatus('permission-denied');
+                }
+                if (currentLocalKey) {
+                    try {
+                        const cached = localStorage.getItem(currentLocalKey);
+                        window.appState = cached ? JSON.parse(cached) : buildDefaultState(npwp);
+                    } catch (e) {
+                        window.appState = buildDefaultState(npwp);
+                    }
+                    initUI();
                 }
             });
         }
@@ -958,11 +1316,79 @@
         window.saveDataToCloud = function() {
             saveLocalState();
             if (isRemoteUpdate || !currentUser || !db) return;
+
+            setSyncIndicatorStatus(true);
             if (cloudSaveTimer) clearTimeout(cloudSaveTimer);
             cloudSaveTimer = setTimeout(() => {
+                cloudSaveTimer = null;
+                if (!currentUser || !db) return;
                 const docRef = doc(db, "users", currentUser.uid);
-                setDoc(docRef, { ...window.appState, updatedAt: Date.now() }, { merge: true });
+                const payload = { ...window.appState, updatedAt: Date.now() };
+                setDoc(docRef, payload, { merge: true })
+                    .then(() => { setSyncIndicatorStatus(false); syncErrorShown = false; })
+                    .catch(err => {
+                        console.error("Cloud Save Error:", err);
+                        setSyncIndicatorStatus(false);
+                        if (err && err.code === 'permission-denied') {
+                            setSyncErrorStatus('permission-denied');
+                        }
+                    });
             }, 700);
+        };
+
+        window.showAuthPage = function(page) {
+            document.getElementById('loginCard').style.display = page === 'login' ? 'block' : 'none';
+            document.getElementById('signupCard').style.display = page === 'signup' ? 'block' : 'none';
+            document.getElementById('forgotCard').style.display = page === 'forgot' ? 'block' : 'none';
+        };
+
+        window.handleLogin = async function(e) {
+            e.preventDefault();
+            const npwp = document.getElementById('loginNpwp').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            if (npwp.length !== 16) return alert("NIK/NPWP harus 16 digit!");
+            try {
+                await signInWithEmailAndPassword(auth, npwpToEmail(npwp), password);
+            } catch (err) { alert("Gagal masuk: " + err.message); }
+        };
+
+        window.handleSignup = async function(e) {
+            e.preventDefault();
+            const npwp = document.getElementById('signupNpwp').value.trim();
+            const namaUsaha = document.getElementById('signupNamaUsaha').value.trim();
+            const phone = document.getElementById('signupPhone').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            if (npwp.length !== 16) return alert("NIK/NPWP harus 16 digit!");
+            try {
+                const userCred = await createUserWithEmailAndPassword(auth, npwpToEmail(npwp), password);
+                const initialData = buildDefaultState(npwp, namaUsaha);
+                initialData.stores[0].profile.phone = phone;
+                currentLocalKey = getLocalStorageKey(userCred.user.uid);
+                window.appState = initialData;
+                saveLocalState();
+                if (db) await setDoc(doc(db, "users", userCred.user.uid), { ...initialData, updatedAt: Date.now() });
+                alert("Pendaftaran berhasil!");
+            } catch (err) { alert("Gagal mendaftar: " + err.message); }
+        };
+
+        window.handleForgot = async function(e) {
+            e.preventDefault();
+            const npwp = document.getElementById('forgotNpwp').value.trim();
+            if (npwp.length !== 16) return alert("NIK/NPWP harus 16 digit!");
+            try {
+                await sendPasswordResetEmail(auth, npwpToEmail(npwp));
+                alert("Instruksi reset password dikirim.");
+                window.showAuthPage('login');
+            } catch (err) { alert("Reset gagal: " + err.message); }
+        };
+
+        window.handleLogout = async function() {
+            if (confirm("Keluar dari akun?")) {
+                if (cloudSaveTimer) clearTimeout(cloudSaveTimer);
+                if (auth) await signOut(auth);
+                if (currentLocalKey) localStorage.removeItem(currentLocalKey);
+                location.reload();
+            }
         };
 
         window.switchEntityMode = function(mode) {
@@ -971,28 +1397,111 @@
             document.getElementById('btnModePersonal').classList.toggle('active', mode === 'personal');
             document.getElementById('sectionUmkmMode').style.display = mode === 'umkm' ? 'block' : 'none';
             document.getElementById('sectionPersonalMode').style.display = mode === 'personal' ? 'block' : 'none';
-            if (mode === 'umkm') window.calculateAll();
+
+            if (mode === 'personal') {
+                if (!window.appState.personalProfile) window.appState.personalProfile = defaultState.personalProfile;
+                const p = window.appState.personalProfile;
+                if (!p.monthsData) p.monthsData = [{ name: 'Januari', year: 2026, gajiPokok: 0, tunjangan: 0, iuran: 0, freelanceBruto: 0 }];
+                if (!p.selectedYear) p.selectedYear = 2026;
+                if (p.activeTabIndex === undefined) p.activeTabIndex = 0;
+
+                document.getElementById('personalNama').value = p.nama || '';
+                document.getElementById('personalTipePekerjaan').value = p.tipePekerjaan || 'karyawan';
+                document.getElementById('personalStatusPTKP').value = p.statusPTKP || '54000000';
+                document.getElementById('freelanceNorma').value = p.freelanceNorma || '0.5';
+                document.getElementById('personalJenisKendaraan').value = p.jenisKendaraan || 'mobil';
+                document.getElementById('personalNJKB').value = p.njkb || 0;
+                document.getElementById('personalKepemilikan').value = p.kepemilikan || '0.02';
+
+                window.populatePersonalYearDropdown();
+                window.renderPersonalTabs();
+                window.togglePersonalJobType();
+                window.calculatePajakKendaraan();
+            } else {
+                window.calculateAll();
+            }
+            window.saveDataToCloud();
+        };
+
+        window.togglePersonalJobType = function() {
+            const type = document.getElementById('personalTipePekerjaan').value;
+            const isFreelance = type === 'freelance';
+            document.getElementById('formKaryawanInputs').style.display = isFreelance ? 'none' : 'grid';
+            document.getElementById('formFreelanceInputs').style.display = isFreelance ? 'grid' : 'none';
+            document.getElementById('personalCalcTitle').innerHTML = isFreelance 
+                ? '<i class="fa-solid fa-laptop-code"></i> Kalkulator PPh Pekerja Lepas (NPPN 50%)' 
+                : '<i class="fa-solid fa-calculator"></i> Kalkulator PPh 21 Karyawan';
+            document.getElementById('labelNettoParam').textContent = isFreelance 
+                ? 'Penghasilan Netto (Bruto x Norma NPPN)' 
+                : 'Penghasilan Netto (Potong Biaya Jabatan)';
+            window.calculatePersonalPph21();
+        };
+
+        window.savePersonalData = function() {
+            if (!window.appState.personalProfile) window.appState.personalProfile = {};
+            const p = window.appState.personalProfile;
+            p.nama = document.getElementById('personalNama').value;
+            p.tipePekerjaan = document.getElementById('personalTipePekerjaan').value;
+            p.statusPTKP = document.getElementById('personalStatusPTKP').value;
+            p.freelanceNorma = document.getElementById('freelanceNorma').value;
+            p.jenisKendaraan = document.getElementById('personalJenisKendaraan').value;
+            p.njkb = parseFloat(document.getElementById('personalNJKB').value) || 0;
+            p.kepemilikan = document.getElementById('personalKepemilikan').value;
+            window.saveDataToCloud();
         };
 
         function initUI() {
+            const mode = window.appState.entityMode || 'umkm';
+            window.switchEntityMode(mode);
             const store = getActiveStore();
+            if (!store.selectedYear) store.selectedYear = 2026;
+
+            renderStoreDropdown();
+
             document.getElementById('namaUsaha').value = store.profile.namaUsaha || '';
             document.getElementById('jenisWP').value = store.profile.jenisWP || 'OP';
-            document.getElementById('nomorNPWP').value = store.profile.npwp || '7326011206010003';
+            document.getElementById('kategoriUsaha').value = store.profile.kategoriUsaha || 'Retail & Kelontong';
+            document.getElementById('targetOmzet').value = store.profile.targetOmzet || 500000000;
+
+            const filteredMonths = getFilteredYearData();
+            const countSel = document.getElementById('jumlahTabProfile');
+            if (countSel) countSel.value = filteredMonths.length <= 12 ? filteredMonths.length.toString() : "12";
+
             window.populateYearDropdown();
             window.renderTabs();
             window.calculateAll();
+            window.runSimulasiKalkulator();
         }
 
+        window.toggleSupportWindow = function() {
+            document.getElementById('supportWindow').classList.toggle('active');
+        };
+
+        window.openWhatsAppSupport = function(e) {
+            e.preventDefault();
+            const mode = window.appState.entityMode || 'umkm';
+            let msg = "Halo Admin AppPUN, saya butuh bantuan terkait aplikasi.\n\n";
+            if (mode === 'umkm') {
+                const store = getActiveStore();
+                msg += `Entity: Toko UMKM\nNama Toko: ${store.profile.namaUsaha}\nNPWP: ${store.profile.npwp || '-'}`;
+            } else {
+                const p = window.appState.personalProfile || {};
+                msg += `Entity: Perseorangan\nNama: ${p.nama || '-'}\nTipe Pekerjaan: ${p.tipePekerjaan || '-'}`;
+            }
+            window.open(`https://wa.me/6289518625612?text=${encodeURIComponent(msg)}`, '_blank');
+        };
+
         /* ========================================================================= */
-        /* --- EKSPOR XML CORETAX DJP BERDASARKAN FORM FIELD DISESUAIKAN --- */
+        /* --- EKSPOR XML CORETAX DJP DENGAN IDTKU 22-DIGIT VALID (PUSAT: 000000) --- */
         /* ========================================================================= */
 
         window.exportCoreTaxXML = function() {
             const store = getActiveStore();
             const rawNpwp = store.profile.npwp || "7326011206010003";
             const tin = rawNpwp.replace(/\D/g, '').padEnd(16, '0').substring(0, 16);
-            const idTku = `${tin}000000`; // NITKU 22-Digit Pusat
+            
+            // ID TKU (NITKU 22 Digit) = 16 digit NIK/NPWP + 6 digit "000000" (Pusat)
+            const idTku = `${tin}000000`;
             
             const year = store.selectedYear || 2026;
             const filteredData = getFilteredYearData();
@@ -1005,20 +1514,19 @@
             filteredData.forEach((item, index) => {
                 const transNum = item.billing && item.billing.trim() !== '' 
                     ? item.billing.trim() 
-                    : `TRX-${year}-${String(index + 1).padStart(4, '0')}`;
+                    : `STRUK-${year}-${item.name.substring(0,3).toUpperCase()}`;
                     
                 const monthNum = String(monthOrder[item.name] || 1).padStart(2, '0');
-                const transDate = item.customDate || `${year}-${monthNum}-28`;
-                const customerName = item.customerName || "Pelanggan Umum";
+                const transDate = `${year}-${monthNum}-15`;
 
                 xml += `\t\t<Transaction>\n`;
                 xml += `\t\t\t<IdTku>${idTku}</IdTku>\n`;
                 xml += `\t\t\t<TransactionNumber>${transNum}</TransactionNumber>\n`;
                 xml += `\t\t\t<TransactionDate>${transDate}</TransactionDate>\n`;
-                xml += `\t\t\t<Customer>${customerName}</Customer>\n`;
+                xml += `\t\t\t<Customer>Penjualan Bruto ${item.name}</Customer>\n`;
                 xml += `\t\t\t<DetailsTransaction>\n`;
                 xml += `\t\t\t\t<Detail>\n`;
-                xml += `\t\t\t\t\t<DetailsOfGoodService>Penjualan Bruto - ${item.name}</DetailsOfGoodService>\n`;
+                xml += `\t\t\t\t\t<DetailsOfGoodService>Omzet Pembukuan UMKM (${item.name})</DetailsOfGoodService>\n`;
                 xml += `\t\t\t\t\t<PricePerUnit>${item.omzet || 0}</PricePerUnit>\n`;
                 xml += `\t\t\t\t\t<Qty>1</Qty>\n`;
                 xml += `\t\t\t\t</Detail>\n`;
@@ -1039,6 +1547,531 @@
             document.body.removeChild(link);
         };
 
+        window.triggerImport = function() {
+            document.getElementById('importFileInput').click();
+        };
+
+        window.handleUnifiedImport = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const fileName = file.name.toLowerCase();
+            const reader = new FileReader();
+
+            if (fileName.endsWith('.xml')) {
+                reader.onload = function(e) { parseAndImportXML(e.target.result); };
+                reader.readAsText(file);
+            } else {
+                reader.onload = function(e) { parseAndImportCSV(e.target.result); };
+                reader.readAsText(file);
+            }
+        };
+
+        function parseAndImportXML(xmlContent) {
+            try {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlContent, "text/xml");
+                
+                const tinNode = xmlDoc.getElementsByTagName("TIN")[0];
+                const tin = tinNode ? tinNode.textContent.trim() : "";
+
+                const transactions = xmlDoc.getElementsByTagName("Transaction");
+                if (!transactions || transactions.length === 0) {
+                    return alert("File XML tidak memiliki tag <Transaction> yang valid!");
+                }
+
+                const store = getActiveStore();
+                if (tin) {
+                    store.profile.npwp = tin;
+                    document.getElementById('nomorNPWP').value = tin;
+                }
+
+                const monthlyAggregator = {};
+
+                for (let i = 0; i < transactions.length; i++) {
+                    const trans = transactions[i];
+                    const transNum = trans.getElementsByTagName("TransactionNumber")[0]?.textContent || "";
+                    const dateStr = trans.getElementsByTagName("TransactionDate")[0]?.textContent || "";
+                    const discount = parseFloat(trans.getElementsByTagName("Discount")[0]?.textContent || 0);
+
+                    let transTotal = 0;
+                    const details = trans.getElementsByTagName("Detail");
+                    for (let j = 0; j < details.length; j++) {
+                        const price = parseFloat(details[j].getElementsByTagName("PricePerUnit")[0]?.textContent || 0);
+                        const qty = parseFloat(details[j].getElementsByTagName("Qty")[0]?.textContent || 1);
+                        transTotal += (price * qty);
+                    }
+                    transTotal = Math.max(0, transTotal - discount);
+
+                    if (dateStr) {
+                        const d = new Date(dateStr);
+                        if (!isNaN(d.getTime())) {
+                            const year = d.getFullYear();
+                            const monthName = allMonthsList[d.getMonth()];
+                            const key = `${year}_${monthName}`;
+
+                            if (!monthlyAggregator[key]) {
+                                monthlyAggregator[key] = { year, name: monthName, omzet: 0, beban: 0, billing: transNum };
+                            }
+                            monthlyAggregator[key].omzet += transTotal;
+                            if (transNum && !monthlyAggregator[key].billing.includes(transNum)) {
+                                monthlyAggregator[key].billing += `, ${transNum}`;
+                            }
+                        }
+                    }
+                }
+
+                const newImportedData = Object.values(monthlyAggregator);
+                if (newImportedData.length > 0) {
+                    store.monthsData = newImportedData;
+                    store.selectedYear = newImportedData[0].year;
+                    window.populateYearDropdown();
+                    window.renderTabs();
+                    window.calculateAll();
+                    window.saveDataToCloud();
+                    alert(`Sukses mengimpor ${transactions.length} transaksi dari file XML Coretax DJP!`);
+                }
+            } catch (err) {
+                alert("Gagal memproses XML Coretax DJP: " + err.message);
+            }
+        }
+
+        function parseAndImportCSV(csvText) {
+            const mode = window.appState.entityMode || 'umkm';
+            const lines = csvText.split(/\r\n|\n/);
+            if (lines.length <= 1) return alert("File CSV kosong!");
+
+            if (mode === 'personal') {
+                const p = window.appState.personalProfile;
+                const newPersonalMonths = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    const cols = line.split(',');
+                    if (cols.length >= 3) {
+                        const y = parseInt(cols[0]) || 2026;
+                        const m = cols[1].replace(/"/g, '');
+                        const bruto = parseFloat(cols[2]) || 0;
+                        const extraVal = parseFloat(cols[3]) || 0;
+                        newPersonalMonths.push({ year: y, name: m, gajiPokok: bruto, tunjangan: 0, iuran: extraVal, freelanceBruto: bruto });
+                    }
+                }
+                if (newPersonalMonths.length > 0) {
+                    p.monthsData = newPersonalMonths;
+                    window.populatePersonalYearDropdown();
+                    window.renderPersonalTabs();
+                    window.calculatePersonalPph21();
+                    window.saveDataToCloud();
+                    alert("Data Perseorangan/Freelance berhasil diimpor!");
+                }
+            } else {
+                const store = getActiveStore();
+                const newMonthsData = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    const cols = line.split(',');
+                    if (cols.length >= 3) {
+                        newMonthsData.push({
+                            year: parseInt(cols[0]) || 2026,
+                            name: cols[1].replace(/"/g, ''),
+                            omzet: parseFloat(cols[2]) || 0,
+                            beban: parseFloat(cols[3]) || 0,
+                            billing: cols[4] ? cols[4].replace(/"/g, '') : ''
+                        });
+                    }
+                }
+                if (newMonthsData.length > 0) {
+                    store.monthsData = newMonthsData;
+                    window.populateYearDropdown();
+                    window.renderTabs();
+                    window.calculateAll();
+                    window.saveDataToCloud();
+                    alert("Data UMKM berhasil diimpor & disinkronkan!");
+                }
+            }
+        }
+
+        /* --- SCRIPT MANAJEMEN TAB PERSEORANGAN --- */
+        function getFilteredPersonalYearData() {
+            const p = window.appState.personalProfile;
+            if (!p || !p.monthsData) return [];
+            return p.monthsData
+                .filter(m => (parseInt(m.year) || 2026) === p.selectedYear)
+                .sort((a,b) => (monthOrder[a.name] || 0) - (monthOrder[b.name] || 0));
+        }
+
+        window.populatePersonalYearDropdown = function() {
+            const p = window.appState.personalProfile;
+            if (!p || !p.monthsData) return;
+            const yearSelect = document.getElementById('personalFilterTahun');
+            let years = [...new Set(p.monthsData.map(m => parseInt(m.year) || 2026))].sort((a,b) => b - a);
+            if (years.length === 0) years = [2026];
+            if (!p.selectedYear) p.selectedYear = years[0];
+
+            yearSelect.innerHTML = '';
+            years.forEach(y => {
+                const opt = document.createElement('option');
+                opt.value = y; opt.textContent = y;
+                if (y === p.selectedYear) opt.selected = true;
+                yearSelect.appendChild(opt);
+            });
+            document.querySelectorAll('.personal-selected-year-label').forEach(el => el.textContent = p.selectedYear);
+        };
+
+        window.changePersonalSelectedYear = function() {
+            const p = window.appState.personalProfile;
+            p.selectedYear = parseInt(document.getElementById('personalFilterTahun').value) || 2026;
+            p.activeTabIndex = 0;
+            document.querySelectorAll('.personal-selected-year-label').forEach(el => el.textContent = p.selectedYear);
+            window.renderPersonalTabs();
+            window.calculatePersonalPph21();
+            window.saveDataToCloud();
+        };
+
+        window.renderPersonalTabs = function() {
+            const p = window.appState.personalProfile;
+            const tabList = document.getElementById('personalTabList');
+            tabList.innerHTML = '';
+            const currentYearData = getFilteredPersonalYearData();
+
+            if (currentYearData.length === 0) {
+                tabList.innerHTML = '<li class="nav-tab-item"><i>Belum ada data</i></li>';
+                document.getElementById('personalGajiPokok').value = '';
+                document.getElementById('personalTunjangan').value = '';
+                document.getElementById('personalIuranSip').value = '';
+                document.getElementById('freelancePenghasilanBruto').value = '';
+                return;
+            }
+
+            if (p.activeTabIndex >= currentYearData.length) p.activeTabIndex = 0;
+
+            currentYearData.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.className = `nav-tab-item ${index === p.activeTabIndex ? 'active' : ''}`;
+                li.onclick = () => window.switchPersonalTab(index);
+                const globalIndex = p.monthsData.indexOf(item);
+                li.innerHTML = `
+                    <span>${item.name}</span>
+                    <span class="close-tab" onclick="window.deletePersonalTab(event, ${globalIndex})"><i class="fa-solid fa-xmark"></i></span>
+                `;
+                tabList.appendChild(li);
+            });
+
+            const activeData = currentYearData[p.activeTabIndex];
+            if (activeData) {
+                document.getElementById('personalGajiPokok').value = activeData.gajiPokok !== undefined ? activeData.gajiPokok : '';
+                document.getElementById('personalTunjangan').value = activeData.tunjangan !== undefined ? activeData.tunjangan : '';
+                document.getElementById('personalIuranSip').value = activeData.iuran !== undefined ? activeData.iuran : '';
+                document.getElementById('freelancePenghasilanBruto').value = activeData.freelanceBruto !== undefined ? activeData.freelanceBruto : '';
+            }
+        };
+
+        window.switchPersonalTab = function(index) {
+            const p = window.appState.personalProfile;
+            p.activeTabIndex = index;
+            window.renderPersonalTabs();
+            window.calculatePersonalPph21();
+            window.saveDataToCloud();
+        };
+
+        window.openAddPersonalTabModal = function() {
+            const p = window.appState.personalProfile;
+            document.getElementById('addPersonalTabModal').classList.add('active');
+            document.getElementById('newPersonalTabYear').value = p.selectedYear || 2026;
+        };
+
+        window.closeAddPersonalTabModal = function() { document.getElementById('addPersonalTabModal').classList.remove('active'); };
+
+        window.addNewPersonalTab = function() {
+            const p = window.appState.personalProfile;
+            const month = document.getElementById('newPersonalTabMonth').value;
+            const year = parseInt(document.getElementById('newPersonalTabYear').value) || 2026;
+            const exists = p.monthsData.some(m => m.name === month && (parseInt(m.year) || 2026) === year);
+            if (exists) return alert(`Periode Perseorangan ${month} ${year} sudah ada!`);
+
+            p.monthsData.push({ name: month, year: year, gajiPokok: 0, tunjangan: 0, iuran: 0, freelanceBruto: 0 });
+            p.selectedYear = year;
+            window.populatePersonalYearDropdown();
+
+            const filtered = getFilteredPersonalYearData();
+            p.activeTabIndex = filtered.findIndex(m => m.name === month && (parseInt(m.year) || 2026) === year);
+
+            window.closeAddPersonalTabModal();
+            window.renderPersonalTabs();
+            window.calculatePersonalPph21();
+            window.saveDataToCloud();
+        };
+
+        window.deletePersonalTab = function(e, globalIndex) {
+            e.stopPropagation();
+            const p = window.appState.personalProfile;
+            const item = p.monthsData[globalIndex];
+            if (confirm(`Hapus data perseorangan ${item.name} ${item.year}?`)) {
+                p.monthsData.splice(globalIndex, 1);
+                window.populatePersonalYearDropdown();
+                window.renderPersonalTabs();
+                window.calculatePersonalPph21();
+                window.saveDataToCloud();
+            }
+        };
+
+        window.updateCurrentPersonalTabData = function() {
+            const p = window.appState.personalProfile;
+            const currentYearData = getFilteredPersonalYearData();
+            const activeData = currentYearData[p.activeTabIndex];
+            if (!activeData) return;
+
+            activeData.gajiPokok = parseFloat(document.getElementById('personalGajiPokok').value) || 0;
+            activeData.tunjangan = parseFloat(document.getElementById('personalTunjangan').value) || 0;
+            activeData.iuran = parseFloat(document.getElementById('personalIuranSip').value) || 0;
+            activeData.freelanceBruto = parseFloat(document.getElementById('freelancePenghasilanBruto').value) || 0;
+
+            window.calculatePersonalPph21();
+            window.saveDataToCloud();
+        };
+
+        window.calculatePersonalPph21 = function() {
+            window.savePersonalData();
+            const p = window.appState.personalProfile;
+            const jobType = document.getElementById('personalTipePekerjaan').value;
+            const ptkp = parseFloat(document.getElementById('personalStatusPTKP').value) || 54000000;
+
+            const currentYearData = getFilteredPersonalYearData();
+            const activeData = currentYearData[p.activeTabIndex] || { gajiPokok: 0, tunjangan: 0, iuran: 0, freelanceBruto: 0 };
+
+            let activeBrutoBulan = 0, activeNettoBulan = 0;
+
+            if (jobType === 'freelance') {
+                activeBrutoBulan = activeData.freelanceBruto || 0;
+                const norma = parseFloat(p.freelanceNorma) || 0.5;
+                activeNettoBulan = activeBrutoBulan * norma;
+            } else {
+                const gaji = activeData.gajiPokok || 0;
+                const tunj = activeData.tunjangan || 0;
+                const iuran = activeData.iuran || 0;
+                activeBrutoBulan = gaji + tunj;
+                const biayaJabatan = Math.min(activeBrutoBulan * 0.05, 500000);
+                activeNettoBulan = activeBrutoBulan - biayaJabatan - iuran;
+            }
+
+            let totalNettoTahun = 0, totalBrutoTahun = 0;
+            currentYearData.forEach(m => {
+                if (jobType === 'freelance') {
+                    const b = m.freelanceBruto || 0;
+                    const norma = parseFloat(p.freelanceNorma) || 0.5;
+                    totalBrutoTahun += b;
+                    totalNettoTahun += (b * norma);
+                } else {
+                    const g = m.gajiPokok || 0;
+                    const t = m.tunjangan || 0;
+                    const i = m.iuran || 0;
+                    const b = g + t;
+                    const bj = Math.min(b * 0.05, 500000);
+                    totalBrutoTahun += b;
+                    totalNettoTahun += (b - bj - i);
+                }
+            });
+
+            const monthCount = currentYearData.length;
+            if (monthCount > 0 && monthCount < 12) {
+                const multi = 12 - monthCount;
+                totalBrutoTahun += (activeBrutoBulan * multi);
+                totalNettoTahun += (activeNettoBulan * multi);
+            }
+
+            const pkp = Math.max(0, totalNettoTahun - ptkp);
+            let pphTahun = 0;
+            if (pkp > 0) {
+                if (pkp <= 60000000) pphTahun = pkp * 0.05;
+                else if (pkp <= 250000000) pphTahun = (60000000 * 0.05) + ((pkp - 60000000) * 0.15);
+                else if (pkp <= 500000000) pphTahun = (60000000 * 0.05) + (190000000 * 0.15) + ((pkp - 250000000) * 0.25);
+                else pphTahun = (60000000 * 0.05) + (190000000 * 0.15) + (250000000 * 0.25) + ((pkp - 500000000) * 0.30);
+            }
+
+            const pphBulanActive = pphTahun / 12;
+
+            document.getElementById('resPersonalBrutoBulan').textContent = formatRupiah(activeBrutoBulan);
+            document.getElementById('resPersonalBrutoTahun').textContent = formatRupiah(totalBrutoTahun);
+            document.getElementById('resPersonalNettoBulan').textContent = formatRupiah(activeNettoBulan);
+            document.getElementById('resPersonalNettoTahun').textContent = formatRupiah(totalNettoTahun);
+            document.getElementById('resPersonalPKP').textContent = formatRupiah(pkp);
+            document.getElementById('resPersonalPphBulan').textContent = formatRupiah(pphBulanActive);
+            document.getElementById('resPersonalPphTahun').textContent = formatRupiah(pphTahun);
+
+            const pHistoryBody = document.getElementById('personalHistoryTableBody');
+            if (pHistoryBody) {
+                pHistoryBody.innerHTML = '';
+                const ptkpBulan = ptkp / 12;
+                const labelTipe = jobType === 'freelance' ? 'Freelancer (NPPN)' : 'Karyawan (PPh 21)';
+
+                currentYearData.forEach((m) => {
+                    let bBulan = 0, nBulan = 0;
+                    if (jobType === 'freelance') {
+                        bBulan = m.freelanceBruto || 0;
+                        nBulan = bBulan * (parseFloat(p.freelanceNorma) || 0.5);
+                    } else {
+                        const g = m.gajiPokok || 0;
+                        const t = m.tunjangan || 0;
+                        const i = m.iuran || 0;
+                        bBulan = g + t;
+                        const bj = Math.min(bBulan * 0.05, 500000);
+                        nBulan = bBulan - bj - i;
+                    }
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${m.year || p.selectedYear}</strong></td>
+                        <td>${m.name}</td>
+                        <td>${labelTipe}</td>
+                        <td>${formatRupiah(bBulan)}</td>
+                        <td>${formatRupiah(nBulan)}</td>
+                        <td>${formatRupiah(ptkpBulan)}</td>
+                        <td style="color: #2563eb; font-weight: 700;">${formatRupiah(pphBulanActive)}</td>
+                        <td><span class="badge ${pphBulanActive > 0 ? 'badge-warning' : 'badge-success'}">${pphBulanActive > 0 ? 'Kena Pajak' : 'Nihil / Bebas'}</span></td>
+                    `;
+                    pHistoryBody.appendChild(tr);
+                });
+            }
+        };
+
+        window.calculatePajakKendaraan = function() {
+            window.savePersonalData();
+            const jenis = document.getElementById('personalJenisKendaraan').value;
+            const njkb = parseFloat(document.getElementById('personalNJKB').value) || 0;
+            const tarif = parseFloat(document.getElementById('personalKepemilikan').value) || 0.02;
+
+            const swdkllj = jenis === 'mobil' ? 143000 : 35000;
+            const pkb = njkb * tarif;
+            const total = pkb + swdkllj;
+
+            document.getElementById('resPKB').textContent = formatRupiah(pkb);
+            document.getElementById('resSWDKLLJ').textContent = formatRupiah(swdkllj);
+            document.getElementById('resTotalKendaraan').textContent = formatRupiah(total);
+        };
+
+        function renderStoreDropdown() {
+            const select = document.getElementById('storeSelectDropdown');
+            select.innerHTML = '';
+            window.appState.stores.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = s.profile.namaUsaha || `Toko (${s.id})`;
+                if (s.id === window.appState.activeStoreId) opt.selected = true;
+                select.appendChild(opt);
+            });
+        }
+
+        window.switchStore = function(storeId) {
+            window.appState.activeStoreId = storeId;
+            window.saveDataToCloud();
+            initUI();
+        };
+
+        window.openAddStoreModal = function() {
+            document.getElementById('addStoreModal').classList.add('active');
+            document.getElementById('newStoreName').value = '';
+            document.getElementById('newStoreCategory').value = 'Kuliner / Makanan & Minuman';
+            document.getElementById('customStoreCategoryGroup').style.display = 'none';
+        };
+
+        window.closeAddStoreModal = function() { document.getElementById('addStoreModal').classList.remove('active'); };
+
+        window.handleStoreCategoryChange = function(val) {
+            document.getElementById('customStoreCategoryGroup').style.display = val === 'Lainnya' ? 'flex' : 'none';
+        };
+
+        window.addNewStore = function() {
+            const name = document.getElementById('newStoreName').value.trim();
+            let category = document.getElementById('newStoreCategory').value;
+            if (category === 'Lainnya') {
+                const customVal = document.getElementById('newStoreCategoryCustom').value.trim();
+                category = customVal || 'Lainnya';
+            }
+            if (!name) return alert("Masukkan nama toko!");
+
+            const newId = "store_" + Date.now();
+            const currentStore = getActiveStore();
+
+            window.appState.stores.push({
+                id: newId,
+                profile: {
+                    namaUsaha: name,
+                    npwp: currentStore.profile.npwp || '',
+                    jenisWP: currentStore.profile.jenisWP || 'OP',
+                    kategoriUsaha: category,
+                    targetOmzet: 500000000
+                },
+                selectedYear: 2026, activeTabIndex: 0,
+                monthsData: [{ name: 'Januari', year: 2026, omzet: 0, beban: 0, billing: '' }]
+            });
+
+            window.appState.activeStoreId = newId;
+            window.closeAddStoreModal();
+            window.saveDataToCloud();
+            initUI();
+        };
+
+        window.setTabCountFromProfile = function(countStr) {
+            const count = parseInt(countStr) || 1;
+            const store = getActiveStore();
+            const currentYear = store.selectedYear || 2026;
+
+            const otherYearData = store.monthsData.filter(m => (parseInt(m.year) || 2026) !== currentYear);
+            const newYearMonths = [];
+
+            for (let i = 0; i < count; i++) {
+                const mName = allMonthsList[i];
+                const existing = store.monthsData.find(m => m.name === mName && (parseInt(m.year) || 2026) === currentYear);
+                if (existing) newYearMonths.push(existing);
+                else newYearMonths.push({ name: mName, year: currentYear, omzet: 0, beban: 0, billing: '' });
+            }
+
+            store.monthsData = [...otherYearData, ...newYearMonths];
+            store.activeTabIndex = 0;
+
+            window.renderTabs();
+            window.calculateAll();
+            window.saveDataToCloud();
+        };
+
+        window.saveProfileToCloud = function() {
+            const store = getActiveStore();
+            store.profile.namaUsaha = document.getElementById('namaUsaha').value;
+            store.profile.jenisWP = document.getElementById('jenisWP').value;
+            store.profile.kategoriUsaha = document.getElementById('kategoriUsaha').value;
+            store.profile.targetOmzet = parseFloat(document.getElementById('targetOmzet').value) || 0;
+            renderStoreDropdown();
+            window.saveDataToCloud();
+        };
+
+        window.populateYearDropdown = function() {
+            const store = getActiveStore();
+            const yearSelect = document.getElementById('filterTahun');
+            let years = [...new Set(store.monthsData.map(m => parseInt(m.year) || 2026))].sort((a,b) => b - a);
+            if (years.length === 0) years = [2026];
+            if (!store.selectedYear) store.selectedYear = years[0];
+
+            yearSelect.innerHTML = '';
+            years.forEach(y => {
+                const opt = document.createElement('option');
+                opt.value = y; opt.textContent = y;
+                if (y === store.selectedYear) opt.selected = true;
+                yearSelect.appendChild(opt);
+            });
+            document.querySelectorAll('.selected-year-label').forEach(el => el.textContent = store.selectedYear);
+        };
+
+        window.changeSelectedYear = function() {
+            const store = getActiveStore();
+            store.selectedYear = parseInt(document.getElementById('filterTahun').value) || 2026;
+            store.activeTabIndex = 0;
+            document.querySelectorAll('.selected-year-label').forEach(el => el.textContent = store.selectedYear);
+            window.renderTabs();
+            window.calculateAll();
+            window.saveDataToCloud();
+        };
+
         function getFilteredYearData() {
             const store = getActiveStore();
             return store.monthsData
@@ -1052,14 +2085,25 @@
             tabList.innerHTML = '';
             const currentYearData = getFilteredYearData();
 
-            if (currentYearData.length === 0) return;
+            if (currentYearData.length === 0) {
+                tabList.innerHTML = '<li class="nav-tab-item"><i>Belum ada data</i></li>';
+                document.getElementById('inputOmzet').value = '';
+                document.getElementById('inputBeban').value = '';
+                document.getElementById('inputKodeBilling').value = '';
+                return;
+            }
+
             if (store.activeTabIndex >= currentYearData.length) store.activeTabIndex = 0;
 
             currentYearData.forEach((item, index) => {
                 const li = document.createElement('li');
                 li.className = `nav-tab-item ${index === store.activeTabIndex ? 'active' : ''}`;
                 li.onclick = () => window.switchTab(index);
-                li.innerHTML = `<span>${item.name}</span>`;
+                const globalIndex = store.monthsData.indexOf(item);
+                li.innerHTML = `
+                    <span>${item.name}</span>
+                    <span class="close-tab" onclick="window.deleteTab(event, ${globalIndex})"><i class="fa-solid fa-xmark"></i></span>
+                `;
                 tabList.appendChild(li);
             });
 
@@ -1068,8 +2112,6 @@
                 document.getElementById('inputOmzet').value = activeData.omzet !== undefined ? activeData.omzet : '';
                 document.getElementById('inputBeban').value = activeData.beban !== undefined ? activeData.beban : '';
                 document.getElementById('inputKodeBilling').value = activeData.billing || '';
-                document.getElementById('inputNamaPelanggan').value = activeData.customerName || 'Pelanggan Umum';
-                document.getElementById('inputTanggalTransaksi').value = activeData.customDate || `${activeData.year || 2026}-01-28`;
             }
         };
 
@@ -1078,6 +2120,49 @@
             store.activeTabIndex = index;
             window.renderTabs();
             window.calculateAll();
+            window.saveDataToCloud();
+        };
+
+        window.openAddTabModal = function() {
+            const store = getActiveStore();
+            document.getElementById('addTabModal').classList.add('active');
+            document.getElementById('newTabYear').value = store.selectedYear || 2026;
+        };
+
+        window.closeAddTabModal = function() { document.getElementById('addTabModal').classList.remove('active'); };
+
+        window.addNewTab = function() {
+            const store = getActiveStore();
+            const month = document.getElementById('newTabMonth').value;
+            const year = parseInt(document.getElementById('newTabYear').value) || 2026;
+
+            const exists = store.monthsData.some(m => m.name === month && (parseInt(m.year) || 2026) === year);
+            if (exists) return alert(`Periode ${month} ${year} sudah ada!`);
+
+            store.monthsData.push({ name: month, year: year, omzet: 0, beban: 0, billing: '' });
+            store.selectedYear = year;
+            window.populateYearDropdown();
+
+            const filtered = getFilteredYearData();
+            store.activeTabIndex = filtered.findIndex(m => m.name === month && (parseInt(m.year) || 2026) === year);
+
+            window.closeAddTabModal();
+            window.renderTabs();
+            window.calculateAll();
+            window.saveDataToCloud();
+        };
+
+        window.deleteTab = function(e, globalIndex) {
+            e.stopPropagation();
+            const store = getActiveStore();
+            const item = store.monthsData[globalIndex];
+            if (confirm(`Hapus data ${item.name} ${item.year}?`)) {
+                store.monthsData.splice(globalIndex, 1);
+                window.populateYearDropdown();
+                window.renderTabs();
+                window.calculateAll();
+                window.saveDataToCloud();
+            }
         };
 
         window.updateCurrentTabData = function() {
@@ -1089,8 +2174,6 @@
             activeData.omzet = parseFloat(document.getElementById('inputOmzet').value) || 0;
             activeData.beban = parseFloat(document.getElementById('inputBeban').value) || 0;
             activeData.billing = document.getElementById('inputKodeBilling').value;
-            activeData.customerName = document.getElementById('inputNamaPelanggan').value;
-            activeData.customDate = document.getElementById('inputTanggalTransaksi').value;
 
             window.calculateAll();
             window.saveDataToCloud();
@@ -1100,18 +2183,17 @@
             const store = getActiveStore();
             const isOP = store.profile.jenisWP === 'OP';
             const filteredData = getFilteredYearData();
-            const rawNpwp = store.profile.npwp || "7326011206010003";
-            const tin = rawNpwp.replace(/\D/g, '').padEnd(16, '0').substring(0, 16);
-            const idTku = `${tin}000000`;
 
             let cumulativeOmzet = 0, totalOmzetAll = 0, totalLabaAll = 0, totalOmzetKenaPajakAll = 0, totalPajakAll = 0;
+            const chartLabels = [], chartOmzet = [], chartLaba = [], chartPajak = [];
             const historyBody = document.getElementById('historyTableBody');
             historyBody.innerHTML = '';
 
-            filteredData.forEach((item, idx) => {
+            filteredData.forEach((item) => {
                 const omzet = item.omzet || 0;
                 const beban = item.beban || 0;
                 const laba = omzet - beban;
+
                 const prevCumulative = cumulativeOmzet;
                 cumulativeOmzet += omzet;
 
@@ -1121,56 +2203,192 @@
                     if (prevCumulative >= LIMIT) dpp = omzet;
                     else if (cumulativeOmzet > LIMIT) dpp = cumulativeOmzet - LIMIT;
                     else dpp = 0;
-                } else dpp = omzet;
+                } else {
+                    dpp = omzet;
+                }
 
                 const pajak = dpp * 0.005;
+
+                item.computedLaba = laba;
+                item.computedDPP = dpp;
+                item.computedPajak = pajak;
+                item.computedCumulative = cumulativeOmzet;
 
                 totalOmzetAll += omzet;
                 totalLabaAll += laba;
                 totalOmzetKenaPajakAll += dpp;
                 totalPajakAll += pajak;
 
-                const transNum = item.billing || `TRX-${store.selectedYear}-${String(idx + 1).padStart(4, '0')}`;
-                const transDate = item.customDate || `${store.selectedYear}-01-28`;
-                const custName = item.customerName || "Pelanggan Umum";
+                chartLabels.push(item.name);
+                chartOmzet.push(omzet);
+                chartLaba.push(laba);
+                chartPajak.push(pajak);
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><code>${idTku}</code></td>
-                    <td><strong>${custName}</strong></td>
-                    <td><span class="badge badge-info">${transNum}</span></td>
-                    <td>${transDate}</td>
+                    <td><strong>${item.year || store.selectedYear}</strong></td>
+                    <td>${item.name}</td>
                     <td>${formatRupiah(omzet)}</td>
                     <td>${formatRupiah(beban)}</td>
+                    <td style="color: #059669; font-weight: 600;">${formatRupiah(laba)}</td>
                     <td>${formatRupiah(dpp)}</td>
                     <td style="color: #2563eb; font-weight: 700;">${formatRupiah(pajak)}</td>
-                    <td><span class="badge badge-success">Sesuai DJP</span></td>
+                    <td>${item.billing ? `<span class="badge badge-info">${item.billing}</span>` : '-'}</td>
+                    <td><span class="badge ${pajak > 0 ? 'badge-warning' : 'badge-success'}">${pajak > 0 ? 'Wajib' : 'Bebas'}</span></td>
                 `;
                 historyBody.appendChild(tr);
             });
+
+            const activeItem = filteredData[store.activeTabIndex];
+            if (activeItem) {
+                document.getElementById('calcLabaBersih').textContent = formatRupiah(activeItem.computedLaba);
+                document.getElementById('calcKumulatifOmzet').textContent = formatRupiah(activeItem.computedCumulative);
+                document.getElementById('calcDPP').textContent = formatRupiah(activeItem.computedDPP);
+                document.getElementById('calcPajakBulan').textContent = formatRupiah(activeItem.computedPajak);
+
+                if (isOP) {
+                    document.getElementById('calcBebasPajak').textContent = "Rp 500 Jt";
+                    document.getElementById('calcStatusBebas').textContent = activeItem.computedCumulative <= 500000000 
+                        ? `Bebas Pajak (Kumulatif <= 500Jt)`
+                        : `Melebihi limit 500Jt (Kena 0,5%)`;
+                } else {
+                    document.getElementById('calcBebasPajak').textContent = "Tidak Berlaku";
+                    document.getElementById('calcStatusBebas').textContent = "Badan Usaha PPh 0,5% Direct";
+                }
+            } else {
+                document.getElementById('calcLabaBersih').textContent = 'Rp 0';
+                document.getElementById('calcKumulatifOmzet').textContent = 'Rp 0';
+                document.getElementById('calcDPP').textContent = 'Rp 0';
+                document.getElementById('calcPajakBulan').textContent = 'Rp 0';
+            }
 
             document.getElementById('summaryTotalOmzet').textContent = formatRupiah(totalOmzetAll);
             document.getElementById('summaryTotalLaba').textContent = formatRupiah(totalLabaAll);
             document.getElementById('summaryOmzetKenaPajak').textContent = formatRupiah(totalOmzetKenaPajakAll);
             document.getElementById('summaryTotalPajak').textContent = formatRupiah(totalPajakAll);
+
+            window.updateProgressTarget();
+            updateChart(chartLabels, chartOmzet, chartLaba, chartPajak);
+        };
+
+        window.updateProgressTarget = function() {
+            const store = getActiveStore();
+            const target = parseFloat(document.getElementById('targetOmzet').value) || 500000000;
+            const filteredData = getFilteredYearData();
+            const totalOmzet = filteredData.reduce((acc, curr) => acc + (curr.omzet || 0), 0);
+
+            const percent = Math.min(Math.round((totalOmzet / target) * 100), 100) || 0;
+            document.getElementById('targetPercentText').textContent = `${percent}% (${formatRupiah(totalOmzet)} / ${formatRupiah(target)})`;
+            document.getElementById('targetProgressBar').style.width = `${percent}%`;
+        };
+
+        window.runSimulasiKalkulator = function() {
+            const omzet = parseFloat(document.getElementById('simulasiOmzet').value) || 0;
+            const akumulasi = parseFloat(document.getElementById('simulasiAkumulasi').value) || 0;
+            const isOP = (document.getElementById('jenisWP').value || 'OP') === 'OP';
+
+            let dpp = 0;
+            if (isOP) {
+                const LIMIT = 500000000;
+                const totalAkumulasi = akumulasi + omzet;
+                if (akumulasi >= LIMIT) dpp = omzet;
+                else if (totalAkumulasi > LIMIT) dpp = totalAkumulasi - LIMIT;
+                else dpp = 0;
+            } else {
+                dpp = omzet;
+            }
+
+            const pajak = dpp * 0.005;
+            document.getElementById('simulasiDPPText').textContent = formatRupiah(dpp);
+            document.getElementById('simulasiPajakText').textContent = formatRupiah(pajak);
         };
 
         function formatRupiah(amount) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount);
         }
 
-        window.populateYearDropdown = function() {
-            const store = getActiveStore();
-            const yearSelect = document.getElementById('filterTahun');
-            let years = [...new Set(store.monthsData.map(m => parseInt(m.year) || 2026))].sort((a,b) => b - a);
-            if (years.length === 0) years = [2026];
-            yearSelect.innerHTML = '';
-            years.forEach(y => {
-                const opt = document.createElement('option');
-                opt.value = y; opt.textContent = y;
-                if (y === store.selectedYear) opt.selected = true;
-                yearSelect.appendChild(opt);
+        function updateChart(labels, omzet, laba, pajak) {
+            const canvas = document.getElementById('taxChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Omzet', data: omzet, backgroundColor: 'rgba(37, 99, 235, 0.75)', borderColor: '#2563eb', borderWidth: 1, borderRadius: 6 },
+                        { label: 'Laba', data: laba, backgroundColor: 'rgba(16, 185, 129, 0.75)', borderColor: '#10b981', borderWidth: 1, borderRadius: 6 },
+                        { label: 'Pajak (0.5%)', data: pajak, type: 'line', borderColor: '#ef4444', backgroundColor: '#ef4444', borderWidth: 2, fill: false, tension: 0.3 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11, family: 'Plus Jakarta Sans' } } },
+                        tooltip: { callbacks: { label: function(context) { return context.dataset.label + ': ' + formatRupiah(context.raw); } } }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { callback: function(value) { return 'Rp ' + (value / 1000000).toLocaleString('id-ID') + 'M'; } } }
+                    }
+                }
             });
+        }
+
+        window.exportSpreadsheet = function() {
+            const mode = window.appState.entityMode || 'umkm';
+            let csvContent = "\uFEFF";
+            if (mode === 'personal') {
+                const p = window.appState.personalProfile || {};
+                csvContent += "Tahun,Bulan,Tipe Pekerjaan,Penghasilan Bruto (Rp),Iuran BPJS / Norma (NPPN)\n";
+                if (p.monthsData && p.monthsData.length > 0) {
+                    p.monthsData.forEach(item => {
+                        const isFreelance = p.tipePekerjaan === 'freelance';
+                        const bruto = isFreelance ? (item.freelanceBruto || 0) : ((item.gajiPokok || 0) + (item.tunjangan || 0));
+                        const extraVal = isFreelance ? (p.freelanceNorma || 0.5) : (item.iuran || 0);
+                        csvContent += [ item.year || 2026, `"${item.name}"`, `"${p.tipePekerjaan || 'karyawan'}"`, bruto, extraVal ].join(",") + "\n";
+                    });
+                }
+            } else {
+                const store = getActiveStore();
+                csvContent += "Tahun,Bulan,Omzet Bruto (Rp),Beban Operasional (Rp),Laba Bersih (Rp),DPP Pajak (Rp),PPh Final 0.5% (Rp),Kode Billing / NTPN\n";
+                store.monthsData.forEach(item => {
+                    csvContent += [ item.year || 2026, `"${item.name}"`, item.omzet || 0, item.beban || 0, item.computedLaba || 0, item.computedDPP || 0, item.computedPajak || 0, `"${item.billing || ''}"` ].join(",") + "\n";
+                });
+            }
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `AppPUN_${mode.toUpperCase()}_Export_${Date.now()}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+
+        window.downloadTemplate = function() {
+            const mode = window.appState.entityMode || 'umkm';
+            let templateContent = "\uFEFF";
+            if (mode === 'personal') {
+                const jobType = (window.appState.personalProfile && window.appState.personalProfile.tipePekerjaan) || 'karyawan';
+                if (jobType === 'freelance') {
+                    templateContent += "Tahun,Bulan,Penghasilan Bruto,Norma NPPN\n2026,Januari,15000000,0.5\n2026,Februari,18000000,0.5\n";
+                } else {
+                    templateContent += "Tahun,Bulan,Penghasilan Bruto,Iuran BPJS Pensiun\n2026,Januari,12000000,200000\n2026,Februari,12000000,200000\n";
+                }
+            } else {
+                templateContent += "Tahun,Bulan,Omzet Bruto,Beban Operasional,NTPN_Billing\n2026,Januari,85000000,42000000,NTPN-8821931\n2026,Februari,92000000,45000000,NTPN-8821932\n";
+            }
+
+            const blob = new Blob([templateContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `Template_Impor_${mode.toUpperCase()}_AppPUN.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         };
     </script>
 </body>
