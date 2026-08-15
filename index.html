@@ -334,6 +334,16 @@
         .faq-item summary { font-weight: 700; color: var(--secondary); outline: none; }
         .faq-item p { margin-top: 6px; color: var(--text-muted); line-height: 1.4; font-size: 0.775rem; }
 
+        /* REAL USER COUNTER BANNER INSIDE DASHBOARD */
+        .dashboard-user-banner {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-radius: 14px; padding: 12px 18px; margin-bottom: 18px;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+        }
+        .dashboard-user-banner .banner-text { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.875rem; color: var(--secondary); }
+        .dashboard-user-banner .banner-stat { font-weight: 800; color: var(--primary); font-size: 1.05rem; background: rgba(255,255,255,0.8); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border-subtle); }
+
         @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: flex-end; padding: 0; }
@@ -406,9 +416,9 @@
                 </svg>
                 <h2>Masuk ke AppPUN</h2>
                 <p>Kelola Pajak UMKM & Perorangan (Integrasi DJP Coretax Validated)</p>
-                <!-- FLEXING COUNTER ON LOGIN CARD -->
+                <!-- DYNAMIC REAL USER COUNTER ON LOGIN CARD -->
                 <div>
-                    <span class="flexing-user-badge"><i class="fa-solid fa-fire" style="color:#f59e0b;"></i> <span id="authLiveUserCounter">12.854</span>+ Pengguna Aktif</span>
+                    <span class="flexing-user-badge"><i class="fa-solid fa-users" style="color:#10b981;"></i> <span class="real-user-count-label">Memuat total pengguna...</span></span>
                 </div>
             </div>
             <form id="loginForm" class="auth-form" onsubmit="window.handleLogin(event)">
@@ -526,9 +536,9 @@
                 </div>
             </div>
             <div class="header-actions">
-                <!-- USER STATS FLEXING COUNTER ON HEADER -->
+                <!-- DYNAMIC REAL USER COUNTER IN HEADER -->
                 <div class="user-badge" style="background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.4); color: #6ee7b7;">
-                    <i class="fa-solid fa-users"></i> <span id="headerLiveUserCounter">12.854 WP Active</span>
+                    <i class="fa-solid fa-users"></i> <span class="real-user-count-label">Memuat data...</span>
                 </div>
                 <div class="sync-indicator">
                     <span class="sync-dot" id="syncStatusDot"></span>
@@ -548,6 +558,17 @@
     </header>
 
     <div class="main-container">
+
+        <!-- REAL USER COUNTER WIDGET BANNER INSIDE DASHBOARD -->
+        <div class="dashboard-user-banner">
+            <div class="banner-text">
+                <i class="fa-solid fa-chart-line" style="color: var(--primary); font-size: 1.2rem;"></i>
+                <span>Komunitas Wajib Pajak AppPUN Terdaftar (Real-time Firestore)</span>
+            </div>
+            <div class="banner-stat">
+                <i class="fa-solid fa-users" style="color: #10b981;"></i> <span class="real-user-count-label">Memuat data...</span>
+            </div>
+        </div>
 
         <!-- FITUR PERGANTIAN ENTITAS -->
         <div class="entity-toggle-container">
@@ -672,7 +693,7 @@
             </div>
 
             <div class="tax-info-box">
-                <i class="fa-solid fa-users"></i> <strong>Fitur Baru Transaksi Per Pelanggan:</strong> Anda dapat memasukkan banyak transaksi pelanggan dalam 1 bulan! Klik tombol <strong>"+ Tambah Pelanggan / Nota"</strong> di bawah untuk memasukkan struk/faktur per pelanggan.
+                <i class="fa-solid fa-users"></i> <strong>Fitur Transaksi Per Pelanggan:</strong> Anda dapat memasukkan banyak transaksi pelanggan dalam 1 bulan! Klik tombol <strong>"+ Tambah Pelanggan / Nota"</strong> di bawah untuk memasukkan struk/faktur per pelanggan.
             </div>
 
             <!-- Monthly Tabs & Input Form Multi-Pelanggan Coretax -->
@@ -750,11 +771,10 @@
                 </div>
             </div>
 
-            <!-- Tabel Riwayat UMKM + FITUR HAPUS RIWAYAT -->
+            <!-- Tabel Riwayat UMKM -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Tabel Riwayat Transaksi Coretax (<span class="selected-year-label">2026</span>)</span>
-                    <!-- TOMBOL FITUR HAPUS SEMUA RIWAYAT -->
                     <button class="btn btn-danger" style="min-height:32px; padding:4px 12px; font-size:0.775rem;" onclick="window.clearSelectedYearHistory()"><i class="fa-solid fa-trash-can"></i> Hapus Semua Riwayat (<span class="selected-year-label">2026</span>)</button>
                 </div>
                 <div class="table-responsive">
@@ -907,7 +927,7 @@
                 </div>
             </div>
 
-            <!-- TABEL RIWAYAT PAJAK PERSEORANGAN + FITUR HAPUS RIWAYAT -->
+            <!-- TABEL RIWAYAT PAJAK PERSEORANGAN -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Pajak Bulanan Perorangan (<span class="personal-selected-year-label">2026</span>)</span>
@@ -1142,7 +1162,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection, getCountFromServer } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDdmiCbU40lfgHdXEpvbmYdcxonIao9CC4",
@@ -1268,6 +1288,26 @@
 
         window.appState = defaultState;
 
+        /* FITUR JUMLAH PENGGUNA SUNGGUHNYS (REAL FROM FIRESTORE) */
+        async function fetchRealUserCount() {
+            if (!db) return;
+            try {
+                const usersCol = collection(db, "users");
+                const snapshot = await getCountFromServer(usersCol);
+                const totalRealUsers = snapshot.data().count;
+                const formatted = new Intl.NumberFormat('id-ID').format(totalRealUsers);
+
+                document.querySelectorAll('.real-user-count-label').forEach(el => {
+                    el.textContent = `${formatted} Wajib Pajak Terdaftar`;
+                });
+            } catch (err) {
+                console.warn("Gagal mengambil jumlah pengguna asli dari Firestore:", err);
+                document.querySelectorAll('.real-user-count-label').forEach(el => {
+                    el.textContent = `1+ Wajib Pajak Terdaftar`;
+                });
+            }
+        }
+
         function getActiveStore() {
             let store = window.appState.stores.find(s => s.id === window.appState.activeStoreId);
             if (!store) {
@@ -1319,6 +1359,7 @@
         if (auth) {
             onAuthStateChanged(auth, (user) => {
                 if (cloudSaveTimer) { clearTimeout(cloudSaveTimer); cloudSaveTimer = null; }
+                fetchRealUserCount();
                 if (user) {
                     currentUser = user;
                     const npwp = user.email.split('@')[0];
@@ -1347,6 +1388,7 @@
             }
             document.getElementById('authOverlay').style.display = 'none';
             initUI();
+            fetchRealUserCount();
         }
 
         function listenToCloudData(uid, npwp) {
@@ -1444,6 +1486,7 @@
                 window.appState = initialData;
                 saveLocalState();
                 if (db) await setDoc(doc(db, "users", userCred.user.uid), { ...initialData, updatedAt: Date.now() });
+                fetchRealUserCount();
                 alert("Pendaftaran berhasil!");
             } catch (err) { alert("Gagal mendaftar: " + err.message); }
         };
@@ -1548,7 +1591,6 @@
             window.populateYearDropdown();
             window.renderTabs();
             window.calculateAll();
-            window.runSimulasiKalkulator();
         }
 
         window.toggleSupportWindow = function() {
@@ -1569,10 +1611,7 @@
             window.open(`https://wa.me/6289518625612?text=${encodeURIComponent(msg)}`, '_blank');
         };
 
-        /* ========================================================================= */
-        /* --- FITUR BARU: HAPUS RIWAYAT TRANSAKSI --- */
-        /* ========================================================================= */
-
+        /* HAPUS RIWAYAT TRANSAKSI */
         window.clearSelectedYearHistory = function() {
             const store = getActiveStore();
             const year = store.selectedYear || 2026;
@@ -1627,10 +1666,7 @@
             }
         };
 
-        /* ========================================================================= */
-        /* --- EKSPOR XML CORETAX DJP BERDASARKAN SELURUH TRANSAKSI PELANGGAN --- */
-        /* ========================================================================= */
-
+        /* EKSPOR XML CORETAX DJP BERDASARKAN SELURUH TRANSAKSI PELANGGAN */
         window.exportCoreTaxXML = function() {
             const store = getActiveStore();
             const rawNpwp = store.profile.npwp || "7326011206010003";
@@ -1887,7 +1923,7 @@
             }
         }
 
-        /* --- SCRIPT MANAJEMEN TAB PERSEORANGAN --- */
+        /* MANAJEMEN TAB PERSEORANGAN */
         function getFilteredPersonalYearData() {
             const p = window.appState.personalProfile;
             if (!p || !p.monthsData) return [];
@@ -2306,8 +2342,7 @@
                 .sort((a,b) => (monthOrder[a.name] || 0) - (monthOrder[b.name] || 0));
         }
 
-        /* --- SCRIPT MANAJEMEN TRANSAKSI MULTI-PELANGGAN BULANAN --- */
-
+        /* MANAJEMEN TRANSAKSI BULANAN */
         window.renderTabs = function() {
             const store = getActiveStore();
             const tabList = document.getElementById('tabList');
@@ -2768,27 +2803,6 @@
             document.getElementById('targetProgressBar').style.width = `${percent}%`;
         };
 
-        window.runSimulasiKalkulator = function() {
-            const omzet = parseFloat(document.getElementById('simulasiOmzet').value) || 0;
-            const akumulasi = parseFloat(document.getElementById('simulasiAkumulasi').value) || 0;
-            const isOP = (document.getElementById('jenisWP').value || 'OP') === 'OP';
-
-            let dpp = 0;
-            if (isOP) {
-                const LIMIT = 500000000;
-                const totalAkumulasi = akumulasi + omzet;
-                if (akumulasi >= LIMIT) dpp = omzet;
-                else if (totalAkumulasi > LIMIT) dpp = totalAkumulasi - LIMIT;
-                else dpp = 0;
-            } else {
-                dpp = omzet;
-            }
-
-            const pajak = dpp * 0.005;
-            document.getElementById('simulasiDPPText').textContent = formatRupiah(dpp);
-            document.getElementById('simulasiPajakText').textContent = formatRupiah(pajak);
-        };
-
         function formatRupiah(amount) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount);
         }
@@ -2823,7 +2837,7 @@
             });
         }
 
-        /* --- EKSPOR EXCEL & CSV DENGAN KEPALA KOLOM RESMI CORETAX --- */
+        /* EKSPOR EXCEL & CSV DENGAN KEPALA KOLOM RESMI CORETAX */
         window.exportSpreadsheet = function() {
             const mode = window.appState.entityMode || 'umkm';
             let csvContent = "\uFEFF";
