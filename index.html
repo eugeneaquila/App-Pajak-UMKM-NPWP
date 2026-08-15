@@ -232,7 +232,8 @@
         .metric-desc { font-size: 0.725rem; color: var(--text-muted); font-weight: 500; }
 
         .tabs-header-wrapper { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--border-subtle); margin-bottom: 18px; gap: 8px; padding-bottom: 4px; }
-        .nav-tabs { display: flex; gap: 8px; list-style: none; overflow-x: auto; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; padding-bottom: 4px; width: 100%; }
+        .nav-tabs { display: flex; gap: 8px; list-style: none; overflow-x: auto; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; padding-bottom: 4px; width: 100%; scrollbar-width: none; }
+        .nav-tabs::-webkit-scrollbar { display: none; }
         .nav-tab-item { 
             padding: 9px 16px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); 
             border-radius: 10px; cursor: pointer; white-space: nowrap; transition: all 0.2s ease; 
@@ -278,7 +279,7 @@
 
         .support-float-btn {
             position: fixed; bottom: 24px; right: 24px; z-index: 990;
-            width: 58px; height: 58px; border-radius: 50%;
+            width: 54px; height: 54px; border-radius: 50%;
             background: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
             color: white; border: 2px solid rgba(255,255,255,0.8);
             box-shadow: 0 10px 28px rgba(37, 99, 235, 0.4);
@@ -351,7 +352,7 @@
         .modal-content { 
             background: rgba(255, 255, 255, 0.92); 
             backdrop-filter: blur(20px);
-            padding: 26px; border-radius: 24px 24px 0 0; width: 100%; max-width: 500px; 
+            padding: 24px 20px; border-radius: 24px 24px 0 0; width: 100%; max-width: 500px; 
             box-shadow: var(--shadow-lg); border: 1px solid var(--border-glass); border-bottom: none;
             animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
         }
@@ -376,8 +377,95 @@
             margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #cbd5e1;
         }
 
-        .item-row { display: grid; grid-template-columns: 2fr 1fr 1fr 40px; gap: 8px; align-items: center; margin-bottom: 8px; }
+        /* DEFAULT DESKTOP ITEM ROW */
+        .item-row { display: grid; grid-template-columns: 2fr 1fr 1fr 42px; gap: 8px; align-items: center; margin-bottom: 8px; }
         .item-header { font-size: 0.725rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+
+        /* ================= MOBILE OPTIMIZATION STYLES (< 640px) ================= */
+        @media (max-width: 640px) {
+            .hide-mobile { display: none !important; }
+
+            header { padding: 10px 14px; }
+            .brand h1 { font-size: 1.15rem; }
+            .brand p { display: none; }
+            .header-actions {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                width: 100%;
+                padding-top: 6px;
+                padding-bottom: 4px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .header-actions::-webkit-scrollbar { display: none; }
+            .header-actions .btn {
+                padding: 6px 10px;
+                font-size: 0.775rem;
+                min-height: 36px;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+            .header-actions .user-badge, .header-actions .sync-indicator {
+                font-size: 0.7rem;
+                padding: 4px 10px;
+                flex-shrink: 0;
+            }
+
+            .main-container { padding: 0 10px; margin-top: 12px; }
+            .card { padding: 14px; border-radius: 14px; margin-bottom: 14px; }
+            .card-title { font-size: 0.95rem; }
+            
+            /* Responsive Grid on Mobile Item Row */
+            .item-row {
+                grid-template-columns: 1fr 1fr 38px;
+                gap: 6px;
+                background: rgba(255, 255, 255, 0.65);
+                padding: 10px;
+                border-radius: 12px;
+                border: 1px solid rgba(226, 232, 240, 0.9);
+                margin-bottom: 10px;
+            }
+            .item-row > div:nth-child(1) {
+                grid-column: span 3; /* Item Name takes full width */
+            }
+            .item-row .item-header {
+                font-size: 0.675rem;
+                margin-bottom: 2px;
+            }
+
+            .customer-tx-card { padding: 12px; border-radius: 14px; }
+            .customer-tx-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .support-float-btn {
+                width: 48px;
+                height: 48px;
+                font-size: 1.15rem;
+                bottom: 16px;
+                right: 16px;
+            }
+            .support-window {
+                right: 12px;
+                bottom: 74px;
+                width: calc(100vw - 24px);
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .metric-card {
+                padding: 12px;
+                border-radius: 14px;
+            }
+            .metric-value {
+                font-size: 1.05rem;
+            }
+        }
 
         @media (min-width: 768px) {
             .metrics-grid { grid-template-columns: repeat(4, 1fr); }
@@ -538,7 +626,7 @@
             <div class="header-actions">
                 <!-- DYNAMIC REAL USER COUNTER IN HEADER -->
                 <div class="user-badge" style="background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.4); color: #6ee7b7;">
-                    <i class="fa-solid fa-users"></i> <span class="real-user-count-label">Memuat data...</span>
+                    <i class="fa-solid fa-users"></i> <span class="real-user-count-label">Memuat...</span>
                 </div>
                 <div class="sync-indicator">
                     <span class="sync-dot" id="syncStatusDot"></span>
@@ -547,10 +635,10 @@
                 <div class="user-badge" id="userBadgeArea">
                     <i class="fa-solid fa-circle-user"></i> <span id="displayUserNpwp">Loading...</span>
                 </div>
-                <button class="btn btn-outline" onclick="window.exportSpreadsheet()" title="Ekspor CSV Coretax Standard"><i class="fa-solid fa-file-excel"></i> CSV Coretax</button>
-                <button class="btn btn-outline" onclick="window.exportCoreTaxXML()" title="Ekspor XML DJP Coretax Multi-Pelanggan"><i class="fa-solid fa-file-code"></i> XML DJP (Full)</button>
-                <button class="btn btn-outline" onclick="window.downloadTemplate()" title="Unduh Template CSV"><i class="fa-solid fa-file-arrow-down"></i> Template</button>
-                <button class="btn btn-outline" onclick="window.triggerImport()" title="Impor File (CSV / XML)"><i class="fa-solid fa-file-import"></i> Impor</button>
+                <button class="btn btn-outline" onclick="window.exportSpreadsheet()" title="Ekspor CSV Coretax Standard"><i class="fa-solid fa-file-excel"></i> <span class="hide-mobile">CSV Coretax</span></button>
+                <button class="btn btn-outline" onclick="window.exportCoreTaxXML()" title="Ekspor XML DJP Coretax Multi-Pelanggan"><i class="fa-solid fa-file-code"></i> <span class="hide-mobile">XML DJP</span></button>
+                <button class="btn btn-outline" onclick="window.downloadTemplate()" title="Unduh Template CSV"><i class="fa-solid fa-file-arrow-down"></i> <span class="hide-mobile">Template</span></button>
+                <button class="btn btn-outline" onclick="window.triggerImport()" title="Impor File (CSV / XML)"><i class="fa-solid fa-file-import"></i> <span class="hide-mobile">Impor</span></button>
                 <input type="file" id="importFileInput" accept=".csv,.xml" style="display: none;" onchange="window.handleUnifiedImport(event)">
                 <button class="btn btn-danger" onclick="window.handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
@@ -2411,19 +2499,19 @@
                     itemsHtml += `
                         <div class="item-row">
                             <div>
-                                ${itIdx === 0 ? '<div class="item-header">Nama Barang / Jasa</div>' : ''}
-                                <input type="text" class="form-control" style="min-height:36px; padding:6px 10px;" value="${it.name || ''}" placeholder="Lego / Minecraft" oninput="window.updateTxItemField(${txIdx}, ${itIdx}, 'name', this.value)">
+                                <div class="item-header">Nama Barang / Jasa</div>
+                                <input type="text" class="form-control" style="min-height:38px; padding:6px 10px;" value="${it.name || ''}" placeholder="Lego / Minecraft" oninput="window.updateTxItemField(${txIdx}, ${itIdx}, 'name', this.value)">
                             </div>
                             <div>
-                                ${itIdx === 0 ? '<div class="item-header">Harga Satuan (Rp)</div>' : ''}
-                                <input type="number" class="form-control" style="min-height:36px; padding:6px 10px;" value="${it.price !== undefined ? it.price : 0}" placeholder="600000" oninput="window.updateTxItemField(${txIdx}, ${itIdx}, 'price', this.value)">
+                                <div class="item-header">Harga Satuan (Rp)</div>
+                                <input type="number" class="form-control" style="min-height:38px; padding:6px 10px;" value="${it.price !== undefined ? it.price : 0}" placeholder="600000" oninput="window.updateTxItemField(${txIdx}, ${itIdx}, 'price', this.value)">
                             </div>
                             <div>
-                                ${itIdx === 0 ? '<div class="item-header">Jumlah / Jumlah Barang</div>' : ''}
-                                <input type="number" class="form-control" style="min-height:36px; padding:6px 10px;" value="${it.qty !== undefined ? it.qty : 1}" placeholder="1" oninput="window.updateTxItemField(${txIdx}, ${itIdx}, 'qty', this.value)">
+                                <div class="item-header">Jumlah / Barang</div>
+                                <input type="number" class="form-control" style="min-height:38px; padding:6px 10px;" value="${it.qty !== undefined ? it.qty : 1}" placeholder="1" oninput="window.updateTxItemField(${txIdx}, ${itIdx}, 'qty', this.value)">
                             </div>
-                            <div style="padding-top: ${itIdx === 0 ? '16px' : '0'};">
-                                <button class="btn btn-danger" style="min-height:36px; padding:4px 8px; width:100%;" onclick="window.removeTxItemRow(${txIdx}, ${itIdx})"><i class="fa-solid fa-trash"></i></button>
+                            <div style="display:flex; align-items:flex-end;">
+                                <button class="btn btn-danger" style="min-height:38px; padding:4px; width:100%;" onclick="window.removeTxItemRow(${txIdx}, ${itIdx})" title="Hapus Item"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </div>
                     `;
