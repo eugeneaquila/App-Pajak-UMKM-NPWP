@@ -278,7 +278,7 @@
         .sync-dot.syncing { background: #f59e0b; animation: pulse 1s infinite; }
         .sync-dot.sync-error { background: #ef4444; animation: pulse 1s infinite; }
 
-        /* CALL CENTER / HELPDESK FLOATING WIDGET STYLES */
+        /* HELPDESK & CHAT ADMIN FLOATING WIDGET STYLES */
         .support-float-btn {
             position: fixed; bottom: 24px; right: 24px; z-index: 990;
             width: 58px; height: 58px; border-radius: 50%;
@@ -969,8 +969,8 @@
 
     </div>
 
-    <!-- CALL CENTER / HELPDESK FLOATING SUPPORT WIDGET -->
-    <button class="support-float-btn" onclick="window.toggleSupportWindow()" title="Pusat Bantuan & Call Center">
+    <!-- HELPDESK & CHAT ADMIN FLOATING SUPPORT WIDGET -->
+    <button class="support-float-btn" onclick="window.toggleSupportWindow()" title="Pusat Bantuan & Chat Admin">
         <i class="fa-solid fa-headset"></i>
     </button>
 
@@ -981,25 +981,25 @@
         </div>
         <div class="support-body">
             
-            <!-- WhatsApp CS Button -->
+            <!-- Chat Admin WhatsApp Button -->
             <a href="#" class="support-card" onclick="window.openWhatsAppSupport(event)">
                 <div class="support-icon green">
                     <i class="fa-brands fa-whatsapp"></i>
                 </div>
                 <div class="support-info">
                     <h5>Chat WhatsApp CS Pajak</h5>
-                    <p>Respon Cepat: Senin - Jumat (08.00 - 17.00)</p>
+                    <p>Hubungi CS: +62 895-1862-5612</p>
                 </div>
             </a>
 
-            <!-- Call Center Hotline -->
-            <a href="tel:1500200" class="support-card">
+            <!-- Direct Chat Admin Link -->
+            <a href="https://wa.me/6289518625612" target="_blank" class="support-card">
                 <div class="support-icon blue">
-                    <i class="fa-solid fa-phone-volume"></i>
+                    <i class="fa-solid fa-user-gear"></i>
                 </div>
                 <div class="support-info">
-                    <h5>Call Center Kring Pajak</h5>
-                    <p>Hubungi Direct Line: 1500-200</p>
+                    <h5>Chat Admin Langsung</h5>
+                    <p>Konsultasi & Bantuan Sistem (24/7)</p>
                 </div>
             </a>
 
@@ -1521,7 +1521,7 @@
             window.runSimulasiKalkulator();
         }
 
-        /* --- SCRIPT CALL CENTER / WHATSAPP HELPDESK --- */
+        /* --- SCRIPT CHAT ADMIN WHATSAPP HELPDESK --- */
         window.toggleSupportWindow = function() {
             const win = document.getElementById('supportWindow');
             win.classList.toggle('active');
@@ -1530,7 +1530,7 @@
         window.openWhatsAppSupport = function(e) {
             e.preventDefault();
             const mode = window.appState.entityMode || 'umkm';
-            let msg = "Halo CS AppPUN, saya butuh bantuan terkait aplikasi.\n\n";
+            let msg = "Halo Admin AppPUN, saya butuh bantuan terkait aplikasi.\n\n";
 
             if (mode === 'umkm') {
                 const store = getActiveStore();
@@ -1540,7 +1540,7 @@
                 msg += `Entity: Perseorangan\nNama: ${p.nama || '-'}\nTipe Pekerjaan: ${p.tipePekerjaan || '-'}`;
             }
 
-            const phoneNumber = "6281234567890"; // Ganti dengan nomor WhatsApp CS Anda
+            const phoneNumber = "6289518625612"; // Nomor WhatsApp CS / Admin
             const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(msg)}`;
             window.open(url, '_blank');
         };
