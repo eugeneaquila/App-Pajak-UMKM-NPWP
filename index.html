@@ -82,6 +82,13 @@
         .auth-header h2 { font-size: 1.5rem; font-weight: 800; color: var(--secondary); letter-spacing: -0.02em; }
         .auth-header p { font-size: 0.875rem; color: var(--text-muted); margin-top: 6px; font-weight: 500; }
         
+        .flexing-user-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #047857; font-weight: 800; font-size: 0.775rem;
+            padding: 6px 14px; border-radius: 20px; margin-top: 10px;
+        }
+
         .auth-form .form-group { margin-bottom: 16px; }
         .auth-form .btn-block { width: 100%; justify-content: center; padding: 12px; margin-top: 12px; font-size: 0.95rem; }
         
@@ -399,6 +406,10 @@
                 </svg>
                 <h2>Masuk ke AppPUN</h2>
                 <p>Kelola Pajak UMKM & Perorangan (Integrasi DJP Coretax Validated)</p>
+                <!-- FLEXING COUNTER ON LOGIN CARD -->
+                <div>
+                    <span class="flexing-user-badge"><i class="fa-solid fa-fire" style="color:#f59e0b;"></i> <span id="authLiveUserCounter">12.854</span>+ Pengguna Aktif</span>
+                </div>
             </div>
             <form id="loginForm" class="auth-form" onsubmit="window.handleLogin(event)">
                 <div class="form-group">
@@ -515,6 +526,10 @@
                 </div>
             </div>
             <div class="header-actions">
+                <!-- USER STATS FLEXING COUNTER ON HEADER -->
+                <div class="user-badge" style="background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.4); color: #6ee7b7;">
+                    <i class="fa-solid fa-users"></i> <span id="headerLiveUserCounter">12.854 WP Active</span>
+                </div>
                 <div class="sync-indicator">
                     <span class="sync-dot" id="syncStatusDot"></span>
                     <span id="syncStatusText">Tersinkronisasi</span>
@@ -657,7 +672,7 @@
             </div>
 
             <div class="tax-info-box">
-                <i class="fa-solid fa-users"></i> <strong>Fitur Baru Transaksi Per Pelanggan:</strong> Anda dapat memasukkan banyak transaksi pelanggan dalam 1 bulan! Klik tombol <strong>"+ Tambah Transaksi Pelanggan"</strong> di bawah untuk memasukkan struk/faktur per pelanggan.
+                <i class="fa-solid fa-users"></i> <strong>Fitur Baru Transaksi Per Pelanggan:</strong> Anda dapat memasukkan banyak transaksi pelanggan dalam 1 bulan! Klik tombol <strong>"+ Tambah Pelanggan / Nota"</strong> di bawah untuk memasukkan struk/faktur per pelanggan.
             </div>
 
             <!-- Monthly Tabs & Input Form Multi-Pelanggan Coretax -->
@@ -670,7 +685,6 @@
                 <div id="tabContentArea">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px; flex-wrap:wrap; gap:10px;">
                         <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--secondary);"><i class="fa-solid fa-receipt" style="color:var(--primary);"></i> Daftar Transaksi Pelanggan Bulan Ini</h4>
-                        <!-- TOMBOL UTAMA FITUR BARU: TAMBAH PER PELANGGAN -->
                         <button class="btn btn-primary" onclick="window.addCustomerTransaction()"><i class="fa-solid fa-user-plus"></i> + Tambah Pelanggan / Nota</button>
                     </div>
 
@@ -736,10 +750,12 @@
                 </div>
             </div>
 
-            <!-- Tabel Riwayat UMKM -->
+            <!-- Tabel Riwayat UMKM + FITUR HAPUS RIWAYAT -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Tabel Riwayat Transaksi Coretax (<span class="selected-year-label">2026</span>)</span>
+                    <!-- TOMBOL FITUR HAPUS SEMUA RIWAYAT -->
+                    <button class="btn btn-danger" style="min-height:32px; padding:4px 12px; font-size:0.775rem;" onclick="window.clearSelectedYearHistory()"><i class="fa-solid fa-trash-can"></i> Hapus Semua Riwayat (<span class="selected-year-label">2026</span>)</button>
                 </div>
                 <div class="table-responsive">
                     <table class="data-table">
@@ -755,6 +771,7 @@
                                 <th>DPP Pajak</th>
                                 <th>PPh 0,5%</th>
                                 <th>Status</th>
+                                <th style="text-align:center;">Aksi Hapus</th>
                             </tr>
                         </thead>
                         <tbody id="historyTableBody"></tbody>
@@ -890,10 +907,11 @@
                 </div>
             </div>
 
-            <!-- TABEL RIWAYAT PAJAK PERSEORANGAN -->
+            <!-- TABEL RIWAYAT PAJAK PERSEORANGAN + FITUR HAPUS RIWAYAT -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Pajak Bulanan Perorangan (<span class="personal-selected-year-label">2026</span>)</span>
+                    <button class="btn btn-danger" style="min-height:32px; padding:4px 12px; font-size:0.775rem;" onclick="window.clearPersonalSelectedYearHistory()"><i class="fa-solid fa-trash-can"></i> Hapus Semua Riwayat (<span class="personal-selected-year-label">2026</span>)</button>
                 </div>
                 <div class="table-responsive">
                     <table class="data-table">
@@ -907,6 +925,7 @@
                                 <th>PTKP Alokasi</th>
                                 <th>PPh 21 Bulan Ini</th>
                                 <th>Status PPh</th>
+                                <th style="text-align:center;">Aksi Hapus</th>
                             </tr>
                         </thead>
                         <tbody id="personalHistoryTableBody"></tbody>
@@ -1551,6 +1570,64 @@
         };
 
         /* ========================================================================= */
+        /* --- FITUR BARU: HAPUS RIWAYAT TRANSAKSI --- */
+        /* ========================================================================= */
+
+        window.clearSelectedYearHistory = function() {
+            const store = getActiveStore();
+            const year = store.selectedYear || 2026;
+            if (confirm(`Apakah Anda yakin ingin MENGHAPUS SELURUH RIWAYAT transaksi UMKM tahun ${year}?`)) {
+                store.monthsData = store.monthsData.filter(m => (parseInt(m.year) || 2026) !== year);
+                store.activeTabIndex = 0;
+                window.populateYearDropdown();
+                window.renderTabs();
+                window.calculateAll();
+                window.saveDataToCloud();
+                alert(`Riwayat transaksi tahun ${year} telah dibersihkan.`);
+            }
+        };
+
+        window.deleteSingleHistoryRow = function(globalIndex) {
+            const store = getActiveStore();
+            const item = store.monthsData[globalIndex];
+            if (!item) return;
+            if (confirm(`Hapus data riwayat transaksi periode ${item.name} ${item.year}?`)) {
+                store.monthsData.splice(globalIndex, 1);
+                window.populateYearDropdown();
+                window.renderTabs();
+                window.calculateAll();
+                window.saveDataToCloud();
+            }
+        };
+
+        window.clearPersonalSelectedYearHistory = function() {
+            const p = window.appState.personalProfile;
+            const year = p.selectedYear || 2026;
+            if (confirm(`Apakah Anda yakin ingin MENGHAPUS SELURUH RIWAYAT pajak perseorangan tahun ${year}?`)) {
+                p.monthsData = p.monthsData.filter(m => (parseInt(m.year) || 2026) !== year);
+                p.activeTabIndex = 0;
+                window.populatePersonalYearDropdown();
+                window.renderPersonalTabs();
+                window.calculatePersonalPph21();
+                window.saveDataToCloud();
+                alert(`Riwayat perorangan tahun ${year} telah dibersihkan.`);
+            }
+        };
+
+        window.deletePersonalSingleHistoryRow = function(globalIndex) {
+            const p = window.appState.personalProfile;
+            const item = p.monthsData[globalIndex];
+            if (!item) return;
+            if (confirm(`Hapus riwayat pajak perorangan ${item.name} ${item.year}?`)) {
+                p.monthsData.splice(globalIndex, 1);
+                window.populatePersonalYearDropdown();
+                window.renderPersonalTabs();
+                window.calculatePersonalPph21();
+                window.saveDataToCloud();
+            }
+        };
+
+        /* ========================================================================= */
         /* --- EKSPOR XML CORETAX DJP BERDASARKAN SELURUH TRANSAKSI PELANGGAN --- */
         /* ========================================================================= */
 
@@ -1574,7 +1651,6 @@
                 const monthNum = String(monthOrder[monthData.name] || 1).padStart(2, '0');
                 const defaultDate = `${year}-${monthNum}-15`;
 
-                // Iterasi Seluruh Transaksi Pelanggan di Bulan Ini
                 const txList = (monthData.transactions && monthData.transactions.length > 0)
                     ? monthData.transactions 
                     : [{
@@ -2025,6 +2101,7 @@
                 const labelTipe = jobType === 'freelance' ? 'Freelancer (NPPN)' : 'Karyawan (PPh 21)';
 
                 currentYearData.forEach((m) => {
+                    const globalIdx = p.monthsData.indexOf(m);
                     let bBulan = 0, nBulan = 0;
                     if (jobType === 'freelance') {
                         bBulan = m.freelanceBruto || 0;
@@ -2048,6 +2125,9 @@
                         <td>${formatRupiah(ptkpBulan)}</td>
                         <td style="color: #2563eb; font-weight: 700;">${formatRupiah(pphBulanActive)}</td>
                         <td><span class="badge ${pphBulanActive > 0 ? 'badge-warning' : 'badge-success'}">${pphBulanActive > 0 ? 'Kena Pajak' : 'Nihil / Bebas'}</span></td>
+                        <td style="text-align:center;">
+                            <button class="btn btn-danger" style="min-height:26px; padding:2px 8px; font-size:0.7rem;" onclick="window.deletePersonalSingleHistoryRow(${globalIdx})"><i class="fa-solid fa-trash"></i></button>
+                        </td>
                     `;
                     pHistoryBody.appendChild(tr);
                 });
@@ -2383,9 +2463,11 @@
             }
             monthData.omzet = totalMonthOmzet;
             document.getElementById('inputTotalOmzetMonth').value = totalMonthOmzet;
+            
+            const rawNpwp = (getActiveStore().profile.npwp || '7326011206010003').replace(/\D/g, '').padEnd(16, '0');
+            const subCabang = (getActiveStore().profile.kodeCabang || '000000').padStart(6, '0');
+            document.getElementById('displayNitkuPreview').value = `${rawNpwp}${subCabang}`;
         }
-
-        /* --- MANAJEMEN EVENT PELANGGAN --- */
 
         window.addCustomerTransaction = function() {
             const store = getActiveStore();
@@ -2580,6 +2662,7 @@
             historyBody.innerHTML = '';
 
             filteredData.forEach((item) => {
+                const globalIdx = store.monthsData.indexOf(item);
                 ensureTransactionsStructure(item);
                 calculateTotalMonthOmzet(item);
 
@@ -2635,6 +2718,9 @@
                     <td>${formatRupiah(dpp)}</td>
                     <td style="color: #2563eb; font-weight: 700;">${formatRupiah(pajak)}</td>
                     <td><span class="badge ${pajak > 0 ? 'badge-warning' : 'badge-success'}">${pajak > 0 ? 'Wajib' : 'Bebas'}</span></td>
+                    <td style="text-align:center;">
+                        <button class="btn btn-danger" style="min-height:26px; padding:2px 8px; font-size:0.7rem;" onclick="window.deleteSingleHistoryRow(${globalIdx})"><i class="fa-solid fa-trash"></i></button>
+                    </td>
                 `;
                 historyBody.appendChild(tr);
             });
