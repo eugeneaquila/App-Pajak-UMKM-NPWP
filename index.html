@@ -343,7 +343,22 @@
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
         .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
 
-        /* ITEM MANAGER STYLE */
+        /* CUSTOMER TRANSACTION CARD STYLING */
+        .customer-tx-card {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(203, 213, 225, 0.8);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+        }
+        .customer-tx-card:hover { border-color: var(--primary); box-shadow: 0 6px 18px rgba(37,99,235,0.08); }
+        .customer-tx-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #cbd5e1;
+        }
+
         .item-row { display: grid; grid-template-columns: 2fr 1fr 1fr 40px; gap: 8px; align-items: center; margin-bottom: 8px; }
         .item-header { font-size: 0.725rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
 
@@ -508,7 +523,7 @@
                     <i class="fa-solid fa-circle-user"></i> <span id="displayUserNpwp">Loading...</span>
                 </div>
                 <button class="btn btn-outline" onclick="window.exportSpreadsheet()" title="Ekspor CSV Coretax Standard"><i class="fa-solid fa-file-excel"></i> CSV Coretax</button>
-                <button class="btn btn-outline" onclick="window.exportCoreTaxXML()" title="Ekspor XML DJP Coretax Multi-Item"><i class="fa-solid fa-file-code"></i> XML DJP (Full)</button>
+                <button class="btn btn-outline" onclick="window.exportCoreTaxXML()" title="Ekspor XML DJP Coretax Multi-Pelanggan"><i class="fa-solid fa-file-code"></i> XML DJP (Full)</button>
                 <button class="btn btn-outline" onclick="window.downloadTemplate()" title="Unduh Template CSV"><i class="fa-solid fa-file-arrow-down"></i> Template</button>
                 <button class="btn btn-outline" onclick="window.triggerImport()" title="Impor File (CSV / XML)"><i class="fa-solid fa-file-import"></i> Impor</button>
                 <input type="file" id="importFileInput" accept=".csv,.xml" style="display: none;" onchange="window.handleUnifiedImport(event)">
@@ -642,37 +657,10 @@
             </div>
 
             <div class="tax-info-box">
-                <i class="fa-solid fa-circle-check"></i> <strong>Pembaruan Rincian Multi-Item Coretax:</strong> Sekarang Anda dapat menambahkan rincian barang/jasa (<code>DetailsOfGoodService</code>), harga satuan (<code>PricePerUnit</code>), jumlah (<code>Qty</code>), dan diskon (<code>Discount</code>) per transaksi untuk menghasilkan file XML Coretax yang 100% lengkap!
+                <i class="fa-solid fa-users"></i> <strong>Fitur Baru Transaksi Per Pelanggan:</strong> Anda dapat memasukkan banyak transaksi pelanggan dalam 1 bulan! Klik tombol <strong>"+ Tambah Transaksi Pelanggan"</strong> di bawah untuk memasukkan struk/faktur per pelanggan.
             </div>
 
-            <!-- Kalkulator Simulasi Cepat -->
-            <div class="calc-widget">
-                <div class="card-title" style="color: white; margin-bottom: 12px; font-size: 0.95rem;">
-                    <i class="fa-solid fa-wand-magic-sparkles" style="color: #60a5fa;"></i> Simulasi Cepat PPh UMKM
-                </div>
-                <div class="grid-3" style="align-items: center;">
-                    <div class="form-group">
-                        <label for="simulasiOmzet">Input Omzet Simulasi (Rp)</label>
-                        <input type="number" id="simulasiOmzet" class="form-control" placeholder="100000000" value="100000000" oninput="window.runSimulasiKalkulator()">
-                    </div>
-                    <div class="form-group">
-                        <label for="simulasiAkumulasi">Akumulasi Lalu (Rp)</label>
-                        <input type="number" id="simulasiAkumulasi" class="form-control" placeholder="400000000" value="400000000" oninput="window.runSimulasiKalkulator()">
-                    </div>
-                    <div class="calc-result-box">
-                        <div class="calc-result-item">
-                            <span>DPP Pajak:</span>
-                            <strong id="simulasiDPPText">Rp 0</strong>
-                        </div>
-                        <div class="calc-result-item highlight">
-                            <span>Pajak Terutang (0,5%):</span>
-                            <strong id="simulasiPajakText">Rp 0</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Monthly Tabs & Input Form Detail Coretax -->
+            <!-- Monthly Tabs & Input Form Multi-Pelanggan Coretax -->
             <div class="card">
                 <div class="tabs-header-wrapper">
                     <ul class="nav-tabs" id="tabList"></ul>
@@ -680,46 +668,29 @@
                 </div>
 
                 <div id="tabContentArea">
-                    <div class="grid-3" style="margin-bottom: 16px;">
-                        <div class="form-group">
-                            <label for="inputTanggal">Tanggal Transaksi (<span style="color: var(--primary);">&lt;TransactionDate&gt;</span>)</label>
-                            <input type="date" id="inputTanggal" class="form-control" onchange="window.updateCurrentTabData()">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputCustomer">Nama Pelanggan (<span style="color: var(--primary);">&lt;Customer&gt;</span>)</label>
-                            <input type="text" id="inputCustomer" class="form-control" placeholder="Contoh: Alisha / Pelanggan Umum" oninput="window.updateCurrentTabData()">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputKodeBilling">No. Faktur / Struk (<span style="color: var(--primary);">&lt;TransactionNumber&gt;</span>)</label>
-                            <input type="text" id="inputKodeBilling" class="form-control" placeholder="Contoh: STRUK-ABC / NTPN-8821931" oninput="window.updateCurrentTabData()">
-                        </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px; flex-wrap:wrap; gap:10px;">
+                        <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--secondary);"><i class="fa-solid fa-receipt" style="color:var(--primary);"></i> Daftar Transaksi Pelanggan Bulan Ini</h4>
+                        <!-- TOMBOL UTAMA FITUR BARU: TAMBAH PER PELANGGAN -->
+                        <button class="btn btn-primary" onclick="window.addCustomerTransaction()"><i class="fa-solid fa-user-plus"></i> + Tambah Pelanggan / Nota</button>
                     </div>
 
-                    <!-- MANAGEMENT RINCIAN BARANG/JASA (MULTI-DETAIL EXPORT DJP) -->
-                    <div style="background: rgba(248, 250, 252, 0.9); border: 1px solid var(--border-subtle); padding: 16px; border-radius: 14px; margin-bottom: 16px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
-                            <span style="font-weight: 800; font-size: 0.85rem; color: var(--secondary); display: flex; align-items: center; gap: 6px;">
-                                <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> Rincian Barang / Jasa (<span style="color: var(--primary);">&lt;DetailsTransaction&gt;</span>)
-                            </span>
-                            <button class="btn btn-primary" style="min-height: 32px; padding: 4px 10px; font-size: 0.775rem;" onclick="window.addItemRow()"><i class="fa-solid fa-plus"></i> Tambah Item</button>
-                        </div>
-                        
-                        <div id="itemListContainer">
-                            <!-- Rows generated by JS -->
-                        </div>
+                    <!-- CONTAINER TRANSAKSI PER PELANGGAN -->
+                    <div id="customerTransactionsList"></div>
 
-                        <div class="grid-3" style="margin-top: 12px; border-top: 1px dashed #cbd5e1; padding-top: 10px;">
+                    <!-- BEBAN DAN RINGKASAN PAJAK BULANAN -->
+                    <div style="background: rgba(241, 245, 249, 0.9); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 16px; margin-bottom: 16px;">
+                        <div class="grid-3" style="align-items: center;">
                             <div class="form-group">
-                                <label for="inputDiscount">Potongan Diskon Transaksi (<span style="color: var(--primary);">&lt;Discount&gt;</span>)</label>
-                                <input type="number" id="inputDiscount" class="form-control" placeholder="0" value="0" oninput="window.updateCurrentTabData()">
-                            </div>
-                            <div class="form-group">
-                                <label for="inputOmzet">Nilai Transaksi Netto (Auto Omzet Bruto)</label>
-                                <input type="number" id="inputOmzet" class="form-control" placeholder="0" readonly style="background-color: rgba(241, 245, 249, 0.7); font-weight: 800; color: #059669;">
-                            </div>
-                            <div class="form-group">
-                                <label for="inputBeban">Beban Operasional (Rp)</label>
+                                <label for="inputBeban">Beban Operasional Bulan Ini (Rp)</label>
                                 <input type="number" id="inputBeban" class="form-control" placeholder="0" oninput="window.updateCurrentTabData()">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputTotalOmzetMonth">Total Omzet Bulan Ini (Gabungan Pelanggan)</label>
+                                <input type="number" id="inputTotalOmzetMonth" class="form-control" readonly style="background-color: rgba(226, 232, 240, 0.7); font-weight: 800; color: #059669;">
+                            </div>
+                            <div class="form-group">
+                                <label for="displayNitkuPreview">NITKU Tempat Kegiatan Usaha (22 Digit)</label>
+                                <input type="text" id="displayNitkuPreview" class="form-control" readonly style="background-color: rgba(226, 232, 240, 0.7); font-weight: 700; color: var(--primary);" value="...">
                             </div>
                         </div>
                     </div>
@@ -728,7 +699,7 @@
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>Parameter Pembukuan</th>
+                                    <th>Parameter Pembukuan Bulan Ini</th>
                                     <th>Nilai Kalkulasi</th>
                                     <th>Status Pajak</th>
                                 </tr>
@@ -737,7 +708,7 @@
                                 <tr>
                                     <td><strong>Laba Bersih</strong></td>
                                     <td id="calcLabaBersih" style="font-weight: 700; color: #059669;">Rp 0</td>
-                                    <td>Omzet Netto - Beban</td>
+                                    <td>Total Omzet Pelanggan - Beban</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Akumulasi Omzet (<span class="selected-year-label">2026</span>)</strong></td>
@@ -775,13 +746,13 @@
                         <thead>
                             <tr>
                                 <th>Thn</th>
-                                <th>Tgl Transaksi</th>
-                                <th>Nama Pelanggan</th>
-                                <th>No. Struk/Faktur</th>
-                                <th>Rincian Item</th>
-                                <th>Diskon</th>
-                                <th>Omzet Netto</th>
-                                <th>Beban</th>
+                                <th>Bulan</th>
+                                <th>Jml Pelanggan</th>
+                                <th>Jml Struk/Faktur</th>
+                                <th>Total Omzet Netto</th>
+                                <th>Beban Operasional</th>
+                                <th>Laba Bersih</th>
+                                <th>DPP Pajak</th>
                                 <th>PPh 0,5%</th>
                                 <th>Status</th>
                             </tr>
@@ -1216,16 +1187,22 @@
                     { 
                         name: 'Januari', 
                         year: 2026, 
-                        transactionDate: '2026-01-15', 
-                        customer: 'Alisha', 
-                        billing: 'STRUK-ABC',
-                        discount: 25000,
-                        items: [
-                            { name: 'Lego City Undercover Cart', price: 600000, qty: 5 },
-                            { name: 'Minecraft', price: 500000, qty: 2 }
+                        beban: 1200000,
+                        transactions: [
+                            {
+                                id: 'tx_1',
+                                transactionDate: '2026-01-15', 
+                                customer: 'Alisha', 
+                                billing: 'STRUK-ABC',
+                                discount: 25000,
+                                items: [
+                                    { name: 'Lego City Undercover Cart', price: 600000, qty: 5 },
+                                    { name: 'Minecraft', price: 500000, qty: 2 }
+                                ],
+                                omzet: 3975000
+                            }
                         ],
-                        omzet: 3975000, 
-                        beban: 1200000 
+                        omzet: 3975000
                     }
                 ]
             }]
@@ -1255,11 +1232,16 @@
                     selectedYear: year, activeTabIndex: 0,
                     monthsData: [{ 
                         name: 'Januari', year: year, 
-                        transactionDate: `${year}-01-15`, 
-                        customer: 'Pelanggan Umum', 
-                        billing: '', discount: 0,
-                        items: [{ name: 'Penjualan Barang / Jasa', price: 0, qty: 1 }],
-                        omzet: 0, beban: 0 
+                        beban: 0,
+                        transactions: [{
+                            id: 'tx_' + Date.now(),
+                            transactionDate: `${year}-01-15`, 
+                            customer: 'Pelanggan Umum', 
+                            billing: '', discount: 0,
+                            items: [{ name: 'Penjualan Barang / Jasa', price: 0, qty: 1 }],
+                            omzet: 0 
+                        }],
+                        omzet: 0 
                     }]
                 }]
             };
@@ -1569,7 +1551,7 @@
         };
 
         /* ========================================================================= */
-        /* --- EKSPOR XML CORETAX DJP DENGAN RINCIAN MULTI-ITEM & POTONGAN DISKON --- */
+        /* --- EKSPOR XML CORETAX DJP BERDASARKAN SELURUH TRANSAKSI PELANGGAN --- */
         /* ========================================================================= */
 
         window.exportCoreTaxXML = function() {
@@ -1588,45 +1570,47 @@
             xml += `\t<TIN>${tin}</TIN>\n`;
             xml += `\t<ListOfTransaction>\n`;
 
-            filteredData.forEach((item) => {
-                const transNum = item.billing && item.billing.trim() !== '' 
-                    ? item.billing.trim() 
-                    : `STRUK-${year}-${item.name.substring(0,3).toUpperCase()}`;
+            filteredData.forEach((monthData) => {
+                const monthNum = String(monthOrder[monthData.name] || 1).padStart(2, '0');
+                const defaultDate = `${year}-${monthNum}-15`;
+
+                // Iterasi Seluruh Transaksi Pelanggan di Bulan Ini
+                const txList = (monthData.transactions && monthData.transactions.length > 0)
+                    ? monthData.transactions 
+                    : [{
+                        customer: monthData.customer || 'Pelanggan Umum',
+                        transactionDate: monthData.transactionDate || defaultDate,
+                        billing: monthData.billing || `STRUK-${year}-${monthData.name.substring(0,3).toUpperCase()}`,
+                        discount: monthData.discount || 0,
+                        items: monthData.items || [{ name: `Penjualan ${monthData.name}`, price: monthData.omzet || 0, qty: 1 }]
+                    }];
+
+                txList.forEach(tx => {
+                    const transNum = tx.billing && tx.billing.trim() !== '' ? tx.billing.trim() : `STRUK-${year}-${monthData.name.substring(0,3).toUpperCase()}`;
+                    const transDate = tx.transactionDate && tx.transactionDate !== '' ? tx.transactionDate : defaultDate;
+                    const customerName = tx.customer && tx.customer.trim() !== '' ? tx.customer.trim() : 'Pelanggan Umum';
+                    const discountVal = tx.discount || 0;
+
+                    xml += `\t\t<Transaction>\n`;
+                    xml += `\t\t\t<IdTku>${idTku}</IdTku>\n`;
+                    xml += `\t\t\t<TransactionNumber>${transNum}</TransactionNumber>\n`;
+                    xml += `\t\t\t<TransactionDate>${transDate}</TransactionDate>\n`;
+                    xml += `\t\t\t<Customer>${customerName}</Customer>\n`;
+                    xml += `\t\t\t<DetailsTransaction>\n`;
                     
-                const monthNum = String(monthOrder[item.name] || 1).padStart(2, '0');
-                const transDate = item.transactionDate && item.transactionDate !== '' 
-                    ? item.transactionDate 
-                    : `${year}-${monthNum}-15`;
+                    const itemsList = tx.items && tx.items.length > 0 ? tx.items : [{ name: `Penjualan ${monthData.name}`, price: tx.omzet || 0, qty: 1 }];
+                    itemsList.forEach(it => {
+                        xml += `\t\t\t\t<Detail>\n`;
+                        xml += `\t\t\t\t\t<DetailsOfGoodService>${it.name || 'Barang / Jasa'}</DetailsOfGoodService>\n`;
+                        xml += `\t\t\t\t\t<PricePerUnit>${it.price || 0}</PricePerUnit>\n`;
+                        xml += `\t\t\t\t\t<Qty>${it.qty || 1}</Qty>\n`;
+                        xml += `\t\t\t\t</Detail>\n`;
+                    });
 
-                const customerName = item.customer && item.customer.trim() !== '' 
-                    ? item.customer.trim() 
-                    : 'Pelanggan Umum';
-
-                const discountVal = item.discount || 0;
-
-                xml += `\t\t<Transaction>\n`;
-                xml += `\t\t\t<IdTku>${idTku}</IdTku>\n`;
-                xml += `\t\t\t<TransactionNumber>${transNum}</TransactionNumber>\n`;
-                xml += `\t\t\t<TransactionDate>${transDate}</TransactionDate>\n`;
-                xml += `\t\t\t<Customer>${customerName}</Customer>\n`;
-                xml += `\t\t\t<DetailsTransaction>\n`;
-                
-                // Rincian Multi-Item
-                const itemsList = item.items && item.items.length > 0 ? item.items : [
-                    { name: `Omzet Pembukuan UMKM (${item.name})`, price: item.omzet || 0, qty: 1 }
-                ];
-
-                itemsList.forEach(it => {
-                    xml += `\t\t\t\t<Detail>\n`;
-                    xml += `\t\t\t\t\t<DetailsOfGoodService>${it.name || 'Barang / Jasa'}</DetailsOfGoodService>\n`;
-                    xml += `\t\t\t\t\t<PricePerUnit>${it.price || 0}</PricePerUnit>\n`;
-                    xml += `\t\t\t\t\t<Qty>${it.qty || 1}</Qty>\n`;
-                    xml += `\t\t\t\t</Detail>\n`;
+                    xml += `\t\t\t</DetailsTransaction>\n`;
+                    xml += `\t\t\t<Discount>${discountVal}</Discount>\n`;
+                    xml += `\t\t</Transaction>\n`;
                 });
-
-                xml += `\t\t\t</DetailsTransaction>\n`;
-                xml += `\t\t\t<Discount>${discountVal}</Discount>\n`;
-                xml += `\t\t</Transaction>\n`;
             });
 
             xml += `\t</ListOfTransaction>\n`;
@@ -1669,8 +1653,8 @@
                 const tinNode = xmlDoc.getElementsByTagName("TIN")[0];
                 const tin = tinNode ? tinNode.textContent.trim() : "";
 
-                const transactions = xmlDoc.getElementsByTagName("Transaction");
-                if (!transactions || transactions.length === 0) {
+                const transactionsNode = xmlDoc.getElementsByTagName("Transaction");
+                if (!transactionsNode || transactionsNode.length === 0) {
                     return alert("File XML tidak memiliki tag <Transaction> yang valid!");
                 }
 
@@ -1680,10 +1664,10 @@
                     document.getElementById('nomorNPWP').value = tin;
                 }
 
-                const importedData = [];
+                const monthlyTxGroup = {};
 
-                for (let i = 0; i < transactions.length; i++) {
-                    const trans = transactions[i];
+                for (let i = 0; i < transactionsNode.length; i++) {
+                    const trans = transactionsNode[i];
                     const idTku = trans.getElementsByTagName("IdTku")[0]?.textContent || "";
                     const transNum = trans.getElementsByTagName("TransactionNumber")[0]?.textContent || "";
                     const dateStr = trans.getElementsByTagName("TransactionDate")[0]?.textContent || "";
@@ -1716,19 +1700,28 @@
                         }
                     }
 
-                    importedData.push({
-                        name: monthName,
-                        year: year,
+                    const key = `${year}_${monthName}`;
+                    if (!monthlyTxGroup[key]) {
+                        monthlyTxGroup[key] = {
+                            name: monthName,
+                            year: year,
+                            beban: 0,
+                            transactions: []
+                        };
+                    }
+
+                    monthlyTxGroup[key].transactions.push({
+                        id: 'tx_' + Date.now() + '_' + i,
                         transactionDate: dateStr,
                         customer: customer,
                         billing: transNum,
                         discount: discount,
                         items: parsedItems.length > 0 ? parsedItems : [{ name: `Penjualan ${monthName}`, price: netOmzet, qty: 1 }],
-                        omzet: netOmzet,
-                        beban: 0
+                        omzet: netOmzet
                     });
                 }
 
+                const importedData = Object.values(monthlyTxGroup);
                 if (importedData.length > 0) {
                     store.monthsData = importedData;
                     store.selectedYear = importedData[0].year;
@@ -1736,7 +1729,7 @@
                     window.renderTabs();
                     window.calculateAll();
                     window.saveDataToCloud();
-                    alert(`Sukses mengimpor ${transactions.length} transaksi dari file XML Coretax DJP!`);
+                    alert(`Sukses mengimpor ${transactionsNode.length} transaksi dari file XML Coretax DJP!`);
                 }
             } catch (err) {
                 alert("Gagal memproses XML Coretax DJP: " + err.message);
@@ -1773,33 +1766,47 @@
                 }
             } else {
                 const store = getActiveStore();
-                const newMonthsData = [];
+                const monthlyMap = {};
+
                 for (let i = 1; i < lines.length; i++) {
                     const line = lines[i].trim();
                     if (!line) continue;
                     const cols = line.split(',');
                     if (cols.length >= 6) {
-                        const omz = parseFloat(cols[5]) || 0;
-                        newMonthsData.push({
-                            year: parseInt(cols[0]) || 2026,
-                            name: cols[1].replace(/"/g, ''),
-                            transactionDate: cols[2].replace(/"/g, ''),
-                            customer: cols[3].replace(/"/g, ''),
-                            billing: cols[4] ? cols[4].replace(/"/g, '') : '',
-                            discount: 0,
-                            items: [{ name: 'Penjualan Omzet Pembukuan', price: omz, qty: 1 }],
-                            omzet: omz,
-                            beban: parseFloat(cols[6]) || 0
+                        const y = parseInt(cols[0]) || 2026;
+                        const m = cols[1].replace(/"/g, '');
+                        const tDate = cols[2].replace(/"/g, '');
+                        const cust = cols[3].replace(/"/g, '');
+                        const billing = cols[4] ? cols[4].replace(/"/g, '') : '';
+                        const disc = parseFloat(cols[5]) || 0;
+                        const omz = parseFloat(cols[6]) || 0;
+                        const bebanVal = parseFloat(cols[7]) || 0;
+
+                        const key = `${y}_${m}`;
+                        if (!monthlyMap[key]) {
+                            monthlyMap[key] = { name: m, year: y, beban: bebanVal, transactions: [] };
+                        }
+
+                        monthlyMap[key].transactions.push({
+                            id: 'tx_' + Date.now() + '_' + i,
+                            transactionDate: tDate,
+                            customer: cust,
+                            billing: billing,
+                            discount: disc,
+                            items: [{ name: 'Penjualan Barang / Jasa', price: omz + disc, qty: 1 }],
+                            omzet: omz
                         });
                     }
                 }
+
+                const newMonthsData = Object.values(monthlyMap);
                 if (newMonthsData.length > 0) {
                     store.monthsData = newMonthsData;
                     window.populateYearDropdown();
                     window.renderTabs();
                     window.calculateAll();
                     window.saveDataToCloud();
-                    alert("Data UMKM Coretax berhasil diimpor!");
+                    alert("Data CSV UMKM Coretax berhasil diimpor!");
                 }
             }
         }
@@ -2118,11 +2125,16 @@
                 selectedYear: 2026, activeTabIndex: 0,
                 monthsData: [{ 
                     name: 'Januari', year: 2026, 
-                    transactionDate: '2026-01-15', 
-                    customer: 'Pelanggan Umum', 
-                    billing: '', discount: 0,
-                    items: [{ name: 'Penjualan Barang / Jasa', price: 0, qty: 1 }],
-                    omzet: 0, beban: 0 
+                    beban: 0,
+                    transactions: [{
+                        id: 'tx_' + Date.now(),
+                        transactionDate: '2026-01-15', 
+                        customer: 'Pelanggan Umum', 
+                        billing: '', discount: 0,
+                        items: [{ name: 'Penjualan Barang / Jasa', price: 0, qty: 1 }],
+                        omzet: 0 
+                    }],
+                    omzet: 0 
                 }]
             });
 
@@ -2147,11 +2159,16 @@
                 if (existing) newYearMonths.push(existing);
                 else newYearMonths.push({ 
                     name: mName, year: currentYear, 
-                    transactionDate: `${currentYear}-${monthNum}-15`, 
-                    customer: 'Pelanggan Umum', 
-                    billing: '', discount: 0,
-                    items: [{ name: `Penjualan ${mName}`, price: 0, qty: 1 }],
-                    omzet: 0, beban: 0 
+                    beban: 0,
+                    transactions: [{
+                        id: 'tx_' + Date.now() + '_' + i,
+                        transactionDate: `${currentYear}-${monthNum}-15`, 
+                        customer: 'Pelanggan Umum', 
+                        billing: '', discount: 0,
+                        items: [{ name: `Penjualan ${mName}`, price: 0, qty: 1 }],
+                        omzet: 0 
+                    }],
+                    omzet: 0 
                 });
             }
 
@@ -2209,6 +2226,8 @@
                 .sort((a,b) => (monthOrder[a.name] || 0) - (monthOrder[b.name] || 0));
         }
 
+        /* --- SCRIPT MANAJEMEN TRANSAKSI MULTI-PELANGGAN BULANAN --- */
+
         window.renderTabs = function() {
             const store = getActiveStore();
             const tabList = document.getElementById('tabList');
@@ -2217,13 +2236,9 @@
 
             if (currentYearData.length === 0) {
                 tabList.innerHTML = '<li class="nav-tab-item"><i>Belum ada data</i></li>';
-                document.getElementById('inputOmzet').value = '';
+                document.getElementById('customerTransactionsList').innerHTML = '';
                 document.getElementById('inputBeban').value = '';
-                document.getElementById('inputKodeBilling').value = '';
-                document.getElementById('inputCustomer').value = '';
-                document.getElementById('inputTanggal').value = '';
-                document.getElementById('inputDiscount').value = 0;
-                document.getElementById('itemListContainer').innerHTML = '';
+                document.getElementById('inputTotalOmzetMonth').value = 0;
                 return;
             }
 
@@ -2243,112 +2258,239 @@
 
             const activeData = currentYearData[store.activeTabIndex];
             if (activeData) {
-                const monthNum = String(monthOrder[activeData.name] || 1).padStart(2, '0');
-                const defaultDate = `${store.selectedYear || 2026}-${monthNum}-15`;
-
                 document.getElementById('inputBeban').value = activeData.beban !== undefined ? activeData.beban : '';
-                document.getElementById('inputKodeBilling').value = activeData.billing || '';
-                document.getElementById('inputCustomer').value = activeData.customer || 'Pelanggan Umum';
-                document.getElementById('inputTanggal').value = activeData.transactionDate || defaultDate;
-                document.getElementById('inputDiscount').value = activeData.discount !== undefined ? activeData.discount : 0;
-                
-                renderItemListRows(activeData);
+                ensureTransactionsStructure(activeData);
+                renderCustomerTransactionsList(activeData);
             }
         };
 
-        function renderItemListRows(activeData) {
-            const container = document.getElementById('itemListContainer');
-            container.innerHTML = '';
-
-            if (!activeData.items || activeData.items.length === 0) {
-                activeData.items = [{ name: `Penjualan ${activeData.name}`, price: activeData.omzet || 0, qty: 1 }];
+        function ensureTransactionsStructure(monthData) {
+            if (!monthData.transactions || monthData.transactions.length === 0) {
+                const monthNum = String(monthOrder[monthData.name] || 1).padStart(2, '0');
+                const defaultDate = `${monthData.year || 2026}-${monthNum}-15`;
+                monthData.transactions = [{
+                    id: 'tx_' + Date.now(),
+                    transactionDate: monthData.transactionDate || defaultDate,
+                    customer: monthData.customer || 'Pelanggan Umum',
+                    billing: monthData.billing || '',
+                    discount: monthData.discount || 0,
+                    items: monthData.items || [{ name: `Penjualan ${monthData.name}`, price: monthData.omzet || 0, qty: 1 }],
+                    omzet: monthData.omzet || 0
+                }];
             }
-
-            activeData.items.forEach((item, idx) => {
-                const row = document.createElement('div');
-                row.className = 'item-row';
-                row.innerHTML = `
-                    <div>
-                        ${idx === 0 ? '<div class="item-header">Nama Barang / Jasa</div>' : ''}
-                        <input type="text" class="form-control" style="min-height:36px; padding:6px 10px;" value="${item.name || ''}" placeholder="Lego / Minecraft" oninput="window.updateItemRowData(${idx}, 'name', this.value)">
-                    </div>
-                    <div>
-                        ${idx === 0 ? '<div class="item-header">Harga Satuan</div>' : ''}
-                        <input type="number" class="form-control" style="min-height:36px; padding:6px 10px;" value="${item.price !== undefined ? item.price : 0}" placeholder="600000" oninput="window.updateItemRowData(${idx}, 'price', this.value)">
-                    </div>
-                    <div>
-                        ${idx === 0 ? '<div class="item-header">Qty</div>' : ''}
-                        <input type="number" class="form-control" style="min-height:36px; padding:6px 10px;" value="${item.qty !== undefined ? item.qty : 1}" placeholder="1" oninput="window.updateItemRowData(${idx}, 'qty', this.value)">
-                    </div>
-                    <div style="padding-top: ${idx === 0 ? '16px' : '0'};">
-                        <button class="btn btn-danger" style="min-height:36px; padding:4px 8px; width:100%;" onclick="window.removeItemRow(${idx})"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                `;
-                container.appendChild(row);
-            });
-
-            calculateOmzetFromItems(activeData);
         }
 
-        window.addItemRow = function() {
+        function renderCustomerTransactionsList(monthData) {
+            const container = document.getElementById('customerTransactionsList');
+            container.innerHTML = '';
+
+            monthData.transactions.forEach((tx, txIdx) => {
+                const card = document.createElement('div');
+                card.className = 'customer-tx-card';
+
+                const itemsCount = tx.items ? tx.items.length : 1;
+                const totalOmzetTx = calculateTxNetOmzet(tx);
+
+                let itemsHtml = '';
+                (tx.items || []).forEach((it, itIdx) => {
+                    itemsHtml += `
+                        <div class="item-row">
+                            <div>
+                                ${itIdx === 0 ? '<div class="item-header">Nama Barang / Jasa</div>' : ''}
+                                <input type="text" class="form-control" style="min-height:36px; padding:6px 10px;" value="${it.name || ''}" placeholder="Lego / Minecraft" oninput="window.updateTxItemField(${txIdx}, ${itIdx}, 'name', this.value)">
+                            </div>
+                            <div>
+                                ${itIdx === 0 ? '<div class="item-header">Harga Satuan (Rp)</div>' : ''}
+                                <input type="number" class="form-control" style="min-height:36px; padding:6px 10px;" value="${it.price !== undefined ? it.price : 0}" placeholder="600000" oninput="window.updateTxItemField(${txIdx}, ${itIdx}, 'price', this.value)">
+                            </div>
+                            <div>
+                                ${itIdx === 0 ? '<div class="item-header">Qty</div>' : ''}
+                                <input type="number" class="form-control" style="min-height:36px; padding:6px 10px;" value="${it.qty !== undefined ? it.qty : 1}" placeholder="1" oninput="window.updateTxItemField(${txIdx}, ${itIdx}, 'qty', this.value)">
+                            </div>
+                            <div style="padding-top: ${itIdx === 0 ? '16px' : '0'};">
+                                <button class="btn btn-danger" style="min-height:36px; padding:4px 8px; width:100%;" onclick="window.removeTxItemRow(${txIdx}, ${itIdx})"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="customer-tx-header">
+                        <span style="font-weight: 800; font-size: 0.875rem; color: var(--primary); display: flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-user-tag"></i> Pelanggan #${txIdx + 1}: <strong style="color:var(--secondary);">${tx.customer || 'Pelanggan Umum'}</strong>
+                        </span>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span style="font-weight: 800; font-size: 0.85rem; color: #059669;">${formatRupiah(totalOmzetTx)}</span>
+                            ${monthData.transactions.length > 1 ? `<button class="btn btn-danger" style="min-height:30px; padding:2px 8px; font-size:0.75rem;" onclick="window.removeCustomerTransaction(${txIdx})"><i class="fa-solid fa-trash"></i> Hapus Pelanggan</button>` : ''}
+                        </div>
+                    </div>
+
+                    <div class="grid-3" style="margin-bottom: 14px;">
+                        <div class="form-group">
+                            <label>Nama Pelanggan (<span style="color: var(--primary);">&lt;Customer&gt;</span>)</label>
+                            <input type="text" class="form-control" value="${tx.customer || ''}" placeholder="Alisha / Budi" oninput="window.updateCustomerTxField(${txIdx}, 'customer', this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label>Tanggal Transaksi (<span style="color: var(--primary);">&lt;TransactionDate&gt;</span>)</label>
+                            <input type="date" class="form-control" value="${tx.transactionDate || ''}" onchange="window.updateCustomerTxField(${txIdx}, 'transactionDate', this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label>No. Faktur / Struk (<span style="color: var(--primary);">&lt;TransactionNumber&gt;</span>)</label>
+                            <input type="text" class="form-control" value="${tx.billing || ''}" placeholder="STRUK-ABC" oninput="window.updateCustomerTxField(${txIdx}, 'billing', this.value)">
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(248, 250, 252, 0.9); border: 1px dashed var(--border-subtle); padding: 12px; border-radius: 12px; margin-bottom: 12px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                            <span style="font-size:0.775rem; font-weight:800; color:var(--text-muted); text-transform:uppercase;">Rincian Barang/Jasa (${itemsCount} Item)</span>
+                            <button class="btn btn-primary" style="min-height:28px; padding:2px 8px; font-size:0.725rem;" onclick="window.addTxItemRow(${txIdx})"><i class="fa-solid fa-plus"></i> Tambah Item</button>
+                        </div>
+                        ${itemsHtml}
+                    </div>
+
+                    <div class="grid-3" style="align-items: center;">
+                        <div class="form-group">
+                            <label>Diskon Transaksi Pelanggan Ini (<span style="color: var(--primary);">&lt;Discount&gt;</span>)</label>
+                            <input type="number" class="form-control" value="${tx.discount !== undefined ? tx.discount : 0}" placeholder="0" oninput="window.updateCustomerTxField(${txIdx}, 'discount', this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label>Omzet Netto Pelanggan Ini</label>
+                            <input type="text" class="form-control" readonly value="${formatRupiah(totalOmzetTx)}" style="background-color: rgba(241, 245, 249, 0.7); font-weight: 800; color: #059669;">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            calculateTotalMonthOmzet(monthData);
+        }
+
+        function calculateTxNetOmzet(tx) {
+            let gross = 0;
+            if (tx.items) {
+                tx.items.forEach(it => { gross += ((it.price || 0) * (it.qty || 1)); });
+            }
+            tx.omzet = Math.max(0, gross - (tx.discount || 0));
+            return tx.omzet;
+        }
+
+        function calculateTotalMonthOmzet(monthData) {
+            let totalMonthOmzet = 0;
+            if (monthData.transactions) {
+                monthData.transactions.forEach(tx => {
+                    totalMonthOmzet += calculateTxNetOmzet(tx);
+                });
+            }
+            monthData.omzet = totalMonthOmzet;
+            document.getElementById('inputTotalOmzetMonth').value = totalMonthOmzet;
+        }
+
+        /* --- MANAJEMEN EVENT PELANGGAN --- */
+
+        window.addCustomerTransaction = function() {
             const store = getActiveStore();
             const currentYearData = getFilteredYearData();
             const activeData = currentYearData[store.activeTabIndex];
             if (!activeData) return;
 
-            if (!activeData.items) activeData.items = [];
-            activeData.items.push({ name: '', price: 0, qty: 1 });
-            renderItemListRows(activeData);
+            ensureTransactionsStructure(activeData);
+            const monthNum = String(monthOrder[activeData.name] || 1).padStart(2, '0');
+            const defaultDate = `${activeData.year || 2026}-${monthNum}-15`;
+
+            activeData.transactions.push({
+                id: 'tx_' + Date.now(),
+                transactionDate: defaultDate,
+                customer: 'Pelanggan Baru',
+                billing: '',
+                discount: 0,
+                items: [{ name: 'Penjualan Barang / Jasa', price: 0, qty: 1 }],
+                omzet: 0
+            });
+
+            renderCustomerTransactionsList(activeData);
             window.calculateAll();
             window.saveDataToCloud();
         };
 
-        window.removeItemRow = function(idx) {
+        window.removeCustomerTransaction = function(txIdx) {
             const store = getActiveStore();
             const currentYearData = getFilteredYearData();
             const activeData = currentYearData[store.activeTabIndex];
-            if (!activeData || !activeData.items) return;
+            if (!activeData || !activeData.transactions) return;
 
-            if (activeData.items.length <= 1) {
-                alert("Minimal 1 baris item barang/jasa!");
-                return;
+            if (confirm(`Hapus transaksi pelanggan #${txIdx + 1}?`)) {
+                activeData.transactions.splice(txIdx, 1);
+                renderCustomerTransactionsList(activeData);
+                window.calculateAll();
+                window.saveDataToCloud();
             }
-
-            activeData.items.splice(idx, 1);
-            renderItemListRows(activeData);
-            window.calculateAll();
-            window.saveDataToCloud();
         };
 
-        window.updateItemRowData = function(idx, key, val) {
+        window.updateCustomerTxField = function(txIdx, field, val) {
             const store = getActiveStore();
             const currentYearData = getFilteredYearData();
             const activeData = currentYearData[store.activeTabIndex];
-            if (!activeData || !activeData.items || !activeData.items[idx]) return;
+            if (!activeData || !activeData.transactions || !activeData.transactions[txIdx]) return;
 
-            if (key === 'price' || key === 'qty') {
-                activeData.items[idx][key] = parseFloat(val) || 0;
+            if (field === 'discount') {
+                activeData.transactions[txIdx][field] = parseFloat(val) || 0;
             } else {
-                activeData.items[idx][key] = val;
+                activeData.transactions[txIdx][field] = val;
             }
 
-            calculateOmzetFromItems(activeData);
+            renderCustomerTransactionsList(activeData);
             window.calculateAll();
             window.saveDataToCloud();
         };
 
-        function calculateOmzetFromItems(activeData) {
-            let grossSum = 0;
-            if (activeData.items) {
-                activeData.items.forEach(it => {
-                    grossSum += ((it.price || 0) * (it.qty || 1));
-                });
+        window.addTxItemRow = function(txIdx) {
+            const store = getActiveStore();
+            const currentYearData = getFilteredYearData();
+            const activeData = currentYearData[store.activeTabIndex];
+            if (!activeData || !activeData.transactions || !activeData.transactions[txIdx]) return;
+
+            if (!activeData.transactions[txIdx].items) activeData.transactions[txIdx].items = [];
+            activeData.transactions[txIdx].items.push({ name: '', price: 0, qty: 1 });
+            renderCustomerTransactionsList(activeData);
+            window.calculateAll();
+            window.saveDataToCloud();
+        };
+
+        window.removeTxItemRow = function(txIdx, itemIdx) {
+            const store = getActiveStore();
+            const currentYearData = getFilteredYearData();
+            const activeData = currentYearData[store.activeTabIndex];
+            if (!activeData || !activeData.transactions || !activeData.transactions[txIdx]) return;
+
+            if (activeData.transactions[txIdx].items.length <= 1) {
+                return alert("Minimal 1 baris rincian barang/jasa!");
             }
-            const discountVal = parseFloat(document.getElementById('inputDiscount').value) || 0;
-            activeData.discount = discountVal;
-            activeData.omzet = Math.max(0, grossSum - discountVal);
-            document.getElementById('inputOmzet').value = activeData.omzet;
-        }
+
+            activeData.transactions[txIdx].items.splice(itemIdx, 1);
+            renderCustomerTransactionsList(activeData);
+            window.calculateAll();
+            window.saveDataToCloud();
+        };
+
+        window.updateTxItemField = function(txIdx, itemIdx, field, val) {
+            const store = getActiveStore();
+            const currentYearData = getFilteredYearData();
+            const activeData = currentYearData[store.activeTabIndex];
+            if (!activeData || !activeData.transactions || !activeData.transactions[txIdx]) return;
+
+            const item = activeData.transactions[txIdx].items[itemIdx];
+            if (!item) return;
+
+            if (field === 'price' || field === 'qty') {
+                item[field] = parseFloat(val) || 0;
+            } else {
+                item[field] = val;
+            }
+
+            renderCustomerTransactionsList(activeData);
+            window.calculateAll();
+            window.saveDataToCloud();
+        };
 
         window.switchTab = function(index) {
             const store = getActiveStore();
@@ -2378,12 +2520,16 @@
             store.monthsData.push({ 
                 name: month, 
                 year: year, 
-                transactionDate: `${year}-${monthNum}-15`, 
-                customer: 'Pelanggan Umum', 
-                billing: '', 
-                discount: 0,
-                items: [{ name: `Penjualan ${month}`, price: 0, qty: 1 }],
-                omzet: 0, beban: 0 
+                beban: 0,
+                transactions: [{
+                    id: 'tx_' + Date.now(),
+                    transactionDate: `${year}-${monthNum}-15`, 
+                    customer: 'Pelanggan Utama', 
+                    billing: '', discount: 0,
+                    items: [{ name: `Penjualan ${month}`, price: 0, qty: 1 }],
+                    omzet: 0 
+                }],
+                omzet: 0 
             });
             store.selectedYear = year;
             window.populateYearDropdown();
@@ -2417,11 +2563,7 @@
             if (!activeData) return;
 
             activeData.beban = parseFloat(document.getElementById('inputBeban').value) || 0;
-            activeData.billing = document.getElementById('inputKodeBilling').value;
-            activeData.customer = document.getElementById('inputCustomer').value || 'Pelanggan Umum';
-            activeData.transactionDate = document.getElementById('inputTanggal').value;
-            
-            calculateOmzetFromItems(activeData);
+            calculateTotalMonthOmzet(activeData);
 
             window.calculateAll();
             window.saveDataToCloud();
@@ -2438,6 +2580,9 @@
             historyBody.innerHTML = '';
 
             filteredData.forEach((item) => {
+                ensureTransactionsStructure(item);
+                calculateTotalMonthOmzet(item);
+
                 const omzet = item.omzet || 0;
                 const beban = item.beban || 0;
                 const laba = omzet - beban;
@@ -2472,21 +2617,22 @@
                 chartLaba.push(laba);
                 chartPajak.push(pajak);
 
-                const monthNum = String(monthOrder[item.name] || 1).padStart(2, '0');
-                const displayDate = item.transactionDate || `${item.year || store.selectedYear}-${monthNum}-15`;
-                const displayCustomer = item.customer || 'Pelanggan Umum';
-                const itemsCount = item.items ? item.items.length : 1;
+                const customerCount = item.transactions ? item.transactions.length : 1;
+                let receiptCount = 0;
+                if (item.transactions) {
+                    item.transactions.forEach(t => { if (t.billing) receiptCount++; });
+                }
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td><strong>${item.year || store.selectedYear}</strong></td>
-                    <td>${displayDate}</td>
-                    <td>${displayCustomer}</td>
-                    <td>${item.billing ? `<span class="badge badge-info">${item.billing}</span>` : '-'}</td>
-                    <td><span class="badge badge-info">${itemsCount} Item</span></td>
-                    <td>${formatRupiah(item.discount || 0)}</td>
+                    <td>${item.name}</td>
+                    <td><span class="badge badge-info">${customerCount} Pelanggan</span></td>
+                    <td>${receiptCount > 0 ? `<span class="badge badge-info">${receiptCount} Struk</span>` : '-'}</td>
                     <td style="font-weight: 700;">${formatRupiah(omzet)}</td>
                     <td>${formatRupiah(beban)}</td>
+                    <td style="color: #059669; font-weight: 600;">${formatRupiah(laba)}</td>
+                    <td>${formatRupiah(dpp)}</td>
                     <td style="color: #2563eb; font-weight: 700;">${formatRupiah(pajak)}</td>
                     <td><span class="badge ${pajak > 0 ? 'badge-warning' : 'badge-success'}">${pajak > 0 ? 'Wajib' : 'Bebas'}</span></td>
                 `;
@@ -2611,20 +2757,30 @@
                 csvContent += "Tahun,Bulan,Tanggal Transaksi,Nama Pelanggan,Nomor Transaksi,Potongan Diskon,Nilai Transaksi (Omzet Netto),Beban Operasional\n";
                 store.monthsData.forEach(item => {
                     const monthNum = String(monthOrder[item.name] || 1).padStart(2, '0');
-                    const tDate = item.transactionDate || `${item.year || store.selectedYear}-${monthNum}-15`;
-                    const cust = item.customer || 'Pelanggan Umum';
-                    const noTrans = item.billing || `STRUK-${item.year}-${item.name.substring(0,3).toUpperCase()}`;
+                    const defaultDate = `${item.year || store.selectedYear}-${monthNum}-15`;
 
-                    csvContent += [ 
-                        item.year || 2026, 
-                        `"${item.name}"`, 
-                        `"${tDate}"`, 
-                        `"${cust}"`, 
-                        `"${noTrans}"`, 
-                        item.discount || 0,
-                        item.omzet || 0, 
-                        item.beban || 0 
-                    ].join(",") + "\n";
+                    const txList = (item.transactions && item.transactions.length > 0)
+                        ? item.transactions
+                        : [{
+                            customer: item.customer || 'Pelanggan Umum',
+                            transactionDate: item.transactionDate || defaultDate,
+                            billing: item.billing || `STRUK-${item.year}-${item.name.substring(0,3).toUpperCase()}`,
+                            discount: item.discount || 0,
+                            omzet: item.omzet || 0
+                        }];
+
+                    txList.forEach(tx => {
+                        csvContent += [ 
+                            item.year || 2026, 
+                            `"${item.name}"`, 
+                            `"${tx.transactionDate || defaultDate}"`, 
+                            `"${tx.customer || 'Pelanggan Umum'}"`, 
+                            `"${tx.billing || ''}"`, 
+                            tx.discount || 0,
+                            tx.omzet || 0, 
+                            item.beban || 0 
+                        ].join(",") + "\n";
+                    });
                 });
             }
 
@@ -2648,7 +2804,7 @@
                     templateContent += "Tahun,Bulan,Penghasilan Bruto,Iuran BPJS Pensiun\n2026,Januari,12000000,200000\n2026,Februari,12000000,200000\n";
                 }
             } else {
-                templateContent += "Tahun,Bulan,Tanggal Transaksi,Nama Pelanggan,Nomor Transaksi,Diskon,Nilai Transaksi (Omzet),Beban Operasional\n2026,Januari,2026-01-15,Alisha,STRUK-ABC,25000,3975000,1200000\n";
+                templateContent += "Tahun,Bulan,Tanggal Transaksi,Nama Pelanggan,Nomor Transaksi,Diskon,Nilai Transaksi (Omzet),Beban Operasional\n2026,Januari,2026-01-15,Alisha,STRUK-ABC,25000,3975000,1200000\n2026,Januari,2026-01-18,Budi,STRUK-DEF,0,4500000,1200000\n";
             }
 
             const blob = new Blob([templateContent], { type: 'text/csv;charset=utf-8;' });
