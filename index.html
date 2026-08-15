@@ -2419,7 +2419,7 @@
                                 <input type="number" class="form-control" style="min-height:36px; padding:6px 10px;" value="${it.price !== undefined ? it.price : 0}" placeholder="600000" oninput="window.updateTxItemField(${txIdx}, ${itIdx}, 'price', this.value)">
                             </div>
                             <div>
-                                ${itIdx === 0 ? '<div class="item-header">Qty</div>' : ''}
+                                ${itIdx === 0 ? '<div class="item-header">Jumlah / Jumlah Barang</div>' : ''}
                                 <input type="number" class="form-control" style="min-height:36px; padding:6px 10px;" value="${it.qty !== undefined ? it.qty : 1}" placeholder="1" oninput="window.updateTxItemField(${txIdx}, ${itIdx}, 'qty', this.value)">
                             </div>
                             <div style="padding-top: ${itIdx === 0 ? '16px' : '0'};">
