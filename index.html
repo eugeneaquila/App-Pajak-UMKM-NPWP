@@ -503,9 +503,9 @@
                 <div class="user-badge" id="userBadgeArea">
                     <i class="fa-solid fa-circle-user"></i> <span id="displayUserNpwp">Loading...</span>
                 </div>
-                <button class="btn btn-outline" onclick="window.exportSpreadsheet()" title="Cadangkan Data CSV"><i class="fa-solid fa-file-excel"></i> Cadangkan</button>
-                <button class="btn btn-outline" onclick="window.exportCoreTaxXML()" title="Ekspor XML DJP Coretax"><i class="fa-solid fa-file-code"></i> XML DJP</button>
-                <button class="btn btn-outline" onclick="window.downloadTemplate()" title="Unduh Template"><i class="fa-solid fa-file-arrow-down"></i> Template</button>
+                <button class="btn btn-outline" onclick="window.exportSpreadsheet()" title="Ekspor CSV Coretax Standard"><i class="fa-solid fa-file-excel"></i> CSV Coretax</button>
+                <button class="btn btn-outline" onclick="window.exportCoreTaxXML()" title="Ekspor XML DJP Coretax Validated"><i class="fa-solid fa-file-code"></i> XML DJP</button>
+                <button class="btn btn-outline" onclick="window.downloadTemplate()" title="Unduh Template CSV"><i class="fa-solid fa-file-arrow-down"></i> Template</button>
                 <button class="btn btn-outline" onclick="window.triggerImport()" title="Impor File (CSV / XML)"><i class="fa-solid fa-file-import"></i> Impor</button>
                 <input type="file" id="importFileInput" accept=".csv,.xml" style="display: none;" onchange="window.handleUnifiedImport(event)">
                 <button class="btn btn-danger" onclick="window.handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button>
@@ -529,7 +529,7 @@
         <div id="sectionUmkmMode">
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title"><i class="fa-solid fa-store"></i> Personalisasi & Profil Toko</span>
+                    <span class="card-title"><i class="fa-solid fa-store"></i> Personalisasi & Profil Toko (Parameter Coretax)</span>
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label for="filterTahun" style="font-weight: 700; font-size: 0.75rem; color: var(--text-muted);">TAHUN:</label>
                         <select id="filterTahun" class="form-control" style="width: 100px; min-height: 36px; padding: 4px 8px; font-weight: 700; color: var(--primary);" onchange="window.changeSelectedYear()">
@@ -580,6 +580,16 @@
                         <label for="nomorNPWP">Nomor NPWP / NIK (16 Digit)</label>
                         <input type="text" id="nomorNPWP" class="form-control" value="" readonly style="background-color: rgba(241, 245, 249, 0.7); cursor: not-allowed;">
                     </div>
+                    <!-- PARAMETER CORETAX UPDATE: SUB-KODE CABANG NITKU -->
+                    <div class="form-group">
+                        <label for="kodeCabangNITKU">Sub-Kode Cabang NITKU (6 Digit)</label>
+                        <select id="kodeCabangNITKU" class="form-control" onchange="window.saveProfileToCloud()">
+                            <option value="000000">000000 - Kantor Pusat (Utama)</option>
+                            <option value="000001">000001 - Cabang 1</option>
+                            <option value="000002">000002 - Cabang 2</option>
+                            <option value="000003">000003 - Cabang 3</option>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label for="jenisWP">Jenis Wajib Pajak</label>
                         <select id="jenisWP" class="form-control" onchange="window.saveProfileToCloud(); window.calculateAll();">
@@ -629,7 +639,7 @@
             </div>
 
             <div class="tax-info-box">
-                <i class="fa-solid fa-circle-info"></i> <strong>Integrasi DJP Coretax Validated:</strong> Format XML <code>IdTku</code> sekarang terekspor sebagai <strong>NITKU 22 Digit (NPWP + 000000)</strong> sehingga 100% diterima oleh portal Coretax DJP tanpa kendala!
+                <i class="fa-solid fa-circle-check"></i> <strong>Pembaruan Integrasi DJP Coretax:</strong> Input data kini langsung terpetakan sempurna ke tag XML resmi Coretax: <code>&lt;IdTku&gt;</code> (NITKU 22 Digit), <code>&lt;Customer&gt;</code> (Nama Pelanggan), <code>&lt;TransactionDate&gt;</code> (Tanggal Riil), <code>&lt;TransactionNumber&gt;</code> (No. Struk/Faktur), & <code>&lt;PricePerUnit&gt;</code> (Nilai Transaksi).
             </div>
 
             <!-- Kalkulator Simulasi Cepat -->
@@ -659,17 +669,32 @@
                 </div>
             </div>
 
-            <!-- Monthly Tabs & Input -->
+            <!-- Monthly Tabs & Input Form Detail Coretax -->
             <div class="card">
                 <div class="tabs-header-wrapper">
                     <ul class="nav-tabs" id="tabList"></ul>
-                    <button class="btn btn-primary" style="padding: 6px 12px; min-height:36px; flex-shrink: 0;" onclick="window.openAddTabModal()"><i class="fa-solid fa-plus"></i></button>
+                    <button class="btn btn-primary" style="padding: 6px 12px; min-height:36px; flex-shrink: 0;" onclick="window.openAddTabModal()"><i class="fa-solid fa-plus"></i> Periode</button>
                 </div>
 
                 <div id="tabContentArea">
                     <div class="grid-3" style="margin-bottom: 16px;">
+                        <!-- FITUR CORETAX 1: TANGGAL TRANSAKSI RIIL -->
                         <div class="form-group">
-                            <label for="inputOmzet">Omzet Bruto Bulan Ini (Rp)</label>
+                            <label for="inputTanggal">Tanggal Transaksi Riil (<span style="color: var(--primary);">&lt;TransactionDate&gt;</span>)</label>
+                            <input type="date" id="inputTanggal" class="form-control" onchange="window.updateCurrentTabData()">
+                        </div>
+                        <!-- FITUR CORETAX 2: NAMA PELANGGAN -->
+                        <div class="form-group">
+                            <label for="inputCustomer">Nama Pelanggan (<span style="color: var(--primary);">&lt;Customer&gt;</span>)</label>
+                            <input type="text" id="inputCustomer" class="form-control" placeholder="Default: Pelanggan Umum" oninput="window.updateCurrentTabData()">
+                        </div>
+                        <!-- FITUR CORETAX 3: NOMOR FAKTUR / STRUK KHUSUS -->
+                        <div class="form-group">
+                            <label for="inputKodeBilling">No. Faktur / Struk (<span style="color: var(--primary);">&lt;TransactionNumber&gt;</span>)</label>
+                            <input type="text" id="inputKodeBilling" class="form-control" placeholder="Contoh: STRUK-001 / NTPN-8821931" oninput="window.updateCurrentTabData()">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputOmzet">Nilai Transaksi / Omzet Bruto (Rp)</label>
                             <input type="number" id="inputOmzet" class="form-control" placeholder="0" oninput="window.updateCurrentTabData()">
                         </div>
                         <div class="form-group">
@@ -677,8 +702,8 @@
                             <input type="number" id="inputBeban" class="form-control" placeholder="0" oninput="window.updateCurrentTabData()">
                         </div>
                         <div class="form-group">
-                            <label for="inputKodeBilling">Kode Billing / NTPN / Struk</label>
-                            <input type="text" id="inputKodeBilling" class="form-control" placeholder="Contoh: STRUK-ABC / NTPN-8821931" oninput="window.updateCurrentTabData()">
+                            <label for="displayNitkuPreview">Pemetaan NITKU Tempat Usaha</label>
+                            <input type="text" id="displayNitkuPreview" class="form-control" readonly style="background-color: rgba(241, 245, 249, 0.7); font-weight: 700; color: var(--primary);" value="...">
                         </div>
                     </div>
 
@@ -686,7 +711,7 @@
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>Parameter</th>
+                                    <th>Parameter Pembukuan</th>
                                     <th>Nilai Kalkulasi</th>
                                     <th>Status Pajak</th>
                                 </tr>
@@ -726,20 +751,21 @@
             <!-- Tabel Riwayat UMKM -->
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Pajak (<span class="selected-year-label">2026</span>)</span>
+                    <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Tabel Riwayat Transaksi Coretax (<span class="selected-year-label">2026</span>)</span>
                 </div>
                 <div class="table-responsive">
                     <table class="data-table">
                         <thead>
                             <tr>
                                 <th>Thn</th>
-                                <th>Bulan</th>
-                                <th>Omzet</th>
+                                <th>Tgl Transaksi</th>
+                                <th>Nama Pelanggan</th>
+                                <th>No. Struk/Faktur</th>
+                                <th>Nilai Transaksi</th>
                                 <th>Beban</th>
                                 <th>Laba</th>
                                 <th>DPP</th>
                                 <th>PPh 0,5%</th>
-                                <th>NTPN / Struk</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -990,7 +1016,7 @@
                 <h5 style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">Bantuan Cepat (FAQ)</h5>
                 <details class="faq-item" style="margin-bottom: 6px;">
                     <summary>Apa itu NITKU / IdTku Coretax?</summary>
-                    <p>IdTku (NITKU) adalah ID Tempat Kegiatan Usaha 22 digit di Coretax. Untuk kantor pusat/WP utama, NITKU adalah 16 digit NIK/NPWP ditambah <code>000000</code>.</p>
+                    <p>IdTku (NITKU) adalah ID Tempat Kegiatan Usaha 22 digit di Coretax. Terdiri dari 16 digit NIK/NPWP ditambah 6 digit sub-kode cabang (misal: <code>000000</code> untuk Pusat).</p>
                 </details>
                 <details class="faq-item" style="margin-bottom: 6px;">
                     <summary>Siapa yang Bebas PPh UMKM 0.5%?</summary>
@@ -1160,11 +1186,18 @@
             },
             stores: [{
                 id: "store_default",
-                profile: { namaUsaha: "Kopi Berkah Nusantara", npwp: "7326011206010003", jenisWP: "OP", kategoriUsaha: "Kuliner / Makanan & Minuman", targetOmzet: 500000000 },
+                profile: { 
+                    namaUsaha: "Kopi Berkah Nusantara", 
+                    npwp: "7326011206010003", 
+                    kodeCabang: "000000", 
+                    jenisWP: "OP", 
+                    kategoriUsaha: "Kuliner / Makanan & Minuman", 
+                    targetOmzet: 500000000 
+                },
                 selectedYear: 2026, activeTabIndex: 0,
                 monthsData: [
-                    { name: 'Januari', year: 2026, omzet: 85000000, beban: 42000000, billing: 'NTPN-8821931' },
-                    { name: 'Februari', year: 2026, omzet: 92000000, beban: 45000000, billing: 'NTPN-8821932' }
+                    { name: 'Januari', year: 2026, transactionDate: '2026-01-15', customer: 'Pelanggan Umum', omzet: 85000000, beban: 42000000, billing: 'NTPN-8821931' },
+                    { name: 'Februari', year: 2026, transactionDate: '2026-02-15', customer: 'Pelanggan Umum', omzet: 92000000, beban: 45000000, billing: 'NTPN-8821932' }
                 ]
             }]
         };
@@ -1182,9 +1215,16 @@
                 },
                 stores: [{
                     id: "store_1",
-                    profile: { namaUsaha: namaUsaha || "", npwp: npwp || "7326011206010003", jenisWP: "OP", kategoriUsaha: "Retail & Kelontong", targetOmzet: 500000000 },
+                    profile: { 
+                        namaUsaha: namaUsaha || "", 
+                        npwp: npwp || "7326011206010003", 
+                        kodeCabang: "000000", 
+                        jenisWP: "OP", 
+                        kategoriUsaha: "Retail & Kelontong", 
+                        targetOmzet: 500000000 
+                    },
                     selectedYear: year, activeTabIndex: 0,
-                    monthsData: [{ name: 'Januari', year: year, omzet: 0, beban: 0, billing: '' }]
+                    monthsData: [{ name: 'Januari', year: year, transactionDate: `${year}-01-15`, customer: 'Pelanggan Umum', omzet: 0, beban: 0, billing: '' }]
                 }]
             };
         }
@@ -1461,6 +1501,7 @@
             document.getElementById('namaUsaha').value = store.profile.namaUsaha || '';
             document.getElementById('jenisWP').value = store.profile.jenisWP || 'OP';
             document.getElementById('kategoriUsaha').value = store.profile.kategoriUsaha || 'Retail & Kelontong';
+            document.getElementById('kodeCabangNITKU').value = store.profile.kodeCabang || '000000';
             document.getElementById('targetOmzet').value = store.profile.targetOmzet || 500000000;
 
             const filteredMonths = getFilteredYearData();
@@ -1492,7 +1533,7 @@
         };
 
         /* ========================================================================= */
-        /* --- EKSPOR XML CORETAX DJP DENGAN IDTKU 22-DIGIT VALID (PUSAT: 000000) --- */
+        /* --- EKSPOR XML CORETAX DJP BERDASARKAN PEMATIKAN DETAIL USER TERBARU --- */
         /* ========================================================================= */
 
         window.exportCoreTaxXML = function() {
@@ -1500,8 +1541,9 @@
             const rawNpwp = store.profile.npwp || "7326011206010003";
             const tin = rawNpwp.replace(/\D/g, '').padEnd(16, '0').substring(0, 16);
             
-            // ID TKU (NITKU 22 Digit) = 16 digit NIK/NPWP + 6 digit "000000" (Pusat)
-            const idTku = `${tin}000000`;
+            // Sub-Kode Cabang 6 Digit (Default '000000' untuk Pusat)
+            const subCabang = (store.profile.kodeCabang || '000000').padStart(6, '0').substring(0, 6);
+            const idTku = `${tin}${subCabang}`; // NITKU 22-Digit
             
             const year = store.selectedYear || 2026;
             const filteredData = getFilteredYearData();
@@ -1511,19 +1553,28 @@
             xml += `\t<TIN>${tin}</TIN>\n`;
             xml += `\t<ListOfTransaction>\n`;
 
-            filteredData.forEach((item, index) => {
+            filteredData.forEach((item) => {
+                // 1. Nomor Transaksi Coretax (<TransactionNumber>)
                 const transNum = item.billing && item.billing.trim() !== '' 
                     ? item.billing.trim() 
                     : `STRUK-${year}-${item.name.substring(0,3).toUpperCase()}`;
                     
+                // 2. Tanggal Transaksi Riil (<TransactionDate>)
                 const monthNum = String(monthOrder[item.name] || 1).padStart(2, '0');
-                const transDate = `${year}-${monthNum}-15`;
+                const transDate = item.transactionDate && item.transactionDate !== '' 
+                    ? item.transactionDate 
+                    : `${year}-${monthNum}-15`;
+
+                // 3. Nama Pelanggan Coretax (<Customer>)
+                const customerName = item.customer && item.customer.trim() !== '' 
+                    ? item.customer.trim() 
+                    : 'Pelanggan Umum';
 
                 xml += `\t\t<Transaction>\n`;
                 xml += `\t\t\t<IdTku>${idTku}</IdTku>\n`;
                 xml += `\t\t\t<TransactionNumber>${transNum}</TransactionNumber>\n`;
                 xml += `\t\t\t<TransactionDate>${transDate}</TransactionDate>\n`;
-                xml += `\t\t\t<Customer>Penjualan Bruto ${item.name}</Customer>\n`;
+                xml += `\t\t\t<Customer>${customerName}</Customer>\n`;
                 xml += `\t\t\t<DetailsTransaction>\n`;
                 xml += `\t\t\t\t<Detail>\n`;
                 xml += `\t\t\t\t\t<DetailsOfGoodService>Omzet Pembukuan UMKM (${item.name})</DetailsOfGoodService>\n`;
@@ -1586,13 +1637,19 @@
                     document.getElementById('nomorNPWP').value = tin;
                 }
 
-                const monthlyAggregator = {};
+                const importedData = [];
 
                 for (let i = 0; i < transactions.length; i++) {
                     const trans = transactions[i];
+                    const idTku = trans.getElementsByTagName("IdTku")[0]?.textContent || "";
                     const transNum = trans.getElementsByTagName("TransactionNumber")[0]?.textContent || "";
                     const dateStr = trans.getElementsByTagName("TransactionDate")[0]?.textContent || "";
+                    const customer = trans.getElementsByTagName("Customer")[0]?.textContent || "Pelanggan Umum";
                     const discount = parseFloat(trans.getElementsByTagName("Discount")[0]?.textContent || 0);
+
+                    if (idTku.length === 22) {
+                        store.profile.kodeCabang = idTku.substring(16);
+                    }
 
                     let transTotal = 0;
                     const details = trans.getElementsByTagName("Detail");
@@ -1603,28 +1660,30 @@
                     }
                     transTotal = Math.max(0, transTotal - discount);
 
+                    let year = 2026;
+                    let monthName = 'Januari';
                     if (dateStr) {
                         const d = new Date(dateStr);
                         if (!isNaN(d.getTime())) {
-                            const year = d.getFullYear();
-                            const monthName = allMonthsList[d.getMonth()];
-                            const key = `${year}_${monthName}`;
-
-                            if (!monthlyAggregator[key]) {
-                                monthlyAggregator[key] = { year, name: monthName, omzet: 0, beban: 0, billing: transNum };
-                            }
-                            monthlyAggregator[key].omzet += transTotal;
-                            if (transNum && !monthlyAggregator[key].billing.includes(transNum)) {
-                                monthlyAggregator[key].billing += `, ${transNum}`;
-                            }
+                            year = d.getFullYear();
+                            monthName = allMonthsList[d.getMonth()];
                         }
                     }
+
+                    importedData.push({
+                        name: monthName,
+                        year: year,
+                        transactionDate: dateStr,
+                        customer: customer,
+                        omzet: transTotal,
+                        beban: 0,
+                        billing: transNum
+                    });
                 }
 
-                const newImportedData = Object.values(monthlyAggregator);
-                if (newImportedData.length > 0) {
-                    store.monthsData = newImportedData;
-                    store.selectedYear = newImportedData[0].year;
+                if (importedData.length > 0) {
+                    store.monthsData = importedData;
+                    store.selectedYear = importedData[0].year;
                     window.populateYearDropdown();
                     window.renderTabs();
                     window.calculateAll();
@@ -1671,10 +1730,23 @@
                     const line = lines[i].trim();
                     if (!line) continue;
                     const cols = line.split(',');
-                    if (cols.length >= 3) {
+                    // Format CSV Baru: Tahun, Bulan, Tanggal Transaksi, Nama Pelanggan, No Transaksi, Omzet, Beban
+                    if (cols.length >= 6) {
                         newMonthsData.push({
                             year: parseInt(cols[0]) || 2026,
                             name: cols[1].replace(/"/g, ''),
+                            transactionDate: cols[2].replace(/"/g, ''),
+                            customer: cols[3].replace(/"/g, ''),
+                            billing: cols[4] ? cols[4].replace(/"/g, '') : '',
+                            omzet: parseFloat(cols[5]) || 0,
+                            beban: parseFloat(cols[6]) || 0
+                        });
+                    } else if (cols.length >= 3) { // Fallback backward-compatibility
+                        newMonthsData.push({
+                            year: parseInt(cols[0]) || 2026,
+                            name: cols[1].replace(/"/g, ''),
+                            transactionDate: `${cols[0]}-01-15`,
+                            customer: 'Pelanggan Umum',
                             omzet: parseFloat(cols[2]) || 0,
                             beban: parseFloat(cols[3]) || 0,
                             billing: cols[4] ? cols[4].replace(/"/g, '') : ''
@@ -1687,7 +1759,7 @@
                     window.renderTabs();
                     window.calculateAll();
                     window.saveDataToCloud();
-                    alert("Data UMKM berhasil diimpor & disinkronkan!");
+                    alert("Data UMKM Coretax berhasil diimpor!");
                 }
             }
         }
@@ -1998,12 +2070,13 @@
                 profile: {
                     namaUsaha: name,
                     npwp: currentStore.profile.npwp || '',
+                    kodeCabang: '000000',
                     jenisWP: currentStore.profile.jenisWP || 'OP',
                     kategoriUsaha: category,
                     targetOmzet: 500000000
                 },
                 selectedYear: 2026, activeTabIndex: 0,
-                monthsData: [{ name: 'Januari', year: 2026, omzet: 0, beban: 0, billing: '' }]
+                monthsData: [{ name: 'Januari', year: 2026, transactionDate: '2026-01-15', customer: 'Pelanggan Umum', omzet: 0, beban: 0, billing: '' }]
             });
 
             window.appState.activeStoreId = newId;
@@ -2022,9 +2095,10 @@
 
             for (let i = 0; i < count; i++) {
                 const mName = allMonthsList[i];
+                const monthNum = String(i + 1).padStart(2, '0');
                 const existing = store.monthsData.find(m => m.name === mName && (parseInt(m.year) || 2026) === currentYear);
                 if (existing) newYearMonths.push(existing);
-                else newYearMonths.push({ name: mName, year: currentYear, omzet: 0, beban: 0, billing: '' });
+                else newYearMonths.push({ name: mName, year: currentYear, transactionDate: `${currentYear}-${monthNum}-15`, customer: 'Pelanggan Umum', omzet: 0, beban: 0, billing: '' });
             }
 
             store.monthsData = [...otherYearData, ...newYearMonths];
@@ -2040,9 +2114,11 @@
             store.profile.namaUsaha = document.getElementById('namaUsaha').value;
             store.profile.jenisWP = document.getElementById('jenisWP').value;
             store.profile.kategoriUsaha = document.getElementById('kategoriUsaha').value;
+            store.profile.kodeCabang = document.getElementById('kodeCabangNITKU').value;
             store.profile.targetOmzet = parseFloat(document.getElementById('targetOmzet').value) || 0;
             renderStoreDropdown();
             window.saveDataToCloud();
+            window.calculateAll();
         };
 
         window.populateYearDropdown = function() {
@@ -2090,6 +2166,8 @@
                 document.getElementById('inputOmzet').value = '';
                 document.getElementById('inputBeban').value = '';
                 document.getElementById('inputKodeBilling').value = '';
+                document.getElementById('inputCustomer').value = '';
+                document.getElementById('inputTanggal').value = '';
                 return;
             }
 
@@ -2109,9 +2187,14 @@
 
             const activeData = currentYearData[store.activeTabIndex];
             if (activeData) {
+                const monthNum = String(monthOrder[activeData.name] || 1).padStart(2, '0');
+                const defaultDate = `${store.selectedYear || 2026}-${monthNum}-15`;
+
                 document.getElementById('inputOmzet').value = activeData.omzet !== undefined ? activeData.omzet : '';
                 document.getElementById('inputBeban').value = activeData.beban !== undefined ? activeData.beban : '';
                 document.getElementById('inputKodeBilling').value = activeData.billing || '';
+                document.getElementById('inputCustomer').value = activeData.customer || 'Pelanggan Umum';
+                document.getElementById('inputTanggal').value = activeData.transactionDate || defaultDate;
             }
         };
 
@@ -2139,7 +2222,16 @@
             const exists = store.monthsData.some(m => m.name === month && (parseInt(m.year) || 2026) === year);
             if (exists) return alert(`Periode ${month} ${year} sudah ada!`);
 
-            store.monthsData.push({ name: month, year: year, omzet: 0, beban: 0, billing: '' });
+            const monthNum = String(monthOrder[month] || 1).padStart(2, '0');
+            store.monthsData.push({ 
+                name: month, 
+                year: year, 
+                transactionDate: `${year}-${monthNum}-15`, 
+                customer: 'Pelanggan Umum', 
+                omzet: 0, 
+                beban: 0, 
+                billing: '' 
+            });
             store.selectedYear = year;
             window.populateYearDropdown();
 
@@ -2174,6 +2266,8 @@
             activeData.omzet = parseFloat(document.getElementById('inputOmzet').value) || 0;
             activeData.beban = parseFloat(document.getElementById('inputBeban').value) || 0;
             activeData.billing = document.getElementById('inputKodeBilling').value;
+            activeData.customer = document.getElementById('inputCustomer').value || 'Pelanggan Umum';
+            activeData.transactionDate = document.getElementById('inputTanggal').value;
 
             window.calculateAll();
             window.saveDataToCloud();
@@ -2183,6 +2277,13 @@
             const store = getActiveStore();
             const isOP = store.profile.jenisWP === 'OP';
             const filteredData = getFilteredYearData();
+
+            // Preview NITKU Tempat Kegiatan Usaha (22 Digit)
+            const rawNpwp = store.profile.npwp || "7326011206010003";
+            const tin = rawNpwp.replace(/\D/g, '').padEnd(16, '0').substring(0, 16);
+            const subCabang = (store.profile.kodeCabang || '000000').padStart(6, '0').substring(0, 6);
+            const previewNitku = `${tin}${subCabang}`;
+            document.getElementById('displayNitkuPreview').value = previewNitku;
 
             let cumulativeOmzet = 0, totalOmzetAll = 0, totalLabaAll = 0, totalOmzetKenaPajakAll = 0, totalPajakAll = 0;
             const chartLabels = [], chartOmzet = [], chartLaba = [], chartPajak = [];
@@ -2224,16 +2325,21 @@
                 chartLaba.push(laba);
                 chartPajak.push(pajak);
 
+                const monthNum = String(monthOrder[item.name] || 1).padStart(2, '0');
+                const displayDate = item.transactionDate || `${item.year || store.selectedYear}-${monthNum}-15`;
+                const displayCustomer = item.customer || 'Pelanggan Umum';
+
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td><strong>${item.year || store.selectedYear}</strong></td>
-                    <td>${item.name}</td>
+                    <td>${displayDate}</td>
+                    <td>${displayCustomer}</td>
+                    <td>${item.billing ? `<span class="badge badge-info">${item.billing}</span>` : '-'}</td>
                     <td>${formatRupiah(omzet)}</td>
                     <td>${formatRupiah(beban)}</td>
                     <td style="color: #059669; font-weight: 600;">${formatRupiah(laba)}</td>
                     <td>${formatRupiah(dpp)}</td>
                     <td style="color: #2563eb; font-weight: 700;">${formatRupiah(pajak)}</td>
-                    <td>${item.billing ? `<span class="badge badge-info">${item.billing}</span>` : '-'}</td>
                     <td><span class="badge ${pajak > 0 ? 'badge-warning' : 'badge-success'}">${pajak > 0 ? 'Wajib' : 'Bebas'}</span></td>
                 `;
                 historyBody.appendChild(tr);
@@ -2337,6 +2443,7 @@
             });
         }
 
+        /* --- EKSPOR EXCEL & CSV DENGAN KEPALA KOLOM RESMI CORETAX --- */
         window.exportSpreadsheet = function() {
             const mode = window.appState.entityMode || 'umkm';
             let csvContent = "\uFEFF";
@@ -2353,16 +2460,29 @@
                 }
             } else {
                 const store = getActiveStore();
-                csvContent += "Tahun,Bulan,Omzet Bruto (Rp),Beban Operasional (Rp),Laba Bersih (Rp),DPP Pajak (Rp),PPh Final 0.5% (Rp),Kode Billing / NTPN\n";
+                csvContent += "Tahun,Bulan,Tanggal Transaksi,Nama Pelanggan,Nomor Transaksi,Nilai Transaksi (Omzet Bruto),Beban Operasional\n";
                 store.monthsData.forEach(item => {
-                    csvContent += [ item.year || 2026, `"${item.name}"`, item.omzet || 0, item.beban || 0, item.computedLaba || 0, item.computedDPP || 0, item.computedPajak || 0, `"${item.billing || ''}"` ].join(",") + "\n";
+                    const monthNum = String(monthOrder[item.name] || 1).padStart(2, '0');
+                    const tDate = item.transactionDate || `${item.year || store.selectedYear}-${monthNum}-15`;
+                    const cust = item.customer || 'Pelanggan Umum';
+                    const noTrans = item.billing || `STRUK-${item.year}-${item.name.substring(0,3).toUpperCase()}`;
+
+                    csvContent += [ 
+                        item.year || 2026, 
+                        `"${item.name}"`, 
+                        `"${tDate}"`, 
+                        `"${cust}"`, 
+                        `"${noTrans}"`, 
+                        item.omzet || 0, 
+                        item.beban || 0 
+                    ].join(",") + "\n";
                 });
             }
 
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = `AppPUN_${mode.toUpperCase()}_Export_${Date.now()}.csv`;
+            link.download = `AppPUN_${mode.toUpperCase()}_Coretax_${Date.now()}.csv`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -2379,13 +2499,13 @@
                     templateContent += "Tahun,Bulan,Penghasilan Bruto,Iuran BPJS Pensiun\n2026,Januari,12000000,200000\n2026,Februari,12000000,200000\n";
                 }
             } else {
-                templateContent += "Tahun,Bulan,Omzet Bruto,Beban Operasional,NTPN_Billing\n2026,Januari,85000000,42000000,NTPN-8821931\n2026,Februari,92000000,45000000,NTPN-8821932\n";
+                templateContent += "Tahun,Bulan,Tanggal Transaksi,Nama Pelanggan,Nomor Transaksi,Nilai Transaksi (Omzet),Beban Operasional\n2026,Januari,2026-01-15,Alisha,STRUK-001,85000000,42000000\n2026,Februari,2026-02-15,Pelanggan Umum,NTPN-8821932,92000000,45000000\n";
             }
 
             const blob = new Blob([templateContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = `Template_Impor_${mode.toUpperCase()}_AppPUN.csv`;
+            link.download = `Template_Impor_${mode.toUpperCase()}_Coretax.csv`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
